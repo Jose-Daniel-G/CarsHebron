@@ -24,7 +24,6 @@ return [
     'boolean'              => 'Le champ :attribute doit être vrai ou faux.',
     'can'                  => 'Le champ :attribute contient une valeur non autorisée.',
     'confirmed'            => 'Le champ de confirmation :attribute ne correspond pas.',
-    'contains'             => 'The :attribute field is missing a required value.',
     'current_password'     => 'Le mot de passe est incorrect.',
     'date'                 => 'Le champ :attribute n\'est pas une date valide.',
     'date_equals'          => 'Le champ :attribute doit être une date égale à :date.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => 'Le champ :attribute doit être une adresse IPv4 valide.',
     'ipv6'                 => 'Le champ :attribute doit être une adresse IPv6 valide.',
     'json'                 => 'Le champ :attribute doit être un document JSON valide.',
-    'list'                 => 'Le champ :attribute doit être une liste.',
     'lowercase'            => 'Le champ :attribute doit être en minuscules.',
     'lt'                   => [
         'array'   => 'Le tableau :attribute doit contenir moins de :value éléments.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => 'Le champ :attribute doit contenir des entrées pour : :values.',
     'required_if'          => 'Le champ :attribute est obligatoire quand la valeur de :other est :value.',
     'required_if_accepted' => 'Le champ :attribute est obligatoire quand le champ :other a été accepté.',
-    'required_if_declined' => 'The :attribute field is required when :other is declined.',
     'required_unless'      => 'Le champ :attribute est obligatoire sauf si :other est :values.',
     'required_with'        => 'Le champ :attribute est obligatoire quand :values est présent.',
     'required_with_all'    => 'Le champ :attribute est obligatoire quand :values sont présents.',

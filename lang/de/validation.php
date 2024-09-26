@@ -24,7 +24,6 @@ return [
     'boolean'              => ':Attribute muss entweder \'true\' oder \'false\' sein.',
     'can'                  => 'Das Feld :attribute enthält einen nicht autorisierten Wert.',
     'confirmed'            => ':Attribute stimmt nicht mit der Bestätigung überein.',
-    'contains'             => 'Dem Feld :attribute fehlt ein erforderlicher Wert.',
     'current_password'     => 'Das Passwort ist falsch.',
     'date'                 => ':Attribute muss ein gültiges Datum sein.',
     'date_equals'          => ':Attribute muss ein Datum gleich :date sein.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => ':Attribute muss eine gültige IPv4-Adresse sein.',
     'ipv6'                 => ':Attribute muss eine gültige IPv6-Adresse sein.',
     'json'                 => ':Attribute muss ein gültiger JSON-String sein.',
-    'list'                 => ':Attribute muss eine Liste sein.',
     'lowercase'            => ':Attribute muss in Kleinbuchstaben sein.',
     'lt'                   => [
         'array'   => ':Attribute muss weniger als :value Elemente haben.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => 'Dieses Feld muss Einträge enthalten für: :values.',
     'required_if'          => ':Attribute muss ausgefüllt werden, wenn :other den Wert :value hat.',
     'required_if_accepted' => ':Attribute muss ausgefüllt werden, wenn :other gewählt ist.',
-    'required_if_declined' => 'Das Feld :attribute ist erforderlich, wenn :other abgelehnt wird.',
     'required_unless'      => ':Attribute muss ausgefüllt werden, wenn :other nicht den Wert :values hat.',
     'required_with'        => ':Attribute muss ausgefüllt werden, wenn :values ausgefüllt wurde.',
     'required_with_all'    => ':Attribute muss ausgefüllt werden, wenn :values ausgefüllt wurde.',

@@ -8,9 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Curso extends Model
 {
     use HasFactory;
-    protected $fillable = ['nombre', 'descripcion', 'horas_requeridas'];
-    public function clases()
+    protected $fillable = ['nombre','ubicacion', 'capacidad', 'telefono','especialidad','estado'];
+
+    public function profesores(){
+        return $this->hasMany(Profesor::class);
+    }
+    public function horarios(){
+        return $this->hasMany(Horario::class);
+    }
+    public function events()
     {
-        return $this->hasMany(Clase::class);
+        return $this->hasMany(Event::class);
     }
 }

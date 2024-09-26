@@ -24,7 +24,6 @@ return [
     'boolean'              => 'Поле :attribute повинне містити логічний тип.',
     'can'                  => 'Поле :attribute містить неавторизоване значення.',
     'confirmed'            => 'Поле :attribute не збігається з підтвердженням.',
-    'contains'             => 'Поле :attribute має містити обов\'язкове значення.',
     'current_password'     => 'Пароль неправильний.',
     'date'                 => 'Поле :attribute не є датою.',
     'date_equals'          => 'Поле :attribute має бути датою рівною :date.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => 'Поле :attribute має містити IPv4 адресу.',
     'ipv6'                 => 'Поле :attribute має містити IPv6 адресу.',
     'json'                 => 'Дані поля :attribute мають бути у форматі JSON.',
-    'list'                 => 'Значення поля :attribute має бути списком.',
     'lowercase'            => 'Поле :attribute має бути рядком у нижньому регістрі',
     'lt'                   => [
         'array'   => 'Поле :attribute має містити менше ніж :value items.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => 'Поле :attribute має містити записи для: :values.',
     'required_if'          => 'Поле :attribute є обов\'язковим для заповнення, коли :other є рівним :value.',
     'required_if_accepted' => 'Поле :attribute є обов\'язковим, якщо прийнято :other.',
-    'required_if_declined' => 'Поле :attribute є обов\'язковим, якщо відхилено :other.',
     'required_unless'      => 'Поле :attribute є обов\'язковим для заповнення, коли :other відрізняється від :values',
     'required_with'        => 'Поле :attribute є обов\'язковим для заповнення, коли :values вказано.',
     'required_with_all'    => 'Поле :attribute є обов\'язковим для заповнення, коли :values вказано.',

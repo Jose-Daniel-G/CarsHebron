@@ -24,7 +24,6 @@ return [
     'boolean'              => 'A(z) :attribute mező csak true vagy false értéket kaphat!',
     'can'                  => 'A :attribute-es mező nem engedélyezett értéket tartalmaz.',
     'confirmed'            => 'A(z) :attribute nem egyezik a megerősítéssel.',
-    'contains'             => 'The :attribute field is missing a required value.',
     'current_password'     => 'A jelszó helytelen.',
     'date'                 => 'A(z) :attribute nem érvényes dátum.',
     'date_equals'          => ':Attribute meg kell egyezzen a következővel: :date.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => 'A(z) :attribute érvényes IPv4 cím kell, hogy legyen!',
     'ipv6'                 => 'A(z) :attribute érvényes IPv6 cím kell, hogy legyen!',
     'json'                 => 'A(z) :attribute érvényes JSON szöveg kell, hogy legyen!',
-    'list'                 => 'A :attribute-es mezőnek listának kell lennie.',
     'lowercase'            => 'A :attribute-nak kisbetűnek kell lennie.',
     'lt'                   => [
         'array'   => 'A(z) :attribute kevesebb, mint :value elemet kell, hogy tartalmazzon.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => 'A :attribute-as mezőnek a következő bejegyzéseket kell tartalmaznia: :values.',
     'required_if'          => 'A(z) :attribute megadása kötelező, ha a(z) :other értéke :value!',
     'required_if_accepted' => 'A :attribute-as mező kitöltése kötelező, ha elfogadja a :other-at.',
-    'required_if_declined' => 'The :attribute field is required when :other is declined.',
     'required_unless'      => 'A(z) :attribute megadása kötelező, ha a(z) :other értéke nem :values!',
     'required_with'        => 'A(z) :attribute megadása kötelező, ha a(z) :values érték létezik.',
     'required_with_all'    => 'A(z) :attribute megadása kötelező, ha a(z) :values értékek léteznek.',

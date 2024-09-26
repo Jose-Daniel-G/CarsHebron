@@ -24,7 +24,6 @@ return [
     'boolean'              => 'فیلد :attribute فقط می‌تواند true و یا false باشد.',
     'can'                  => 'فیلد :attribute یک مقدار غیرمجاز دارد.',
     'confirmed'            => ':Attribute با فیلد تکرار مطابقت ندارد.',
-    'contains'             => 'فیلد :Attribute مقدار لازم را ندارد.',
     'current_password'     => 'رمزعبور اشتباه است.',
     'date'                 => ':Attribute یک تاریخ معتبر نیست.',
     'date_equals'          => ':Attribute باید یک تاریخ برابر با تاریخ :date باشد.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => ':Attribute باید یک آدرس معتبر از نوع IPv4 باشد.',
     'ipv6'                 => ':Attribute باید یک آدرس معتبر از نوع IPv6 باشد.',
     'json'                 => 'فیلد :attribute باید یک رشته از نوع JSON باشد.',
-    'list'                 => 'فیلد :attribute باید یک لیست باشد.',
     'lowercase'            => 'فیلد :attribute باید با حروف کوچک باشد.',
     'lt'                   => [
         'array'   => ':Attribute باید کمتر از :value آیتم داشته باشد.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => 'فیلد :attribute باید حاوی ورودی های :values باشد.',
     'required_if'          => 'هنگامی که :other برابر با :value است، فیلد :attribute الزامی است.',
     'required_if_accepted' => 'فیلد :attribute الزامی است هنگامیکه :other پذیرفته شده است.',
-    'required_if_declined' => 'فیلد :attribute الزامی است هنگامیکه :other رد شده است.',
     'required_unless'      => 'فیلد :attribute الزامی است، مگر آنکه :other در :values موجود باشد.',
     'required_with'        => 'در صورت وجود فیلد :values، فیلد :attribute نیز الزامی است.',
     'required_with_all'    => 'در صورت وجود فیلدهای :values، فیلد :attribute نیز الزامی است.',

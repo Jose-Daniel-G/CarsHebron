@@ -24,7 +24,6 @@ return [
     'boolean'              => ':Attribute moet ja of nee zijn.',
     'can'                  => ':Attribute bevat een waarde waar je niet bevoegd voor bent.',
     'confirmed'            => 'Bevestiging van :attribute komt niet overeen.',
-    'contains'             => ':Attribute mist een vereiste waarde.',
     'current_password'     => 'Huidig wachtwoord is onjuist.',
     'date'                 => ':Attribute moet een datum bevatten.',
     'date_equals'          => ':Attribute moet een datum gelijk aan :date zijn.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => ':Attribute moet een geldig IPv4-adres zijn.',
     'ipv6'                 => ':Attribute moet een geldig IPv6-adres zijn.',
     'json'                 => ':Attribute moet een geldige JSON-string zijn.',
-    'list'                 => 'Het veld :attribute moet een lijst zijn.',
     'lowercase'            => ':Attribute mag alleen kleine letters bevatten.',
     'lt'                   => [
         'array'   => ':Attribute moet minder dan :value waardes bevatten.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => ':Attribute moet waardes bevatten voor :values.',
     'required_if'          => ':Attribute is verplicht indien :other gelijk is aan :value.',
     'required_if_accepted' => ':Attribute is verplicht indien :other is geaccepteerd.',
-    'required_if_declined' => ':Attribute is verplicht indien :other is geweigerd.',
     'required_unless'      => ':Attribute is verplicht tenzij :other gelijk is aan :values.',
     'required_with'        => ':Attribute is verplicht in combinatie met :values.',
     'required_with_all'    => ':Attribute is verplicht in combinatie met :values.',

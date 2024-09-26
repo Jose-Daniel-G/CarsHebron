@@ -24,7 +24,6 @@ return [
     'boolean'              => 'Polje :attribute mora biti false ili true.',
     'can'                  => 'Polje :attribute sadrži neovlaštenu vrijednost.',
     'confirmed'            => 'Potvrda polja :attribute se ne podudara.',
-    'contains'             => 'The :attribute field is missing a required value.',
     'current_password'     => 'Lozinka nije ispravna.',
     'date'                 => 'Polje :attribute nije ispravan datum.',
     'date_equals'          => 'Stavka :attribute mora biti jednaka :date.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => 'Polje :attribute mora biti ispravna IPv4 adresa.',
     'ipv6'                 => 'Polje :attribute mora biti ispravna IPv6 adresa.',
     'json'                 => 'Polje :attribute mora biti ispravan JSON string.',
-    'list'                 => 'Polje :attribute mora biti popis.',
     'lowercase'            => 'Polje :attribute mora sadržavati samo mala slova.',
     'lt'                   => [
         'array'   => 'Polje :attribute mora biti manje od :value stavki.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => 'Polje :attribute mora sadržavati unose za: :values.',
     'required_if'          => 'Polje :attribute je obavezno kada polje :other sadrži :value.',
     'required_if_accepted' => 'Polje :attribute je obavezno kada je prihvaćeno polje :other.',
-    'required_if_declined' => 'The :attribute field is required when :other is declined.',
     'required_unless'      => 'Polje :attribute je obavezno osim :other je u :values.',
     'required_with'        => 'Polje :attribute je obavezno kada postoji polje :values.',
     'required_with_all'    => 'Polje :attribute je obavezno kada postje polja :values.',

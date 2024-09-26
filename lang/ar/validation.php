@@ -24,7 +24,6 @@ return [
     'boolean'              => 'يجب أن تكون قيمة حقل :attribute إما true أو false .',
     'can'                  => 'الحقل :attribute يحتوي على قيمة غير مصرّح بها.',
     'confirmed'            => 'حقل التأكيد غير مُطابق للحقل :attribute.',
-    'contains'             => 'الحقل :attribute يفتقد قيمة مطلوبة.',
     'current_password'     => 'كلمة المرور غير صحيحة.',
     'date'                 => 'حقل :attribute ليس تاريخًا صحيحًا.',
     'date_equals'          => 'يجب أن يكون حقل :attribute مطابقاً للتاريخ :date.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => 'يجب أن يكون حقل :attribute عنوان IPv4 صحيحًا.',
     'ipv6'                 => 'يجب أن يكون حقل :attribute عنوان IPv6 صحيحًا.',
     'json'                 => 'يجب أن يكون حقل :attribute نصًا من نوع JSON.',
-    'list'                 => 'يجب أن يكون حقل :attribute قائمة.',
     'lowercase'            => 'يجب أن يحتوي الحقل :attribute على حروف صغيرة.',
     'lt'                   => [
         'array'   => 'يجب أن يحتوي حقل :attribute على أقل من :value عناصر/عنصر.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => 'الحقل :attribute يجب أن يحتوي على مدخلات لـ: :values.',
     'required_if'          => 'حقل :attribute مطلوب في حال ما إذا كان :other يساوي :value.',
     'required_if_accepted' => 'الحقل :attribute مطلوب عند قبول الحقل :other.',
-    'required_if_declined' => 'الحقل :attribute مطلوب عند رفض الحقل :other.',
     'required_unless'      => 'حقل :attribute مطلوب في حال ما لم يكن :other يساوي :values.',
     'required_with'        => 'حقل :attribute مطلوب إذا توفّر :values.',
     'required_with_all'    => 'حقل :attribute مطلوب إذا توفّر :values.',

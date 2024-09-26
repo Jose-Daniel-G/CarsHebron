@@ -24,7 +24,6 @@ return [
     'boolean'              => 'El camp :attribute ha de ser verdader o fals',
     'can'                  => 'El camp :attribute conté un valor no autoritzat.',
     'confirmed'            => 'La confirmació de :attribute no coincideix.',
-    'contains'             => 'The :attribute field is missing a required value.',
     'current_password'     => 'La contrasenya és incorrecta.',
     'date'                 => ':Attribute no és una data vàlida.',
     'date_equals'          => 'El :attribute ha de ser una data igual a :date.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => ':Attribute ha de ser una adreça IPv4 vàlida.',
     'ipv6'                 => ':Attribute ha de ser una adreça IPv6 vàlida.',
     'json'                 => 'El camp :attribute ha de ser una cadena JSON vàlida.',
-    'list'                 => 'El camp :attribute ha de ser una llista.',
     'lowercase'            => 'El :attribute ha d\'anar en minúscula.',
     'lt'                   => [
         'array'   => 'El :attribute ha de tenir menys de :value ítems.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => 'El camp :attribute ha de contenir entrades per a: :values.',
     'required_if'          => 'El camp :attribute és obligatori quan :other és :value.',
     'required_if_accepted' => 'El camp :attribute és obligatori quan s\'accepta :other.',
-    'required_if_declined' => 'The :attribute field is required when :other is declined.',
     'required_unless'      => 'El camp :attribute és obligatori a no ser que :other sigui a :values.',
     'required_with'        => 'El camp :attribute és obligatori quan hi ha :values.',
     'required_with_all'    => 'El camp :attribute és obligatori quan hi ha :values.',

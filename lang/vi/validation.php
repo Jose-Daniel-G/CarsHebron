@@ -24,7 +24,6 @@ return [
     'boolean'              => 'Trường :attribute phải là true hoặc false.',
     'can'                  => 'Trường :attribute chứa một giá trị trái phép.',
     'confirmed'            => 'Giá trị xác nhận trong trường :attribute không khớp.',
-    'contains'             => 'The :attribute field is missing a required value.',
     'current_password'     => 'Mật khẩu không đúng.',
     'date'                 => 'Trường :attribute không phải là định dạng của ngày-tháng.',
     'date_equals'          => 'Trường :attribute phải là một ngày bằng với :date.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => 'Trường :attribute phải là một địa chỉ IPv4.',
     'ipv6'                 => 'Trường :attribute phải là một địa chỉ IPv6.',
     'json'                 => 'Trường :attribute phải là một chuỗi JSON.',
-    'list'                 => 'Trường :attribute phải là một danh sách.',
     'lowercase'            => 'Trường :attribute phải là chữ thường.',
     'lt'                   => [
         'array'   => 'Mảng :attribute phải có ít hơn :value phần tử.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => 'Trường :attribute phải bao gồm các mục nhập cho: :values.',
     'required_if'          => 'Trường :attribute không được bỏ trống khi trường :other là :value.',
     'required_if_accepted' => 'Trường :attribute không được bỏ trống khi :other được chấp nhận.',
-    'required_if_declined' => 'Trường :attribute không được bỏ trống khi :other bị từ chối.',
     'required_unless'      => 'Trường :attribute không được bỏ trống trừ khi :other là :values.',
     'required_with'        => 'Trường :attribute không được bỏ trống khi một trong :values có giá trị.',
     'required_with_all'    => 'Trường :attribute không được bỏ trống khi tất cả :values có giá trị.',

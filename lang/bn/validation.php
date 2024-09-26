@@ -24,7 +24,6 @@ return [
     'boolean'              => ':Attribute স্থানে  সত্য বা মিথ্যা হতে হবে।',
     'can'                  => ':Attribute ক্ষেত্রটিতে একটি অননুমোদিত মান রয়েছে।',
     'confirmed'            => ':Attribute ক্ষেত্রটি নিশ্চিতকরণ এর সাথে মিলছে না।',
-    'contains'             => ':attribute ক্ষেত্রে একটি প্রয়োজনীয় মান অনুপস্থিত।',
     'current_password'     => 'বর্তমান পাসওয়ার্ড।',
     'date'                 => ':Attribute একটি বৈধ তারিখ নয়।',
     'date_equals'          => 'এই :attribute সমান তারিখ হতে হবে :date।',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => ':Attribute টি একটি বৈধ IPv4 address হতে হবে।',
     'ipv6'                 => ':Attribute টি একটি বৈধ IPv6 address হতে হবে।',
     'json'                 => ':Attribute একটি বৈধ JSON স্ট্রিং হতে হবে।',
-    'list'                 => ':attribute ক্ষেত্র অবশ্যই একটি তালিকা হতে হবে।',
     'lowercase'            => ':Attribute অবশ্যই ছোট হাতের হতে হবে।',
     'lt'                   => [
         'array'   => ':Attribute এর থেকে কম :value আইটেম থাকতে হবে।',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => ':Attribute ফিল্ডে অবশ্যই :values এর জন্য এন্ট্রি থাকতে হবে।',
     'required_if'          => ':Attribute স্থানটি পূরণ করা বাধ্যতামূলক যেখানে :other হল :value।',
     'required_if_accepted' => ':Attribute ক্ষেত্রটি প্রয়োজন হয় যখন :other গৃহীত হয়।',
-    'required_if_declined' => ':Attribute ক্ষেত্রটি প্রয়োজন হয় যখন :other প্রত্যাখ্যান করা হয়।',
     'required_unless'      => ':Attribute স্থানটি পূরণ করা বাধ্যতামূলক যদি না :other, :values তে উপস্থিত থাকে।',
     'required_with'        => ':Attribute স্থানটি পূরণ করা বাধ্যতামূলক যখন  :values উপস্থিত।',
     'required_with_all'    => ':Attribute স্থানটি পূরণ করা বাধ্যতামূলক যখন :values উপস্থিত।',

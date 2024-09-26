@@ -1,0 +1,103 @@
+//tabla tutorial, en el video se ve con style no se porque no se visualiza de esa forma
+$(function () {
+    $('#example1').DataTable({
+        "pageLength": 5,
+        "language": {
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Pagos",
+            "infoEmpty": "Mostrando 0 a 0 de 0 Pagos",
+            "infoFiltered": "(Filtrado de _MAX_ total Pagos)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Pagos",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscador:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        buttons: [{
+            extend: 'collection',
+            text: 'Reportes',
+            orientation: 'landscape',
+            buttons: [
+                {
+                    text: 'Copiar',
+                    extend: 'copy'
+                },
+                {
+                    extend: 'pdf'
+                },
+                {
+                    extend: 'csv'
+                },
+                {
+                    extend: 'excel'
+                },
+                {
+                    text: 'Imprimir',
+                    extend: 'print'
+                }
+            ]
+        },
+        {
+            extend: 'colvis',
+            text: 'Visor de columnas',
+            collectionLayout: 'fixed three-column'
+        }]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+});
+//DESEO PONER ESTE INPUT AUN NO SE COMO HACER QUE funciones
+                 <div class="input-group">
+                <div class="input-group-prepend">
+                <span class="input-group-text">
+                <i class="far fa-calendar-alt"></i>
+                </span>
+                </div>
+                <input type="text" class="form-control" name="fecha_reserva"
+                id="fecha_reserva" value="<?php echo date('Y-m-d'); ?>">
+                </div>
+
+php artisan make:model Post -m
+php artisan make:model Category -m
+php artisan make:factory PostFactory
+php artisan make:factory CategoryFactory
+php artisan make:factory TagFactory
+php artisan make:factory ImageFactory
+php artisan make:seeder UserSeeder
+php artisan make:seeder PostSeeder 
+
+
+
+<!-- 
+##posts
+##users
+##Category 
+ -->"# laravel9blog" 
+ <!-- para que sirva el slug tiene que estar el plugin jQuery-Plugin-stringToSlug-1.3 en public/vendor 
+ DESPUES PONER
+    <script src="{{asset('vendor/jQuery-Plugin-stringToSlug-1.3/jquery.stringToSlug.min.js')}}"></script>
+   <script>
+        $(document).ready(function() {
+            $('#name').stringToSlug({
+                setEvents: 'keyup keydown blur',
+                getPut: '#slug',
+                space:'-'
+            });
+        });
+    </script>
+ -->
+
+
+ <!-- php artisan make:controller Admin/CategoryController --model=Category -r
+
+De esa forma crea el controlador, y le asigna el modelo Category, entonces ya incluye al modelo y lo define como el tipo de variable de en los parámetros de las funciones -->
+

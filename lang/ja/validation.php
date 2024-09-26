@@ -24,7 +24,6 @@ return [
     'boolean'              => ':Attributeには、\'true\'か\'false\'を指定してください。',
     'can'                  => ':Attributeに権限のない値が含まれています。',
     'confirmed'            => ':Attributeと:attribute確認が一致しません。',
-    'contains'             => ':Attributeに必須項目が含まれていません。',
     'current_password'     => 'パスワードが正しくありません。',
     'date'                 => ':Attributeは、正しい日付ではありません。',
     'date_equals'          => ':Attributeは:dateと同じ日付を入力してください。',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => ':AttributeはIPv4アドレスを指定してください。',
     'ipv6'                 => ':AttributeはIPv6アドレスを指定してください。',
     'json'                 => ':Attributeには、有効なJSON文字列を指定してください。',
-    'list'                 => ':attribute フィールドはリストでなければなりません。',
     'lowercase'            => ':Attributeは、小文字で入力してください。',
     'lt'                   => [
         'array'   => ':Attributeの項目数は、:value個より少ない必要があります。',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => ':Attributeには、:valuesのエントリを含める必要があります。',
     'required_if'          => ':Otherが:valueの場合、:attributeを指定してください。',
     'required_if_accepted' => ':Otherを承認した場合、:attributeは必須項目です。',
-    'required_if_declined' => ':Otherを拒否した場合、:attributeは必須項目です。',
     'required_unless'      => ':Otherが:values以外の場合、:attributeは必須項目です。',
     'required_with'        => ':Valuesが入力されている場合、:attributeは必須項目です。',
     'required_with_all'    => ':Valuesが全て指定されている場合、:attributeは必須項目です。',

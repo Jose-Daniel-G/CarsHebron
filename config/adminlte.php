@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Hebron',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,12 +63,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo' => '<b>Hebron</b>LTE',
+    'logo_img' => 'vendor/adminlte/dist/img/HEBRON.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'JDeveloper',
 
     /*
     |--------------------------------------------------------------------------
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/Hebron.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -110,11 +110,10 @@ return [
     */
 
     'preloader' => [
-        'enabled' => true,
-        'mode' => 'fullscreen',
+        'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-            'alt' => 'AdminLTE Preloader Image',
+            'path' => 'vendor/adminlte/dist/img/HEBRON.png',
+            'alt' => 'HEBRON',
             'effect' => 'animation__shake',
             'width' => 60,
             'height' => 60,
@@ -134,11 +133,11 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => false,
+    'usermenu_header' => true,
     'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => false,
-    'usermenu_desc' => false,
-    'usermenu_profile_url' => false,
+    'usermenu_image' => true,
+    'usermenu_desc' => true,
+    'usermenu_profile_url' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -154,7 +153,7 @@ return [
 
     'layout_topnav' => null,
     'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
+    'layout_fixed_sidebar' => true,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
@@ -257,7 +256,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => '/',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -294,99 +293,144 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
+        
         [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav_right' => true,
+            'text' => 'Dashboard',
+            'route' => 'admin.home',
+            'icon' => 'fas fa-home fa-fw ',
         ],
         [
-            'type' => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
-
-        // Sidebar items:
-        [
-            'type' => 'sidebar-menu-search',
-            'text' => 'search',
-        ],
-        [
-            'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
-        ],
-        [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
-        [
-            'text' => 'multilevel',
-            'icon' => 'fas fa-fw fa-share',
+            'text'        => 'Configuraciones',
+            'route'         => 'admin.config.index',
+            'icon' => 'fas fa-sync-alt',
+            // 'can'  => 'admin.config.index',
             'submenu' => [
                 [
-                    'text' => 'level_one',
-                    'url' => '#',
+                    'text' => 'Crear configuracion',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.config.create',
                 ],
                 [
-                    'text' => 'level_one',
-                    'url' => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                        ],
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url' => '#',
+                    'text' => 'Listado de configuracion',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.config.index',
                 ],
             ],
         ],
-        ['header' => 'labels'],
         [
-            'text' => 'important',
-            'icon_color' => 'red',
-            'url' => '#',
+            'text'        => 'Usuarios',
+            'route'         => 'admin.users.index',
+            'icon' => 'fas fa-fw fa-user',
+            'can'  => 'admin.users.index',
+        ],
+
+        ['header' => 'ADMINISTRADOR', 'can' => 'admin.secretarias.index',],
+        [
+            'text' => 'Secretarias',
+            'icon' => 'fas fa-laptop',
+            'can' => 'admin.secretarias.index',
+            'submenu' => [
+                [
+                    'text' => 'Creacion de secretarias',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.secretarias.create',
+                ],
+                [
+                    'text' => 'Listado de secretarias',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.secretarias.index',
+                ],
+
+            ],
         ],
         [
-            'text' => 'warning',
-            'icon_color' => 'yellow',
-            'url' => '#',
+            'text' => 'Clientes',
+            'icon' => 'fas fa-users mr-2',
+            'can' => 'admin.clientes.index',
+            'submenu' => [
+                [
+                    'text' => 'Creacion de clientes',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.clientes.create',
+                ],
+                [
+                    'text' => 'Listado de clientes',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.clientes.index',
+                ],
+
+            ],
         ],
         [
-            'text' => 'information',
-            'icon_color' => 'cyan',
-            'url' => '#',
+            'text' => 'Cursos',
+            'icon' => 'fas fa-book',
+            'can' => 'admin.cursos.index',
+            'submenu' => [
+                [
+                    'text' => 'Creacion de cursos',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.cursos.create',
+                ],
+                [
+                    'text' => 'Listado de cursos',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.cursos.index',
+                ],
+
+            ],
         ],
+        [
+            'text' => 'Profesores',
+            'icon' => 'nav-icon fas fa-copy',
+            'can' => 'admin.profesores.index',
+            'submenu' => [
+                [
+                    'text' => 'Creacion de profesores',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.profesores.create',
+                ],
+                [
+                    'text' => 'Listado de profesores',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.profesores.index',
+                ],
+                [
+                    'text'        => 'Reportes',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.profesores.reportes',
+                ],
+
+            ],
+        ],
+        [
+            'text' => 'Horarios',
+            'icon' => 'fas fa-calendar-alt',
+            'can' => 'admin.horarios.index',
+            'submenu' => [
+                [
+                    'text' => 'Creacion de horarios',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.horarios.create',
+                ],
+                [
+                    'text' => 'Listado de horarios',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.horarios.index',
+                ],
+
+            ],
+        ],
+        [
+            'text'        => 'Reservas',
+            'route'         => 'admin.reservas.reportes',
+            'icon' => 'fas fa-envelope',
+            'can'  => 'admin.reservas.reportes',
+        ],
+        // [
+        //     'text' => 'information',
+        //     'icon_color' => 'cyan',
+        //     'url' => '#',
+        // ],
     ],
 
     /*
@@ -425,36 +469,36 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
                 ],
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
                 ],
             ],
         ],
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
                 ],
             ],
@@ -470,11 +514,11 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
                 ],
             ],
@@ -541,5 +585,5 @@ return [
     |
     */
 
-    'livewire' => false,
+    'livewire' => true,
 ];

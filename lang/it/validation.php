@@ -24,7 +24,6 @@ return [
     'boolean'              => 'Il campo :attribute deve essere vero o falso.',
     'can'                  => 'Il campo :attribute contiene un valore non autorizzato.',
     'confirmed'            => 'Il campo di conferma per :attribute non coincide.',
-    'contains'             => 'The :attribute field is missing a required value.',
     'current_password'     => 'Password non valida.',
     'date'                 => ':Attribute non è una data valida.',
     'date_equals'          => ':Attribute deve essere una data e uguale a :date.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => ':Attribute deve essere un indirizzo IPv4 valido.',
     'ipv6'                 => ':Attribute deve essere un indirizzo IPv6 valido.',
     'json'                 => ':Attribute deve essere una stringa JSON valida.',
-    'list'                 => 'Il campo :attribute deve essere un elenco.',
     'lowercase'            => ':Attribute deve contenere solo caratteri minuscoli.',
     'lt'                   => [
         'array'   => ':Attribute deve contenere meno di :value elementi.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => 'Il campo :attribute deve contenere voci per: :values.',
     'required_if'          => 'Il campo :attribute è richiesto quando :other è :value.',
     'required_if_accepted' => ':Attribute è richiesto quando :other è accettato.',
-    'required_if_declined' => 'The :attribute field is required when :other is declined.',
     'required_unless'      => 'Il campo :attribute è richiesto a meno che :other sia in :values.',
     'required_with'        => 'Il campo :attribute è richiesto quando :values è presente.',
     'required_with_all'    => 'Il campo :attribute è richiesto quando :values sono presenti.',

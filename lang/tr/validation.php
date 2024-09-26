@@ -24,7 +24,6 @@ return [
     'boolean'              => ':Attribute sadece doğru veya yanlış olmalıdır.',
     'can'                  => ':Attribute alanı yetkisiz bir değer içeriyor.',
     'confirmed'            => ':Attribute tekrarı eşleşmiyor.',
-    'contains'             => ':attribute alanında gerekli bir değer eksik.',
     'current_password'     => 'Parola hatalı.',
     'date'                 => ':Attribute geçerli bir tarih değil.',
     'date_equals'          => ':Attribute mutlaka :date ile aynı tarihte olmalıdır.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => ':Attribute mutlaka geçerli bir IPv4 adresi olmalıdır.',
     'ipv6'                 => ':Attribute mutlaka geçerli bir IPv6 adresi olmalıdır.',
     'json'                 => ':Attribute mutlaka geçerli bir JSON içeriği olmalıdır.',
-    'list'                 => ':attribute alanı bir liste olmalıdır.',
     'lowercase'            => ':Attribute küçük harf olmalıdır.',
     'lt'                   => [
         'array'   => ':Attribute mutlaka :value sayısından daha az öge içermelidir.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => ':Attribute değeri şu verileri içermelidir: :values.',
     'required_if'          => ':Attribute :other :value değerine sahip olduğunda mutlaka gereklidir.',
     'required_if_accepted' => ':Attribute alanı, :other kabul edildiğinde gereklidir.',
-    'required_if_declined' => ':other seçeneği reddedildiğinde :attribute alanı gereklidir.',
     'required_unless'      => ':Attribute :other :values değerlerinden birine sahip olmadığında mutlaka gereklidir.',
     'required_with'        => ':Attribute :values varken mutlaka gereklidir.',
     'required_with_all'    => ':Attribute herhangi bir :values değeri varken mutlaka gereklidir.',

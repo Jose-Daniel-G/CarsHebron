@@ -24,7 +24,6 @@ return [
     'boolean'              => ':Attribute harus bernilai true atau false',
     'can'                  => 'Bidang :attribute berisi nilai yang tidak sah.',
     'confirmed'            => 'Konfirmasi :attribute tidak cocok.',
-    'contains'             => 'The :attribute field is missing a required value.',
     'current_password'     => 'Kata sandi salah.',
     'date'                 => ':Attribute bukan tanggal yang valid.',
     'date_equals'          => ':Attribute harus berisi tanggal yang sama dengan :date.',
@@ -67,7 +66,6 @@ return [
     'ipv4'                 => ':Attribute harus berupa alamat IPv4 yang valid.',
     'ipv6'                 => ':Attribute harus berupa alamat IPv6 yang valid.',
     'json'                 => ':Attribute harus berupa JSON string yang valid.',
-    'list'                 => 'Bidang :attribute harus berupa daftar.',
     'lowercase'            => ':Attribute harus berupa huruf kecil.',
     'lt'                   => [
         'array'   => ':Attribute harus memiliki kurang dari :value anggota.',
@@ -128,7 +126,6 @@ return [
     'required_array_keys'  => ':Attribute wajib berisi entri untuk: :values.',
     'required_if'          => ':Attribute wajib diisi bila :other adalah :value.',
     'required_if_accepted' => ':Attribute wajib diisi bila :other sesuai.',
-    'required_if_declined' => 'The :attribute field is required when :other is declined.',
     'required_unless'      => ':Attribute wajib diisi kecuali :other memiliki nilai :values.',
     'required_with'        => ':Attribute wajib diisi bila terdapat :values.',
     'required_with_all'    => ':Attribute wajib diisi bila terdapat :values.',
