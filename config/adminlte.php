@@ -400,11 +400,11 @@ return [
                     'icon'        => 'far fa-circle nav-icon',
                     'route' => 'admin.profesores.index',
                 ],
-                [
-                    'text'        => 'Reportes',
-                    'icon'        => 'far fa-circle nav-icon',
-                    'route' => 'admin.profesores.reportes',
-                ],
+                // [
+                //     'text'        => 'Reportes',
+                //     'icon'        => 'far fa-circle nav-icon',
+                //     'route' => 'admin.profesores.reportes',
+                // ],
 
             ],
         ],

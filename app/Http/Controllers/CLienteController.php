@@ -25,38 +25,46 @@ class ClienteController extends Controller
         $validatedData = $request->validate([
             'nombres' => 'required',
             'apellidos' => 'required',
-            'cc' => 'required',
-            'nro_seguro' => 'required',
+            'cc' => 'required|max:11',
+            'nro_seguro' => 'required|max:11',
             'fecha_nacimiento' => 'required',
             'genero' => 'required',
-            'celular' => 'required',
-            'correo' => 'required|email|max:250|unique:Clientes',
+            'celular' => 'required|max:11',
+            'correo' => 'required|email|max:250|unique:clientes',
             'direccion' => 'required',
             'grupo_sanguineo' => 'required',
             'alergias' => 'required',
-            'contacto_emergencia' => 'required',
+            'contacto_emergencia' => 'required|max:11',
         ]);
+    
+        try {
+            $usuario = User::create(['name' => $request->nombres,'email' => $request->correo,'password' => Hash::make($request->password),]);
+    
+            // Asignar rol de 'cliente' al usuario
+            $usuario->assignRole('cliente');
+    
+            // Asignar el `user_id` en los datos validados
+            $validatedData['user_id'] = $usuario->id;
+    
+            // Crear un nuevo Cliente
+            Cliente::create($validatedData);
+    
+            return redirect()->route('admin.clientes.index')
+                ->with('info', 'Se registró al Cliente de forma correcta')
+                ->with('icono', 'success');
 
-        $usuario = new User();
-        $usuario->name = $request->nombres;
-        $usuario->email = $request->correo;
-        $usuario->password = Hash::make($request->password);
-        $usuario->save();
-        // Asignar el `user_id` en los datos validados
-        $validatedData['user_id'] = $usuario->id;
-        // Si no se ingresa un password, se utiliza el valor de `cc`
-        $validatedData['password'] = $validatedData['password'] ?? $validatedData['cc'];
-
-        // Crear un nuevo Cliente
-        $Cliente = new Cliente();
-        $Cliente->fill($validatedData); // Asignación masiva
-        $Cliente->save();
-        // $usuario->assignRole('Cliente');
-
-        return redirect()->route('admin.clientes.index')
-            ->with('info', 'Se registro al Cliente de forma correcta')
-            ->with('icono', 'success');
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->errorInfo[1] == 1062) { // Código de error para entrada duplicada
+                return back()->withErrors(['correo' => 'El correo ya está en uso. Por favor, utiliza otro.'])
+                    ->withInput();
+            }
+            // Manejo de otros errores si es necesario
+            return back()->withErrors(['error' => 'Ocurrió un error inesperado.'])
+                ->withInput();
+        }
     }
+    
+    
 
     public function show(Cliente $Cliente)
     {

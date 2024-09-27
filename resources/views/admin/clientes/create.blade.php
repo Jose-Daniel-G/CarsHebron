@@ -45,7 +45,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="cc">Cc </label><b>*</b>
-                                        <input type="text" class="form-control" name="cc"
+                                        <input type="number" class="form-control" name="cc"
                                             value="{{ old('cc') }}" required>
                                         @error('cc')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
@@ -57,7 +57,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="nro_seguro">Nro seguro </label><b>*</b>
-                                        <input type="text" class="form-control" name="nro_seguro"
+                                        <input type="number" class="form-control" name="nro_seguro"
                                             value="{{ old('nro_seguro') }}" required>
                                         @error('nro_seguro')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
@@ -89,17 +89,18 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="genero">Género </label><b>*</b>
-                                        <select name="genero" id="" class="form-control" name="genero">
+                                        <select name="genero" id="genero" class="form-control">
                                             <!-- Opción por defecto -->
                                             <option value="" selected disabled>Seleccione una opción</option>
-                                            <option value="M">Masculino</option>
-                                            <option value="F">Femenino</option>
+                                            <option value="M" {{ old('genero') == 'M' ? 'selected' : '' }}>Masculino</option>
+                                            <option value="F" {{ old('genero') == 'F' ? 'selected' : '' }}>Femenino</option>
                                         </select>
                                         @error('genero')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
+                                
 
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -126,16 +127,15 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="grupo_sanguineo">Grupo sanguineo</label><b>*</b>
-                                        <select name="grupo_sanguineo" id="" class="form-control"
-                                            name="grupo_sanguineo">
+                                        <select name="grupo_sanguineo" id="grupo_sanguineo" class="form-control">
                                             <!-- Opción por defecto -->
                                             <option value="" selected disabled>Seleccione una opción</option>
-                                            <option value="A+">A+</option>
-                                            <option value="A-">A-</option>
-                                            <option value="B+">B+</option>
-                                            <option value="B-">B-</option>
-                                            <option value="O+">O+</option>
-                                            <option value="O-">O-</option>
+                                            <option value="A+" {{ old('grupo_sanguineo') == 'A+' ? 'selected' : '' }}>A+</option>
+                                            <option value="A-" {{ old('grupo_sanguineo') == 'A-' ? 'selected' : '' }}>A-</option>
+                                            <option value="B+" {{ old('grupo_sanguineo') == 'B+' ? 'selected' : '' }}>B+</option>
+                                            <option value="B-" {{ old('grupo_sanguineo') == 'B-' ? 'selected' : '' }}>B-</option>
+                                            <option value="O+" {{ old('grupo_sanguineo') == 'O+' ? 'selected' : '' }}>O+</option>
+                                            <option value="O-" {{ old('grupo_sanguineo') == 'O-' ? 'selected' : '' }}>O-</option>
                                         </select>
 
                                         @error('grupo_sanguineo')
@@ -156,7 +156,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="contacto_emergencia">Contacto Emergencia</label><b>*</b>
-                                        <input type="text" class="form-control" name="contacto_emergencia"
+                                        <input type="number" class="form-control" name="contacto_emergencia"
                                             value="{{ old('contacto_emergencia') }}" required>
                                     </div>
                                     @error('contacto_emergencia')
