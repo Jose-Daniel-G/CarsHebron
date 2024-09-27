@@ -15,81 +15,6 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Administrador',
-            'email' => 'admin@email.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('123123123'),
-        ])->assignRole('admin');
-
-        User::create([
-            'name' => 'Jose Daniel Grijalba Osorio',
-            'email' => 'jose.jdgo97@gmail.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('123123123'),
-        ])->assignRole('admin');
-        //----------[  SECRETARIA  ]-------------
-        User::create([
-            'name' => 'Secretaria',
-            'email' => 'secretaria@email.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('123123123'),
-        ])->assignRole('secretaria');
-
-        Secretaria::create([
-            'nombres' => 'Secretaria',
-            'apellidos' => 'Catrana',
-            'cc' => 'secretaria@email.com',
-            'celular' => '3147078256',
-            'fecha_nacimiento' => '10/10/2010',
-            'direccion' => 'calle 5 o este',
-            'user_id' => '3',
-        ]);
-        //-------------------------------------
-        User::create([
-            'name' => 'Profesor',
-            'email' => 'profesor@email.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('123123123'),
-        ])->assignRole('profesor');
-        Profesor::create([
-            'nombres' => 'Profesor',
-            'apellidos' => 'Lewis',
-            'telefono' => '4564564565',
-            'licencia_medica' => '123123123',
-            'especialidad' => 'A2,B1,',
-            'user_id' => '4',
-        ]);
-        //--------------------------------------------]
-        User::create([
-            'name' => 'Profesor1',
-            'email' => 'profesor1@email.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('123123123'),
-        ])->assignRole('profesor');
-        Profesor::create([
-            'nombres' => 'Profesor1',
-            'apellidos' => 'Gallardo',
-            'telefono' => '432324324',
-            'licencia_medica' => '777777',
-            'especialidad' => 'ODONTOLOGIA',
-            'user_id' => '5',
-        ]);
-        //--------------------------------------------]
-        User::create([
-            'name' => 'Profesor2',
-            'email' => 'profesor2@email.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('11111111'),
-        ])->assignRole('profesor');
-        Profesor::create([
-            'nombres' => 'Profesor2',
-            'apellidos' => 'Valdes',
-            'telefono' => '123123213',
-            'licencia_medica' => '222222',
-            'especialidad' => 'FISIOTERAPIA',
-            'user_id' => '6',
-        ]);
         // -------------[ Cliente ]----------------------
         User::create([
             'name' => 'Cliente',
@@ -97,6 +22,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => bcrypt('123123123'),
         ])->assignRole('cliente');
+
         Cliente::create([
             'nombres' => 'Cliente',
             'apellidos' => 'vargas',
@@ -113,10 +39,9 @@ class UserSeeder extends Seeder
             'observaciones' => 'le irrita estar cerca del povo',
             'user_id' => '7',
         ]);
-        // -------------------------------------------------
         //-------------[ USUARIOS ]----------------]
         User::create([
-            'name' => 'Fancisco Antonio Grijalba Osorio', // 'sexo'=> 'M', 'telefono'=>'314852684',
+            'name' => 'Fancisco Antonio Grijalba Osorio', 
             'email' => 'francisco.grijalba@email.com',
             'email_verified_at' => now(),
             'password' => bcrypt('123123123'),
@@ -124,7 +49,6 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Juan David Grijalba Osorio',
-            // 'sexo'=> 'M','telefono'=>'314852685',
             'email' => 'juandavidgo1997@email.com',
             'email_verified_at' => now(),
             'password' => bcrypt('123123123'),
@@ -141,41 +65,14 @@ class UserSeeder extends Seeder
             'email' => 'user@email.com',
             'password' => bcrypt('123123123'),
         ])->assignRole('usuario');
-        //-----------------[ CURSOS ]--------------------------
+    
         Curso::create([
-            'nombre' => 'Curso A1',
-            'descripcion' => '1-1A',
-            'horas_requeridas' => '15',
-            'estado' => 'A',
-        ]);
-        Curso::create([
-            'nombre' => 'Curso A1',
-            'descripcion' => '1-1A',
-            'horas_requeridas' => '15',
-            'estado' => 'A',
-        ]);
-        Curso::create([
-            'nombre' => 'Curso A1',
-            'descripcion' => '1-1A',
-            'horas_requeridas' => '15',
-            'estado' => 'A',
-        ]);
-        Curso::create([
-            'nombre' => 'Curso A1',
-            'descripcion' => '1-1A',
-            'horas_requeridas' => '15',
+            'nombre' => 'Curso B1',
+            'descripcion' => 'Curso de conducción para obtener licencia tipo B1.',
+            'horas_requeridas' => '11',
             'estado' => 'A',
         ]);
 
         User::factory(9)->create();
-
-        /// CREACION DE HORARIOS
-        Horario::create([
-            'dia' => 'LUNES',
-            'hora_inicio' => '8:00:00',
-            'hora_fin' => '14:00:00',
-            'profesor_id' => '1',
-            'curso_id' => '1',
-        ]);
     }
 }

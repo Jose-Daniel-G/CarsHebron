@@ -28,7 +28,8 @@ class HorarioController extends Controller
     }
     public function cargar_datos_cursos($id)
     { 
-        // echo $id;
+        // echo $id;   
+      
         try {
             $horarios = Horario::with('profesor', 'curso')->where('curso_id', $id)->get();
             return view('admin.horarios.cargar_datos_cursos', compact('horarios'));

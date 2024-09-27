@@ -16,7 +16,8 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $total_usuarios = User::count();
         $total_secretarias = Secretaria::count();
         $total_clientes = Cliente::count();
@@ -25,10 +26,19 @@ class HomeController extends Controller
         $total_horarios = Horario::count();
         $total_eventos = CalendarEvent::count();
         $total_configuraciones = Config::count();
-        
+
         $cursos = Curso::all();
-        $profesores =Profesor::all();
+        $profesores = Profesor::all();
         $eventos = CalendarEvent::all();
-        return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios','total_eventos','cursos', 'profesores', 'eventos','total_configuraciones'));
+        return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'eventos', 'total_configuraciones'));
+    }
+    public function ver_reservas($id)
+    { // echo $id;
+        $eventos = CalendarEvent::where('user_id', $id)->get();
+        return view('admin.ver_reservas', compact('eventos'));
+    }
+    public function create()
+    {
+        return view('admin.usuarios.create');
     }
 }

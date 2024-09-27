@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('nombres' , 100);
             $table->string('apellidos' , 100);
             $table->string('cc' , 100)->unique();
-            $table->string('nro_seguro')->unique();
+            $table->integer('nro_seguro')->unique();
             $table->string('fecha_nacimiento' , 100);
             $table->string('genero' , 10);
             $table->string('celular' , 20);
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('direccion' , 150);
             $table->string('grupo_sanguineo' , 150);
             $table->string('alergias' , 255);
-            $table->string('contacto_emergencia' , 255);
+            $table->integer('contacto_emergencia');
             $table->string('observaciones' , 255)->nullable();
 
             $table->unsignedBigInteger('user_id');

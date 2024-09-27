@@ -3,13 +3,13 @@
     @section('title', 'Dashboard')
 
     @section('content_header')
-        <h1>Sistema de reservas </h1>
+        <h3>Sistema de reservas </h3>
     @stop
 
     @section('content')
 
         <div class="row">
-            <h1>Modificar cliente: {{ $cliente->nombres }} {{ $cliente->apellidos }}</h1>
+            <h2>Modificar cliente: <b>{{ $cliente->nombres }} {{ $cliente->apellidos }}</b></h2>
 
         </div>
         <div class="row">
@@ -70,7 +70,8 @@
                                     <div class="form-group">
                                         <label for="fecha_nacimiento">Fecha de nacimiento </label><b>*</b>
                                         <input type="date" class="form-control" name="fecha_nacimiento"
-                                            value="{{ $cliente->fecha_nacimiento }}" required>
+                                        value="{{ \Carbon\Carbon::parse($cliente->fecha_nacimiento)->format('Y-m-d') }}" required>
+                                    
                                         @error('fecha_nacimiento')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
                                         @enderror
@@ -157,7 +158,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="contacto_emergencia">Contacto Emergencia</label><b>*</b>
-                                        <input type="text" class="form-control" name="contacto_emergencia"
+                                        <input type="number" class="form-control" name="contacto_emergencia"
                                             value="{{ $cliente->contacto_emergencia }}" required>
                                     </div>
                                     @error('contacto_emergencia')
@@ -166,15 +167,23 @@
                                 </div>
                             </div>
                             <div class="row">
-
-                                <div class="col-md-12">
+                                <div class="col-md-9">
                                     <div class="form-group">
                                         <label for="observaciones">Observaciones</label>
                                         <input type="text" class="form-control" name="observaciones"
                                             value="{{ $cliente->observaciones }}" required>
                                     </div>
                                 </div>
+                            
+                                <div class="col-md-3 d-flex align-items-center">
+                                    <div class="form-group mb-0">
+                                        <input type="checkbox" id="reset-password" name="reset_password">
+                                        <label for="reset-password" class="ml-2">Restablecer contraseña a la cédula</label>
+                                    </div>
+                                </div>
                             </div>
+                            
+                            
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">

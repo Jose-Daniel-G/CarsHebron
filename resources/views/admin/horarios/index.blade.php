@@ -116,7 +116,7 @@
             var curso_id = $('#curso_select').val();
             var url = "{{ route('admin.horarios.cargar_datos_cursos', ':id') }}";
             url = url.replace(':id', curso_id);
-
+            
             if (curso_id) {
                 $.ajax({
                     url: url,

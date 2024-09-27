@@ -169,7 +169,7 @@
                                     <div class="form-group">
                                         <label for="password">Contrasena </label><b>*</b>
                                         <input type="password" class="form-control" name="password"
-                                            value="{{ old('password') }}" required>
+                                            value="{{ old('password') }}">
                                         @error('password')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
                                         @enderror
@@ -180,7 +180,7 @@
                                     <div class="form-group">
                                         <label for="password_confirmation">Verificacion de contrasena </label><b>*</b>
                                         <input type="password" class="form-control" name="password_confirmation"
-                                            value="{{ old('password_confirmation') }}" required>
+                                            value="{{ old('password_confirmation') }}">
                                         @error('password_confirmation')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
                                         @enderror

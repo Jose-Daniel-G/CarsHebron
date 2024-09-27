@@ -12,7 +12,7 @@ class SecretariaController extends Controller
     public function index()
     {
         $secretarias = Secretaria::with('user')->get(); // viene con la relacion del secretaria
-        return view('admin.secretarias.index', compact(('secretarias')));
+        return view('admin.secretarias.index', compact('secretarias'));
     }
 
     public function create()

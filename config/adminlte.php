@@ -299,27 +299,33 @@ return [
             'route' => 'admin.home',
             'icon' => 'fas fa-home fa-fw ',
         ],
-        [
-            'text'        => 'Configuraciones',
-            'route'         => 'admin.config.index',
-            'icon' => 'fas fa-sync-alt',
-            // 'can'  => 'admin.config.index',
-            'submenu' => [
-                [
-                    'text' => 'Crear configuracion',
-                    'icon'        => 'far fa-circle nav-icon',
-                    'route' => 'admin.config.create',
-                ],
-                [
-                    'text' => 'Listado de configuracion',
-                    'icon'        => 'far fa-circle nav-icon',
-                    'route' => 'admin.config.index',
-                ],
-            ],
-        ],
+        // [
+        //     'text'        => 'Configuraciones',
+        //     'route'         => 'admin.config.index',
+        //     'icon' => 'fas fa-sync-alt',
+        //     // 'can'  => 'admin.config.index',
+        //     'submenu' => [
+        //         [
+        //             'text' => 'Crear configuracion',
+        //             'icon'        => 'far fa-circle nav-icon',
+        //             'route' => 'admin.config.create',
+        //         ],
+        //         [
+        //             'text' => 'Listado de configuracion',
+        //             'icon'        => 'far fa-circle nav-icon',
+        //             'route' => 'admin.config.index',
+        //         ],
+        //     ],
+        // ],
         [
             'text'        => 'Usuarios',
             'route'         => 'admin.users.index',
+            'icon' => 'fas fa-fw fa-user',
+            'can'  => 'admin.users.index',
+        ],
+        [
+            'text'        => 'Usuarios (citas)',
+            'route'         => 'admin.usuarios.index',
             'icon' => 'fas fa-fw fa-user',
             'can'  => 'admin.users.index',
         ],

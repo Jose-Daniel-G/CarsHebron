@@ -13,15 +13,9 @@ use Illuminate\Validation\ValidationException;
 
 class EventController extends Controller
 {
-    public function index()
-    {
-        //
-    }
+    public function index(){}
 
-    public function create()
-    {
-        //
-    }
+    public function create(){}
 
     public function store(Request $request)
     {
@@ -91,7 +85,6 @@ class EventController extends Controller
             ->with('title', 'Éxito');
     }
 
-
     private function traducir_dia($dia)
     {
         $dias = [
@@ -105,20 +98,11 @@ class EventController extends Controller
         ];
         return $dias[$dia] ?? $dias;
     }
-    public function show(Event $event)
-    {
-        //
-    }
+    public function show(Event $event){}
 
-    public function edit(Event $event)
-    {
-        //
-    }
+    public function edit(Event $event){}
 
-    public function update(Request $request, Event $event)
-    {
-        //
-    }
+    public function update(Request $request, Event $event){}
 
     public function destroy(Event $event)
     {
