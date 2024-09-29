@@ -29,8 +29,8 @@ class HomeController extends Controller
 
         $cursos = Curso::all();
         $profesores = Profesor::all();
-        $eventos = CalendarEvent::all();
-        return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'eventos', 'total_configuraciones'));
+        $events = CalendarEvent::all();
+        return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'events', 'total_configuraciones'));
     }
     public function ver_reservas($id)
     { // echo $id;

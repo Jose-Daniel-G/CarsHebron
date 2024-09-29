@@ -1,8 +1,16 @@
 @extends('adminlte::page')
 
 @section('title', 'Dashboard')
-{{-- @section('css')
-@stop --}}
+@section('css')
+    <!-- DataTables core CSS --> <!-- DataTables Buttons extension CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+    {{-- Add here extra stylesheets --}}
+    {{-- NOTA: DESEO TOMAR ESTOS ESTILOS PARA LOS BOTONES DE LA TABLA, MAS NO HE PODIDO --}}
+    {{-- <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}"> --}}
+@stop
 @section('content_header')
     <h1>Listado de profesores</h1>
 @stop
@@ -50,11 +58,13 @@
                                                 class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
                                             <a href="{{ route('admin.profesores.edit', $profesor->id) }}"
                                                 class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
-                                            <form action="{{ route('admin.profesores.destroy', $profesor->id) }}" method="POST"
+                                            <form action="{{ route('admin.profesores.destroy', $profesor->id) }}"
+                                                method="POST"
                                                 onsubmit="return confirm('¿Estás seguro de que deseas eliminar este evento?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                                <button type="submit" class="btn btn-danger"><i
+                                                        class="fas fa-trash"></i></button>
                                             </form>
 
                                         </div>
@@ -68,19 +78,7 @@
         </div>
     </div>
 @stop
-@section('css')
-    {{-- Add here extra stylesheets --}}
-    <!-- DataTables core CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
-    
-    <!-- DataTables Buttons extension CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 
-    {{-- NOTA: DESEO TOMAR ESTOS ESTILOS PARA LOS BOTONES DE LA TABLA, MAS NO HE PODIDO --}}
-    {{-- <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}"> --}}
-@stop
 @section('js')
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.bootstrap4.js"></script>
@@ -119,6 +117,18 @@
                     "orderableReverse": "Invertir el orden de esta columna"
                 }
             },
+            initComplete: function() {
+                // Apply custom styles after initialization
+                $('.dt-button').css({
+                    'background-color': '#4a4a4a',
+                    'color': 'white',
+                    'border': 'none',
+                    'border-radius': '4px',
+                    'padding': '8px 12px',
+                    'margin': '0 5px',
+                    'font-size': '14px'
+                });
+            },
             responsive: true,
             autoWidth: false, //no le vi la funcionalidad
             dom: 'Bfrtip', // Añade el contenedor de botones
@@ -126,26 +136,14 @@
                 extend: 'collection',
                 text: 'Reportes',
                 orientation: 'landscape',
-                buttons: [
-                    {
+                buttons: [{
                         text: 'Copiar',
                         extend: 'copy'
                     },
                     {
                         // text: '<i class="bi bi-file-pdf-fill"></i>',//NO SE ESTA VISUALIZANDO ICONO DE  BOOTSTRAP 4
-                        extend: 'pdf'
-                    },
-                    {
-                        extend: 'csv'
-                    },
-                    {
-                        extend: 'excel'
-                    },
-                    {
-                        text: 'Imprimir',
-                        extend: 'print'
-                    }
-                ]
+                        extend: 'pdf'},{extend: 'csv'},{extend: 'excel'},{text: 'Imprimir',extend: 'print'}
+               ]
             }, ],
 
         });

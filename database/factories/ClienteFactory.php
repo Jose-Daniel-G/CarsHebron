@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\Cliente;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class PacienteFactory extends Factory
+class AgendarFactory extends Factory
 {
     protected $model = Cliente::class;
     public function definition(): array

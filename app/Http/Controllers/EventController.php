@@ -98,11 +98,19 @@ class EventController extends Controller
         ];
         return $dias[$dia] ?? $dias;
     }
-    public function show(Event $event){}
+    // public function show(Event $event){return response()->json($event);}
 
-    public function edit(Event $event){}
+    public function edit(Event $event){
+        // $evento->start = Carbon::createFromFormat('Y-m-d H:i:s',$evento->start)->format('Y-m-d');
+        // $evento->end = Carbon::createFromFormat('Y-m-d H:i:s',$evento->end)->format('Y-m-d');
+    return response()->json($event);
+    }
 
-    public function update(Request $request, Event $event){}
+    public function update(Request $request, Event $event){
+        $validatedData = $request->validate(['profesor_id' => 'required','hora_reserva' => 'required','fecha_reserva' => 'required|date']);
+        $event->update($validatedData);
+        return response()->json(['message' => 'Evento actualizado correctamente']);
+    }
 
     public function destroy(Event $event)
     {
@@ -111,7 +119,9 @@ class EventController extends Controller
             'mensaje' => 'Se eliminó la reserva de manera correcta',
             'icono' => 'success',
         ]);
+        // return response()->json(['message' => 'Evento eliminado exitosamente']);
     }
+
     // public function reportes(){
     //     return view('admin.reservas.reportes');
     // }

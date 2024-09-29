@@ -67,4 +67,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Event::class);
     }
+        // En el modelo User
+        public function horarios()
+        {
+            return $this->hasMany(Horario::class);
+        }
 }

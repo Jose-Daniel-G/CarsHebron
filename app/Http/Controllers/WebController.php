@@ -32,10 +32,10 @@ class WebController extends Controller
     public function cargar_reserva_profesores($id)
     { //echo $id;
         try { 
-            $eventos = Event::where('profesor_id', $id)->get();
+            $events = Event::where('profesor_id', $id)->get();
                     // ->select('id','title', DB::raw('DATE_FORMAT(start, %Y-%m-%d) as start'),DB::raw('DATE_FORMAT(end, %Y-%m-%d) as end'),'color')
                     // ->get();
-            return response()->json($eventos);
+            return response()->json($events);
         } catch (\Exception $exception) {
             return response()->json(['mesaje' => 'Error']);
         }

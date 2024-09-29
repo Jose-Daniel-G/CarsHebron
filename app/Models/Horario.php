@@ -25,4 +25,10 @@ class Horario extends Model
     {
         return $this->hasMany(Event::class);
     }
+        // En el modelo Horario
+        public function usuario()
+        {
+            return $this->belongsTo(User::class, 'user_id');
+        }
+    
 }

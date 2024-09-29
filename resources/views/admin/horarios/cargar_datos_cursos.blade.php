@@ -42,12 +42,15 @@
                                 $horario_inicio = date('H:i:s', strtotime($horario->hora_inicio));
                                 $horario_fin = date('H:i:s', strtotime($horario->hora_fin));
 
+   
                                 if (
                                     strtoupper($horario->dia) == $dia &&
-                                    $hora_inicio < $horario_fin && // Ajuste en comparación
-                                    $hora_fin > $horario_inicio // Ajuste en comparación
+                                    $hora_inicio >= $horario_inicio &&// Ajuste en comparación
+                                    $hora_fin <= $horario_fin  // Ajuste en comparación
                                 ) {
-                                    $nombre_profesor = $horario->profesor->nombres . ' ' . $horario->profesor->apellidos;
+                                    // Asignar nombre del doctor (que es el profesor)
+                                    $nombre_profesor =  $horario->profesor->nombres . ' ' . $horario->profesor->apellidos;
+                                    break; // Salir del bucle si se encuentra el doctor adecuado
                                 }
                             }
                         @endphp
