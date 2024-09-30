@@ -55,8 +55,8 @@ Route::get('/profesores/reportes', [ProfesorController::class, 'reportes'])->nam
 Route::resource('/profesores', ProfesorController::class)->names('admin.profesores')->parameters(['profesores' => 'profesor'])->middleware('auth', 'can:admin.profesores');
 
 
-Route::resource('/events/create', EventController::class)->names('admin.events');
-Route::get('events/mostrar', [EventController::class, 'show'])->name('admin.events.show');// This isn't working is an example
+// Route::resource('/events/create', EventController::class)->names('admin.events');
+// Route::get('events/mostrar', [EventController::class, 'show'])->name('admin.events.show');// This isn't working is an example
 
 
 //RUTAS para las reservas
@@ -74,3 +74,15 @@ Route::resource('/historial', HistorialController::class)->names('admin.historia
 // Route::post('events/actualizar/{evento}', [EventController::class, 'edit'])->name('admin.events.update');
 // Route::delete('events/eliminar/{id}', [EventController::class, 'destroy'])->name('admin.events.destroy');
 // Route::post('events/agregar', [EventController::class, 'store'])->name('admin.events.store');
+
+// Route::group(['middleware'=>['auth']], function(){
+    Route::get('events', [EventController::class, 'index'])->name('admin.events.index');
+    Route::get('events/mostrar', [EventController::class, 'show'])->name('admin.events.show');
+    // Route::post('events/editar/{id}', [EventController::class, 'edit'])->name('admin.events.edit');
+    // Route::put('events/actualizar/{evento}', [EventController::class, 'update'])->name('admin.events.update');
+
+    // Route::post('events/actualizar/{evento}', [EventController::class, 'edit'])->name('admin.events.update');
+    // Route::delete('events/eliminar/{id}', [EventController::class, 'destroy'])->name('admin.events.destroy');
+    Route::post('events/agregar', [EventController::class, 'store'])->name('admin.events.store');
+
+// });

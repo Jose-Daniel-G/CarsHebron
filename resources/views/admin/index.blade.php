@@ -337,42 +337,68 @@
                 $('#curso_info').html('');
             }
         });
-        // carga contenido de tabla en PROFESOR_INFO
         $('#profesor_select').on('change', function() {
             var profesor_id = $('#profesor_select').val();
-
             var calendarEl = document.getElementById('calendar');
-            // alert(profesor_id)
+
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 locale: 'es',
-                displayEventTime: false,
+                displayEventTime: true, // Mostrar la hora del evento
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,listWeek' // Botones de vistas
                 },
-                //events: [],
-                events: "{{ route('admin.events.show') }}", //this isn't working is an example of what I want to do here
-                dateClick: function(info) {
-                    // form.reset();
-                    // form.start.value = info.dateStr;
-                    // form.end.value = info.dateStr;
+                events: {
+                    url: "{{ route('admin.events.show') }}",
+                    method: 'GET',
+                    extraParams: {
+                        profesor_id: profesor_id
+                    },
+                    failure: function() {
+                        alert('Error al cargar eventos');
+                    }
+                },
+                // Cuando se hace clic en un evento
+                eventClick: function(info) {
+                    var evento = info.event; // Obtener el evento clicado
+                    var startTime = evento.start; // Hora de inicio del evento
+                    var endTime = evento.end; // Hora de finalización del evento (opcional)
+
+                    // Mostrar la información en el modal
+                    if (evento.extendedProps.profesor) {
+                        // Accede al nombre y apellido del profesor
+                        var profesorNombres = evento.extendedProps.profesor.nombres || 'No disponible';
+                        var profesorApellidos = evento.extendedProps.profesor.apellidos || 'No disponible';
+                        document.getElementById('nombres_teacher').textContent = `${profesorNombres} ${profesorApellidos}`;
+                    } else {
+                        document.getElementById('nombres_teacher').textContent = 'Profesor no asignado';
+                    }
+
+                    document.getElementById('fecha_reserva1').textContent = startTime.toISOString().split('T')[0]; // Fecha
+                    document.getElementById('hora_reserva1').textContent = startTime.toLocaleTimeString(); // Hora de inicio (formato local)
+
+                    // Mostrar el modal
                     $("#mdalSelected").modal("show");
                 },
+
+                dateClick: function(info) {
+                    // Si necesitas hacer algo adicional al hacer clic en la fecha vacía
+                }
             });
 
             var url = "{{ route('admin.horarios.cargar_reserva_profesores', ':id') }}";
             url = url.replace(':id', profesor_id);
-            // alert('hey '+profesor_id)
+
             if (profesor_id) {
                 $.ajax({
                     url: url,
                     type: 'GET',
                     dataType: 'json',
                     success: function(data) {
-                        calendar.addEventSource(data);
-                        // $('#profesor_info').html(data);
+                        console.log("Datos recibidos del servidor:", data); // Ver los eventos recibidos
+                        calendar.addEventSource(data); // Añade los eventos al calendario
                     },
                     error: function() {
                         alert('Error al obtener datos del profesor');
@@ -381,8 +407,8 @@
             } else {
                 $('#profesor_info').html('');
             }
-            calendar.render();
 
+            calendar.render();
         });
     </script>
 

@@ -100,11 +100,20 @@ class EventController extends Controller
     }
     // public function show(Event $event){return response()->json($event);}
 
-    public function edit(Event $event){
-        // $evento->start = Carbon::createFromFormat('Y-m-d H:i:s',$evento->start)->format('Y-m-d');
-        // $evento->end = Carbon::createFromFormat('Y-m-d H:i:s',$evento->end)->format('Y-m-d');
-    return response()->json($event);
+    public function show(Request $request)
+    {
+        try {
+            // Aquí puedes obtener todos los eventos desde la base de datos
+            // $events = Event::all(); // Cambia esto según la lógica que necesites
+             $events = Event::with('profesor')->get(); // Carga la relación 'profesor'
+            
+            return response()->json($events); // Devuelve todos los eventos
+        } catch (\Exception $e) {
+            \Log::error($e); // Loguea el error para diagnóstico
+            return response()->json(['error' => 'Error al obtener eventos'], 500);
+        }
     }
+    
 
     public function update(Request $request, Event $event){
         $validatedData = $request->validate(['profesor_id' => 'required','hora_reserva' => 'required','fecha_reserva' => 'required|date']);
