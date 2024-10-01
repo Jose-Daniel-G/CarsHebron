@@ -368,10 +368,15 @@
                     var endTime = evento.end; // Hora de finalización del evento (opcional)
 
                     // Mostrar la información en el modal
-
+                    console.log(evento.extendedProps.profesor);
+                    console.log(evento.extendedProps.cliente);
                         // Accede al nombre y apellido del profesor
                         var profesorNombres = evento.extendedProps.profesor.nombres || 'No disponible';
                         var profesorApellidos = evento.extendedProps.profesor.apellidos || 'No disponible';
+                        // var clienteNombres = evento.extendedProps.cliente.nombres || 'No disponible';
+                        // var clienteApellidos = evento.extendedProps.cliente.apellidos || 'No disponible';
+                        // $('#nombres_cliente').text(`${clienteNombres} ${clienteApellidos}`);
+
                         $('#nombres_teacher').text(`${profesorNombres} ${profesorApellidos}`);
                         $('#fecha_reserva1').text(startTime.toISOString().split('T')[0]); // Fecha
                         $('#hora_reserva1').text(startTime.toLocaleTimeString()); // Hora de inicio (formato local)
