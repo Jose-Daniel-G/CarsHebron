@@ -15,10 +15,17 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="profesor_id1">Profesor</label>
                                 <p id="nombres_teacher"> 
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="profesor_id1">Cliente</label>
+                                <p id="nombres_cliente"> 
                                 </p>
                             </div>
                         </div>

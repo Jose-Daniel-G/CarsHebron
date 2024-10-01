@@ -83,7 +83,7 @@ luego dirigirse a esta ruta y editar el siguiente archivo
 
     <VirtualHost *:80>
         ServerName laravel9.test
-        DocumentRoot "/xampp/htdocs/www/laravel/public"
+        DocumentRoot "/xampp/htdocs/www/carsliberty/public"
     </VirtualHost>
     ```                    # RUTA
     ````

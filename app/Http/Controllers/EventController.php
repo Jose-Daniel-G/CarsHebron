@@ -105,7 +105,7 @@ class EventController extends Controller
         try {
             // Aquí puedes obtener todos los eventos desde la base de datos
             // $events = Event::all(); // Cambia esto según la lógica que necesites
-             $events = Event::with('profesor')->get(); // Carga la relación 'profesor'
+             $events = Event::with('profesor', 'cliente')->get(); // Carga la relación 'profesor'
             
             return response()->json($events); // Devuelve todos los eventos
         } catch (\Exception $e) {

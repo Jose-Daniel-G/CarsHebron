@@ -214,7 +214,7 @@
             </div>
         </div>
     @endcan
-    {{-- @if (Auth::check() && Auth::user()->profesor) --}}
+    @if (Auth::check() && Auth::user()->profesor)
     <div class="row">
         <div class="col-md-12">
             <div class="card card-outline card-primary">
@@ -226,7 +226,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    {{-- {{ Auth::user()->profesor->id}} --}}
+                    <h2>{{ Auth::user()->profesor->nombres. ' '.Auth::user()->profesor->apellidos}}</h2>
                     <table id="reservas" class="table table-striped table-bordered table-hover table-sm">
                         <thead class="thead-dark">
                             <tr>
@@ -239,7 +239,7 @@
                         <tbody>
                             <?php $contador = 1; ?>
                             @foreach ($events as $evento)
-                                {{-- @if (Auth::user()->profesor->id == $evento->profesor_id)  --}} {{-- NOTA: SI  FALLA --}}
+                                @if (Auth::user()->profesor->id == $evento->profesor_id)  {{-- NOTA: SI  FALLA --}}
                                 <tr>
                                     <td scope="row">{{ $contador++ }}</td>
                                     <td scope="row">{{ $evento->user->name }}</td>
@@ -248,7 +248,7 @@
                                     <td scope="row" class="text-center">
                                         {{ \Carbon\Carbon::parse($evento->end)->format('H:i') }}</td>
                                 </tr>
-                                {{-- @endif --}}
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -256,7 +256,7 @@
             </div>
         </div>
     </div>
-    {{-- @endif --}}
+    @endif
 
 @stop
 
@@ -340,6 +340,7 @@
         $('#profesor_select').on('change', function() {
             var profesor_id = $('#profesor_select').val();
             var calendarEl = document.getElementById('calendar');
+            let form = document.getElementById('eventoForm');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
@@ -367,17 +368,13 @@
                     var endTime = evento.end; // Hora de finalización del evento (opcional)
 
                     // Mostrar la información en el modal
-                    if (evento.extendedProps.profesor) {
+
                         // Accede al nombre y apellido del profesor
                         var profesorNombres = evento.extendedProps.profesor.nombres || 'No disponible';
                         var profesorApellidos = evento.extendedProps.profesor.apellidos || 'No disponible';
-                        document.getElementById('nombres_teacher').textContent = `${profesorNombres} ${profesorApellidos}`;
-                    } else {
-                        document.getElementById('nombres_teacher').textContent = 'Profesor no asignado';
-                    }
-
-                    document.getElementById('fecha_reserva1').textContent = startTime.toISOString().split('T')[0]; // Fecha
-                    document.getElementById('hora_reserva1').textContent = startTime.toLocaleTimeString(); // Hora de inicio (formato local)
+                        $('#nombres_teacher').text(`${profesorNombres} ${profesorApellidos}`);
+                        $('#fecha_reserva1').text(startTime.toISOString().split('T')[0]); // Fecha
+                        $('#hora_reserva1').text(startTime.toLocaleTimeString()); // Hora de inicio (formato local)
 
                     // Mostrar el modal
                     $("#mdalSelected").modal("show");
@@ -429,7 +426,7 @@
                     'border': 'none',
                     'border-radius': '4px',
                     'padding': '8px 12px',
-                    'margin': '0 5px',
+                    'margin': '0',
                     'font-size': '14px'
                 });
             },

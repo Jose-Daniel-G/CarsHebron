@@ -58,6 +58,8 @@ Route::resource('/profesores', ProfesorController::class)->names('admin.profesor
 // Route::resource('/events/create', EventController::class)->names('admin.events');
 // Route::get('events/mostrar', [EventController::class, 'show'])->name('admin.events.show');// This isn't working is an example
 
+//RUTAS PARA LOS EVENTOS
+Route::resource('/eventos', EventController::class)->names('admin.eventos');
 
 //RUTAS para las reservas
 Route::get('/reservas/reportes', [EventController::class, 'reportes'])->name('admin.reservas.reportes')->middleware('auth', 'can:admin.reservas.reportes');
