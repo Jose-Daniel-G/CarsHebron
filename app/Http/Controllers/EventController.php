@@ -43,7 +43,7 @@ class EventController extends Controller
             ->where('hora_fin', '>=', $hora_reserva)
             ->exists();
         // dd($horarios);
-        if ($horarios) {
+        if (!$horarios) {
             return redirect()->back()->with([
                 'info' => 'El profesor no está disponible en ese horario.',
                 'icono' => 'error',
