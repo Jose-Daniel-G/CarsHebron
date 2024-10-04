@@ -43,8 +43,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="horas_requeridas">horas_requeridas </label><b>*</b>
-                                        <input type="text" class="form-control" name="horas_requeridas"
+                                        <label for="horas_requeridas">horas requeridas </label><b>*</b>
+                                        <input type="number" class="form-control" name="horas_requeridas"
                                             value="{{ old('horas_requeridas') }}" required>
                                         @error('horas_requeridas')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>

@@ -23,13 +23,16 @@ class CursoController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $validatedData = $request->validate([
+        $request->validate([
             'nombre' => 'required',
-            'ubicacion' => 'required',
-            'capacidad' => 'required',
-            'especialidad' => 'required',
+            'descripcion' => 'required',
+            'horas_requeridas' => 'required',
+            // 'ubicacion' => 'required',
+            // 'capacidad' => 'required',
+            // 'especialidad' => 'required',
             'estado' => 'required',
         ]);
+    
         // Crear un nuevo curso
         Curso::create($request->all());
 
@@ -54,9 +57,11 @@ class CursoController extends Controller
         // Validación de los datos
         $request->validate([
             'nombre' => 'required',
-            'ubicacion' => 'required',
-            'capacidad' => 'required',
-            'especialidad' => 'required',
+            'descripcion' => 'required',
+            'horas_requeridas' => 'required',
+            // 'ubicacion' => 'required',
+            // 'capacidad' => 'required',
+            // 'especialidad' => 'required',
             'estado' => 'required',
         ]);
     

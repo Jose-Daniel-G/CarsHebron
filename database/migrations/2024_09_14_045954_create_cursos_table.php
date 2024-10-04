@@ -15,6 +15,15 @@ return new class extends Migration
             $table->string('descripcion');
             $table->integer('horas_requeridas');
             $table->string('estado');
+            // $table->string('descripcion')->nullable();
+            // $table->integer('horas_requeridas')->nullable();
+
+
+
+            // $table->string('ubicacion');
+            // $table->string('capacidad');
+            // $table->string('telefono')->nullable();
+            // $table->string('especialidad');
             $table->timestamps();
         });
     }

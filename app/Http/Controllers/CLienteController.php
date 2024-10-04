@@ -66,9 +66,9 @@ class ClienteController extends Controller
     
     
 
-    public function show(Cliente $Cliente)
+    public function show(Cliente $cliente)
     {
-        return view('admin.clientes.show', compact('Cliente'));
+        return view('admin.clientes.show', compact('cliente'));
     }
 
     public function edit(Cliente $cliente)

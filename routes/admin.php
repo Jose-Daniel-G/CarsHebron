@@ -45,7 +45,7 @@ Route::resource('/secretarias', SecretariaController::class)->names('admin.secre
 //RUTAS AgendarS ADMIN
 Route::resource('/clientes', ClienteController::class)->names('admin.clientes')->middleware('auth', 'can:admin.clientes');
 
-//RUTAS CONSULTORIOS ADMIN
+//RUTAS CURSOS ADMIN
 Route::resource('/cursos', CursoController::class)->names('admin.cursos')->middleware('auth', 'can:admin.cursos');
 
 //RUTAS REPORTES DOCTORES ADMIN
