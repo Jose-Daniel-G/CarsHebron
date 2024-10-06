@@ -62,7 +62,6 @@ class CursoController extends Controller
             // 'ubicacion' => 'required',
             // 'capacidad' => 'required',
             // 'especialidad' => 'required',
-            'estado' => 'required',
         ]);
     
         // Actualizar los datos del curso existente

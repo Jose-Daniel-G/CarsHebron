@@ -10,7 +10,7 @@ class Profesor extends Model
     use HasFactory;
     protected $table = 'profesors'; // Si la tabla se llama 'profesors'
 
-    protected $fillable=['nombres','apellidos','telefono','licencia_medica','especialidad',
+    protected $fillable=['nombres','apellidos','telefono','especialidad',
     'user_id',  // Asegúrate de agregarlo aquí
     ];
     public function curso(){
@@ -26,12 +26,12 @@ class Profesor extends Model
     {
         return $this->hasMany(Event::class);
     }
-    public function historial()
-    {
-        return $this->hasMany(Historial::class);
-    }
-    public function pagos()
-    {
-        return $this->hasMany(Pago::class);
-    }
+    // public function historial()
+    // {
+    //     return $this->hasMany(Historial::class);
+    // }
+    // public function pagos()
+    // {
+    //     return $this->hasMany(Pago::class);
+    // }
 }

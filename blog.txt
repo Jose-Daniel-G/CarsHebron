@@ -1,3 +1,5 @@
+php artisan make:migration create_cliente_curso_table --create=cliente_curso
+
 //tabla tutorial, en el video se ve con style no se porque no se visualiza de esa forma
 $(function () {
     $('#example1').DataTable({

@@ -124,7 +124,7 @@
                                             Cancelar
                                             {{-- <i class="fa-solid fa-plus"></i> --}}
                                         </a>
-                                        <button type="submit" class="btn btn-success">Actulizar secretaria</button>
+                                        <button type="submit" class="btn btn-success">Actualizar secretaria</button>
 
                                     </div>
                                 </div>

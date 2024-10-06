@@ -33,19 +33,18 @@
                 <th>Nro</th>
                 <th>Apellidos y nombres</th>
                 <th>Telefono</th>
-                <th>Licencia Medica</th>
+                <th></th>
                 <th>Epecialidad</th>
             </tr>
         </thead>
         <tbody>
             <? $contador = 1;?>
-            @foreach ($doctores as $doctor)
+            @foreach ($profesores as $profesor)
                 <tr>
                     <td class="text-center">{{ $contador++ }}</td>
-                    <td>{{ $doctor->apellidos }}</td>
-                    <td class="text-center">{{ $doctor->telefono }}</td>
-                    <td>{{ $doctor->licencia_medica }}</td>
-                    <td>{{ $doctor->especialidad }}</td>
+                    <td>{{ $profesor->apellidos }}</td>
+                    <td class="text-center">{{ $profesor->telefono }}</td>
+                    <td>{{ $profesor->especialidad }}</td>
                 </tr>
             @endforeach
 

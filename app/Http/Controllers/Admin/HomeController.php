@@ -37,6 +37,17 @@ class HomeController extends Controller
         $eventos = CalendarEvent::where('user_id', $id)->get();
         return view('admin.ver_reservas', compact('eventos'));
     }
+    public function cargar_reserva_profesores($id)
+    { //echo $id;
+        try { 
+            $events = CalendarEvent::where('profesor_id', $id)->get();
+                    // ->select('id','title', DB::raw('DATE_FORMAT(start, %Y-%m-%d) as start'),DB::raw('DATE_FORMAT(end, %Y-%m-%d) as end'),'color')
+                    // ->get();
+            return response()->json($events);
+        } catch (\Exception $exception) {
+            return response()->json(['mesaje' => 'Error']);
+        }
+    }
     public function create()
     {
         return view('admin.usuarios.create');

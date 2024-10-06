@@ -24,4 +24,8 @@ class Cliente extends Model
     {
         return $this->hasMany(Event::class);
     }
+    public function cursos()
+    {
+        return $this->belongsToMany(Curso::class, 'cliente_curso');
+    }
 }

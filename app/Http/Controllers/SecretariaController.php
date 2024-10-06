@@ -36,9 +36,7 @@ class SecretariaController extends Controller
         $usuario = new User();
         $usuario->name = $request->nombres;
         $usuario->email = $request->email;
-        if ($request->filled('password')) {
-            $usuario->password = Hash::make($request->password);
-        }
+        $usuario->password = Hash::make($request->password);
 
         $usuario->save();
         $secretaria = new Secretaria();

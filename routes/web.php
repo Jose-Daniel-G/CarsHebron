@@ -7,10 +7,10 @@ use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Route;
 
 
+// Route::get('/', function () {return view('welcome');});
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login'); // Redirige a la página de login
 });
-
 
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
 ->group(function () {Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.home');});
@@ -22,7 +22,7 @@ Route::resource('/admin/horarios', HorarioController::class)->names('admin.horar
 //AJAX
 Route::get('/curso/{id}', [WebController::class, 'cargar_datos_cursos'])->name('cargar_datos_cursos');
 // ->middleware('auth','can:cargar_datos_cursos');
-Route::get('/admin/horarios/cargar_reserva_profesores/{id}', [WebController::class, 'cargar_reserva_profesores'])
+Route::get('/admin/horarios/cargar_reserva_profesores/{id}', [HomeController::class, 'cargar_reserva_profesores'])
      ->name('admin.horarios.cargar_reserva_profesores');
 Route::get('/admin/ver_reservas/{id}', [HomeController::class, 'ver_reservas'])->name('admin.ver_reservas')->middleware('auth','can:admin.ver_reservas');
 Route::get('/admin/horarios/curso/{id}', [HorarioController::class, 'cargar_datos_cursos'])->name('admin.horarios.cargar_datos_cursos')->middleware('auth');

@@ -51,18 +51,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="licencia_medica">Licencia Medica </label><b>*</b>
-                                        <input type="text" class="form-control" name="licencia_medica"
-                                            value="{{ old('licencia_medica') }}" required>
-                                        @error('licencia_medica')
-                                            <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
+
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="especialidad">Especialidad </label><b>*</b>
@@ -73,7 +62,8 @@
                                         @enderror
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="email">Email </label><b>*</b>
@@ -108,22 +98,22 @@
                                 </div>
                             </div>
 
-                            </div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <a href="{{ route('admin.secretarias.index') }}" class="btn btn-secondary">
-                                            Cancelar
-                                            {{-- <i class="fa-solid fa-plus"></i> --}}
-                                        </a>
-                                        <button type="submit" class="btn btn-primary">Registrar profesores</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                    </div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <a href="{{ route('admin.secretarias.index') }}" class="btn btn-secondary">
+                                Cancelar
+                                {{-- <i class="fa-solid fa-plus"></i> --}}
+                            </a>
+                            <button type="submit" class="btn btn-primary">Registrar profesores</button>
+                        </div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 
 @stop

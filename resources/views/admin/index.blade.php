@@ -62,7 +62,7 @@
                     <div class="inner">
                         <h3>{{ $total_clientes }}</h3>
 
-                        <p>Pacientes</p>
+                        <p>Clientes</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-person-add"></i>
@@ -121,22 +121,21 @@
             </div>
         @endcan
 
-        {{-- @can('admin.reservas.index') --}}
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-secondary">
-                    <div class="inner">
-                        <h3>{{ $total_eventos }}</h3>
+        @can('admin.reservas.index')
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-secondary">
+                <div class="inner">
+                    <h3>{{ $total_eventos }}</h3>
 
-                        <p>Reservas</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion fas bi bi-calendar2-week"></i>
-                    </div>
-                    <a href="" class="small-box-footer"> <i
-                            class="fas fa-calendar-alt"></i></a>
+                    <p>Reservas</p>
                 </div>
+                <div class="icon">
+                    <i class="ion fas bi bi-calendar2-week"></i>
+                </div>
+                <a href="" class="small-box-footer"> <i class="fas fa-calendar-alt"></i></a>
             </div>
-        {{-- @endcan --}}
+        </div>
+        @endcan
     </div>
     @can('cargar_datos_cursos')
         <div class="row">
@@ -145,7 +144,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-4">
-                                <h3 class="card-title">Calendario de reserva </h3>
+                                <h3 class="card-title">Calendario de atencion de profesores </h3>
                             </div>
                             <div class="col-md-4 d-flex justify-content-end">
                                 <label for="curso_id">Cursos </label><b>*</b>
@@ -156,7 +155,7 @@
                                     @foreach ($cursos as $curso)
                                         <option value="{{ $curso->id }}">
                                             {{ $curso->nombre }} </option>
-                                            {{-- {{ $curso->nombre . ' - ' . $curso->ubicacion }} </option> --}}
+                                        {{-- {{ $curso->nombre . ' - ' . $curso->ubicacion }} </option> --}}
                                     @endforeach
                                 </select>
                             </div>
@@ -175,7 +174,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-4">
-                                <h3 class="card-title">Calendario de reserva  </h3>
+                                <h3 class="card-title">Calendario de reserva </h3>
                             </div>
                             <div class="col-md-4 d-flex justify-content-end">
                                 <label for="curso_id">Profesores </label><b>*</b>
@@ -196,7 +195,7 @@
                         <div class="row">
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#claseModal">
-                                Registrar Cita Medica
+                                Agendar Clase
                             </button>
                             <a href="{{ route('admin.ver_reservas', Auth::user()->id) }}" class="btn btn-success">
                                 <i class="bi bi-calendar-check"></i>Ver las reservas
@@ -274,7 +273,7 @@
             </div>
         </div>
     @endcan
-    @if (Auth::check() && Auth::user()->profesor)
+    @if (Auth::check() && (Auth::user()->profesor || Auth::user()->cliente))
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-outline card-primary">
@@ -286,7 +285,11 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        {{ Auth::user()->profesor->nombres}}
+                        {{-- @if (Auth::user()->profesor)
+                            {{ Auth::user()->profesor->nombres }}
+                        @elseif (Auth::user()->cliente)
+                            {{ Auth::user()->cliente->nombres }}
+                        @endif --}}
                         <table id="reservas" class="table table-striped table-bordered table-hover table-sm">
                             <thead class="thead-dark">
                                 <tr>
@@ -299,15 +302,16 @@
                             <tbody>
                                 <?php $contador = 1; ?>
                                 @foreach ($events as $evento)
-                                    @if (Auth::user()->profesor->id == $evento->profesor_id)  {{-- NOTA: SI  FALLA --}}
-                                    <tr>
-                                        <td scope="row">{{ $contador++ }}</td>
-                                        <td scope="row">{{ $evento->user->name }}</td>
-                                        <td scope="row" class="text-center">
-                                            {{ \Carbon\Carbon::parse($evento->start)->format('Y-m-d') }}</td>
-                                        <td scope="row" class="text-center">
-                                            {{ \Carbon\Carbon::parse($evento->end)->format('H:i') }}</td>
-                                    </tr>
+                                    @if (Auth::user()->profesor->id == $evento->profesor_id)
+                                        {{-- NOTA: SI  FALLA --}}
+                                        <tr>
+                                            <td scope="row">{{ $contador++ }}</td>
+                                            <td scope="row">{{ $evento->user->name }}</td>
+                                            <td scope="row" class="text-center">
+                                                {{ \Carbon\Carbon::parse($evento->start)->format('Y-m-d') }}</td>
+                                            <td scope="row" class="text-center">
+                                                {{ \Carbon\Carbon::parse($evento->end)->format('H:i') }}</td>
+                                        </tr>
                                     @endif
                                 @endforeach
                             </tbody>

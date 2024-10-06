@@ -41,7 +41,7 @@
                                     <td scope="row">{{ $contador++ }}</td>
                                     <td scope="row">{{ $curso->nombre }}</td>
                                     <td scope="row">{{ $curso->horas_requeridas }}</td>
-                                    <td scope="row">{{ $curso->estado }}</td>
+                                    <td scope="row">{{ $curso->estado == 'A' ? 'Activo' : 'Inactivo' }}</td>
                                     <td scope="row">
                                         <div class="btn-group" role="group" aria-label="basic example">
                                             <a href="{{ route('admin.cursos.show', $curso->id) }}"

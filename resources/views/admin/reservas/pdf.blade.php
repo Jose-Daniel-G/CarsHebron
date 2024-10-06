@@ -44,7 +44,6 @@
                     <td class="text-center">{{ $contador++ }}</td>
                     <td>{{ $doctor->apellidos }}</td>
                     <td class="text-center">{{ $doctor->telefono }}</td>
-                    <td>{{ $doctor->licencia_medica }}</td>
                     <td>{{ $doctor->especialidad }}</td>
                 </tr>
             @endforeach

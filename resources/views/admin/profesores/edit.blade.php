@@ -54,16 +54,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="licencia_medica">Licencia Medica </label><b>*</b>
-                                        <input type="text" class="form-control" name="licencia_medica"
-                                            value="{{ $profesor->licencia_medica }}" required>
-                                        @error('licencia_medica')
-                                            <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
@@ -107,11 +97,11 @@
                         </div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <a href="{{ route('admin.secretarias.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('admin.profesores.index') }}" class="btn btn-secondary">
                                     Cancelar
                                     {{-- <i class="fa-solid fa-plus"></i> --}}
                                 </a>
-                                <button type="submit" class="btn btn-primary">Actuliza profesor</button>
+                                <button type="submit" class="btn btn-primary">Actualizar profesor</button>
                             </div>
                         </div>
                     </div>

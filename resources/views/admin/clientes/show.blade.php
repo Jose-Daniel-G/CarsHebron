@@ -92,19 +92,18 @@
 
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="grupo_sanguineo">Grupo sanguineo</label>
                                     <p>{{ $cliente->agrupo_sanguineo }}</p>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
+                            </div> --}}
+                            {{-- <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="alergias">Alergias</label>
                                     <p>{{ $cliente->alergias }}</p>
                                 </div>
-
-                            </div>
+                            </div> --}}
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="contacto_emergencia">Contacto Emergencia</label>

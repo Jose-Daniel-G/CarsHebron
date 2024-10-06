@@ -92,15 +92,17 @@
                                         <select name="genero" id="genero" class="form-control">
                                             <!-- Opción por defecto -->
                                             <option value="" selected disabled>Seleccione una opción</option>
-                                            <option value="M" {{ old('genero') == 'M' ? 'selected' : '' }}>Masculino</option>
-                                            <option value="F" {{ old('genero') == 'F' ? 'selected' : '' }}>Femenino</option>
+                                            <option value="M" {{ old('genero') == 'M' ? 'selected' : '' }}>Masculino
+                                            </option>
+                                            <option value="F" {{ old('genero') == 'F' ? 'selected' : '' }}>Femenino
+                                            </option>
                                         </select>
                                         @error('genero')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
-                                
+
 
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -126,35 +128,6 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="grupo_sanguineo">Grupo sanguineo</label><b>*</b>
-                                        <select name="grupo_sanguineo" id="grupo_sanguineo" class="form-control">
-                                            <!-- Opción por defecto -->
-                                            <option value="" selected disabled>Seleccione una opción</option>
-                                            <option value="A+" {{ old('grupo_sanguineo') == 'A+' ? 'selected' : '' }}>A+</option>
-                                            <option value="A-" {{ old('grupo_sanguineo') == 'A-' ? 'selected' : '' }}>A-</option>
-                                            <option value="B+" {{ old('grupo_sanguineo') == 'B+' ? 'selected' : '' }}>B+</option>
-                                            <option value="B-" {{ old('grupo_sanguineo') == 'B-' ? 'selected' : '' }}>B-</option>
-                                            <option value="O+" {{ old('grupo_sanguineo') == 'O+' ? 'selected' : '' }}>O+</option>
-                                            <option value="O-" {{ old('grupo_sanguineo') == 'O-' ? 'selected' : '' }}>O-</option>
-                                        </select>
-
-                                        @error('grupo_sanguineo')
-                                            <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="alergias">Alergias</label><b>*</b>
-                                        <input type="text" class="form-control" name="alergias"
-                                            value="{{ old('alergias') }}" required>
-                                    </div>
-                                    @error('alergias')
-                                        <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
                                         <label for="contacto_emergencia">Contacto Emergencia</label><b>*</b>
                                         <input type="number" class="form-control" name="contacto_emergencia"
                                             value="{{ old('contacto_emergencia') }}" required>
@@ -163,9 +136,7 @@
                                         <small class="bg-danger text-white p-1">{{ $message }}</small>
                                     @enderror
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="password">Contrasena </label><b>*</b>
                                         <input type="password" class="form-control" name="password"
@@ -176,7 +147,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="password_confirmation">Verificacion de contrasena </label><b>*</b>
                                         <input type="password" class="form-control" name="password_confirmation"
@@ -188,12 +159,26 @@
                                 </div>
                             </div>
                             <div class="row">
-
-                                <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <label>Cursos que tomará:</label>
+                                    <div class="row">
+                                        @foreach ($cursos as $curso)
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="cursos[]" value="{{ $curso->id }}" class="form-check-input" id="curso{{ $curso->id }}">
+                                                    <label class="form-check-label" for="curso{{ $curso->id }}">
+                                                        {{ $curso->nombre }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="observaciones">Observaciones</label>
-                                        <input type="text" class="form-control" name="observaciones"
-                                            value="{{ old('observaciones') }}" required>
+                                        <textarea class="form-control" name="observaciones">{{ old('observaciones') }}</textarea>
+
                                     </div>
                                 </div>
                             </div>

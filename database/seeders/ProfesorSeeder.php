@@ -26,7 +26,6 @@ class ProfesorSeeder extends Seeder
             'nombres' => 'Profesor',
             'apellidos' => 'Lewis',
             'telefono' => '4564564565',
-            'licencia_medica' => '123123123',
             'especialidad' => 'A2,B1,',
             'user_id' => '4',
         ]);
@@ -41,7 +40,6 @@ class ProfesorSeeder extends Seeder
             'nombres' => 'Wingston',
             'apellidos' => 'Gallardo',
             'telefono' => '432324324',
-            'licencia_medica' => '777777',
             'especialidad' => 'ODONTOLOGIA',
             'user_id' => '5',
         ]);
@@ -55,7 +53,6 @@ class ProfesorSeeder extends Seeder
             'nombres' => 'Martin',
             'apellidos' => 'Valdes',
             'telefono' => '123123213',
-            'licencia_medica' => '222222',
             'especialidad' => 'FISIOTERAPIA',
             'user_id' => '6',
         ]);

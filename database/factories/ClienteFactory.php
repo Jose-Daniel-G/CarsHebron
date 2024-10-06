@@ -20,8 +20,8 @@ class AgendarFactory extends Factory
             'celular' => $this->faker->phoneNumber(),
             'correo' => $this->faker->unique()->safeEmail(),
             'direccion' => $this->faker->address(),
-            'grupo_sanguineo' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'O+', 'O-']),
-            'alergias' => $this->faker->words(3, true),
+            // 'grupo_sanguineo' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'O+', 'O-']),
+            // 'alergias' => $this->faker->words(3, true),
             'contacto_emergencia' => $this->faker->phoneNumber(),
             'observaciones' => $this->faker->words(3, true),
         ];

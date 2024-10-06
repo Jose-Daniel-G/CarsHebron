@@ -18,28 +18,28 @@ class WebController extends Controller
         return view('index', compact('cursos'));
     }
 
-    public function cargar_datos_cursos($id)
-    {
-        $curso = Curso::find($id);
-        try {
-            $horarios = Horario::with('profesor', 'curso')->where('curso_id', $id)->get();
-            return view('cargar_datos_cursos', compact('horarios','curso'));
-        } catch (\Exception $exception) {
-            return response()->json(['mesaje' => 'Error']);
-        }
-    }
+    // public function cargar_datos_cursos($id)
+    // {
+    //     $curso = Curso::find($id);
+    //     try {
+    //         $horarios = Horario::with('profesor', 'curso')->where('curso_id', $id)->get();
+    //         return view('cargar_datos_cursos', compact('horarios','curso'));
+    //     } catch (\Exception $exception) {
+    //         return response()->json(['mesaje' => 'Error']);
+    //     }
+    // }
 
-    public function cargar_reserva_profesores($id)
-    { //echo $id;
-        try { 
-            $events = Event::where('profesor_id', $id)->get();
-                    // ->select('id','title', DB::raw('DATE_FORMAT(start, %Y-%m-%d) as start'),DB::raw('DATE_FORMAT(end, %Y-%m-%d) as end'),'color')
-                    // ->get();
-            return response()->json($events);
-        } catch (\Exception $exception) {
-            return response()->json(['mesaje' => 'Error']);
-        }
-    }
+    // public function cargar_reserva_profesores($id)
+    // { //echo $id;
+    //     try { 
+    //         $events = Event::where('profesor_id', $id)->get();
+    //                 // ->select('id','title', DB::raw('DATE_FORMAT(start, %Y-%m-%d) as start'),DB::raw('DATE_FORMAT(end, %Y-%m-%d) as end'),'color')
+    //                 // ->get();
+    //         return response()->json($events);
+    //     } catch (\Exception $exception) {
+    //         return response()->json(['mesaje' => 'Error']);
+    //     }
+    // }
 
     public function show(Web $web)
     {

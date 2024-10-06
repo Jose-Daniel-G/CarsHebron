@@ -56,14 +56,12 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="estado">Estado </label><b>*</b>
                                         <select name="estado" id="" class="form-control" name="estado">
                                             <!-- Opción por defecto -->
-                                            <option value="" selected disabled>{{ $curso->estado }}</option>
+                                            <option value="" selected disabled>{{ $curso->estado == 'A' ? 'Activo' : 'Inactivo' }}</option>
                                             <option value="A">Activo</option>
                                             <option value="I">Inactivo</option>
                                         </select>

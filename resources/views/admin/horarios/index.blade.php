@@ -16,7 +16,6 @@
                     <h3 class="card-title">Horarios registrados</h3>
                     <div class="card-tools">
                         <a href="{{ route('admin.horarios.create') }}" class="btn btn-primary">Registrar
-                            {{-- <i class="fa-solid fa-plus"></i> --}}
                         </a>
                     </div>
                 </div>

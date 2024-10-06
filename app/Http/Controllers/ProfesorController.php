@@ -26,36 +26,44 @@ class ProfesorController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
+        // Validación de los datos
         $validatedData = $request->validate([
             'nombres' => 'required',
             'apellidos' => 'required',
             'telefono' => 'required',
-            'licencia_medica' => 'required',
             'especialidad' => 'required',
-            'email' => 'required|email|max:255',
-            'password' => 'nullable|max:255|confirmed',
+            'email' => 'required|email|max:20|unique:users,email', // Asegúrate de que el email sea único en la tabla users
+            'password' => 'min:8|confirmed',
         ]);
-        
+
+        // Crear el nuevo usuario
         $usuario = new User();
         $usuario->name = $request->nombres;
         $usuario->email = $request->email;
+
+        // Hash de la contraseña
         if ($request->filled('password')) {
             $usuario->password = Hash::make($request->password);
         }
-        // Crear un nuevo profesor
+
+        // Guardar el usuario en la base de datos
+        $usuario->save();
+
+        // Crear un nuevo profesor, usando el ID del usuario recién creado
         $data = $request->all();
-        $data['user_id'] = auth()->id();
+        $data['user_id'] = $usuario->id; // Asigna el ID del nuevo usuario al nuevo profesor
 
         // Crea el nuevo profesor
         Profesor::create($data);
+
+        // Asignar rol de 'profesor' al nuevo usuario
         $usuario->assignRole('profesor');
 
-
         return redirect()->route('admin.profesores.index')
-            ->with('info', 'Se registro el profesor de forma correcta')
+            ->with('info', 'Se registró el profesor de forma correcta')
             ->with('icono', 'success');
     }
+
 
     public function show(Profesor $profesor)
     {
@@ -69,34 +77,39 @@ class ProfesorController extends Controller
 
     public function update(Request $request, Profesor $profesor)
     {
-        // dd($request->all());
-        $validatedData = $request->validate([
+        // Validación de los datos
+        $data = $request->validate([
             'nombres' => 'required',
             'apellidos' => 'required',
             'telefono' => 'required',
-            'licencia_medica' => 'required',
             'especialidad' => 'required',
-            'email' => 'required|email|max:255',
-            'password' => 'nullable|max:255|confirmed',
+            'email' => 'required|email|max:50|unique:users,email,' . $profesor->user_id, // Excluyendo el usuario actual
+            'password' => 'nullable|min:8|confirmed', // Permitir que la contraseña sea opcional
         ]);
-        $usuario = new User();
-        $usuario->name = $request->nombres;
-        $usuario->email = $request->email;
+    
+        // Asignar el user_id actual a los datos
+        $data['user_id'] = $profesor->user_id;
+    
+        // Actualizar el profesor
+        $profesor->update($data); // Actualiza el profesor
+    
+        // Obtener el usuario asociado al profesor directamente a través de la relación
+        $usuario = $profesor->user; 
+    
+        // Actualizar el email del usuario
+        $usuario->email = $data['email']; // Asegúrate de usar el nuevo email validado
+        // Condición para saber si el campo password se ha tocado
         if ($request->filled('password')) {
-            $usuario->password = Hash::make($request->password);
+            $usuario->password = Hash::make($request['password']);
         }
-        // acrualiza un nuevo profesor
-        $data = $request->all();
-        $data['user_id'] = auth()->id();
-
-        // Crea el nuevo profesor
-        $profesor->update($data);
-
-
+    
+        $usuario->save(); // Guardar cambios del usuario
+    
         return redirect()->route('admin.profesores.index')
             ->with('info', 'Profesor actualizado correctamente.')
             ->with('icono', 'success');
     }
+    
 
 
     public function destroy(Profesor $profesor)

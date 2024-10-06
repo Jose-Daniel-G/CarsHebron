@@ -38,7 +38,6 @@
                                 <th>Nro</th>
                                 <th>Nombres y Apellidos</th>
                                 <th>Telefono</th>
-                                <th>Licencia Medica</th>
                                 <th>Especialidad</th>
                                 <th>Acciones</th>
                             </tr>
@@ -50,7 +49,6 @@
                                     <td scope="row">{{ $contador++ }}</td>
                                     <td scope="row">{{ $profesor->nombres . ' ' . $profesor->apellidos }}</td>
                                     <td scope="row">{{ $profesor->telefono }}</td>
-                                    <td scope="row">{{ $profesor->licencia_medica }}</td>
                                     <td scope="row">{{ $profesor->especialidad }}</td>
                                     <td scope="row">
                                         <div class="btn-group" role="group" aria-label="basic example">

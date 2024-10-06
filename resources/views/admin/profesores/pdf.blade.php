@@ -33,7 +33,7 @@
                 <th>Nro</th>
                 <th>Apellidos y nombres</th>
                 <th>Telefono</th>
-                <th>Licencia Medica</th>
+                <th></th>
                 <th>Epecialidad</th>
             </tr>
         </thead>
@@ -44,7 +44,7 @@
                     <td class="text-center">{{ $contador++ }}</td>
                     <td>{{ $profesor->apellidos }}</td>
                     <td class="text-center">{{ $profesor->telefono }}</td>
-                    <td>{{ $profesor->licencia_medica }}</td>
+                    
                     <td>{{ $profesor->especialidad }}</td>
                 </tr>
             @endforeach

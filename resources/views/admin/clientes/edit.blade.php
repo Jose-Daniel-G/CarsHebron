@@ -131,32 +131,6 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="grupo_sanguineo">Grupo sanguineo</label><b>*</b>
-                                        <select name="grupo_sanguineo" id="" class="form-control"
-                                            name="grupo_sanguineo">
-                                            <!-- Opción por defecto -->
-                                            <option value="{{ $cliente->grupo_sanguineo}}" selected disabled>{{ $cliente->grupo_sanguineo}}</option>
-                                            <option value="A+">A+</option>
-                                            <option value="A-">A-</option>
-                                            <option value="B+">B+</option>
-                                            <option value="B-">B-</option>
-                                            <option value="O+">O+</option>
-                                            <option value="O-">O-</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="alergias">Alergias</label><b>*</b>
-                                        <input type="text" class="form-control" name="alergias"
-                                            value="{{ $cliente->alergias }}" required>
-                                    </div>
-                                    @error('alergias')
-                                        <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
                                         <label for="contacto_emergencia">Contacto Emergencia</label><b>*</b>
                                         <input type="number" class="form-control" name="contacto_emergencia"
                                             value="{{ $cliente->contacto_emergencia }}" required>
@@ -165,17 +139,38 @@
                                         <small class="bg-danger text-white p-1">{{ $message }}</small>
                                     @enderror
                                 </div>
+
+                                <div class="col-md-4">
+                                    <label>Cursos que tomará:</label>
+                                    <div class="row">
+                                        @foreach ($cursos as $curso)
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input type="checkbox" 
+                                                           name="cursos[]" 
+                                                           value="{{ $curso->id }}" 
+                                                           class="form-check-input" 
+                                                           id="curso{{ $curso->id }}"
+                                                           {{ in_array($curso->id, $cursosSeleccionados) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="curso{{ $curso->id }}">
+                                                        {{ $curso->nombre }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    
+                                </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-9">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="observaciones">Observaciones</label>
-                                        <input type="text" class="form-control" name="observaciones"
-                                            value="{{ $cliente->observaciones }}" required>
+                                        <textarea class="form-control" name="observaciones">{{ $cliente->observaciones }}</textarea>
                                     </div>
                                 </div>
                             
-                                <div class="col-md-3 d-flex align-items-center">
+                                <div class="col-md-4 d-flex align-items-center">
                                     <div class="form-group mb-0">
                                         <input type="checkbox" id="reset-password" name="reset_password">
                                         <label for="reset-password" class="ml-2">Restablecer contraseña a la cédula</label>
@@ -186,11 +181,11 @@
                             
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
+                                    <a href="{{ route('admin.clientes.index') }}" class="btn btn-secondary">
                                         Cancelar
                                         {{-- <i class="fa-solid fa-plus"></i> --}}
                                     </a>
-                                    <button type="submit" class="btn btn-success">Actulizar cliente</button>
+                                    <button type="submit" class="btn btn-success">Actualizar cliente</button>
 
                                 </div>
                             </div>
