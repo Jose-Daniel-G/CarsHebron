@@ -32,7 +32,7 @@ class ClienteSeeder extends Seeder
             'fecha_nacimiento' => '01-01-1986',
             'genero' => 'M',
             'celular' => '12395113',
-            'correo' => 'cliente.alracona@gmail.com',
+            'correo' => 'cliente@gmail.com',
             'direccion' => 'Cll 9 oeste',
             'contacto_emergencia' => '65495113',
             'observaciones' => 'le irrita estar cerca del povo',

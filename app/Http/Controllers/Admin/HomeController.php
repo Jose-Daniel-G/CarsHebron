@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Models\Config;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -26,12 +27,29 @@ class HomeController extends Controller
         $total_horarios = Horario::count();
         $total_eventos = CalendarEvent::count();
         $total_configuraciones = Config::count();
-
-        $cursos = Curso::all();
+    
+        // Verifica si el usuario autenticado es un administrador
+        if (Auth::user()->hasRole('admin')) {
+            // Obtener todos los cursos
+            $cursos = Curso::all();
+        } else {
+            // Obtener el cliente asociado al usuario autenticado
+            $cliente = Cliente::where('user_id', Auth::id())->first(); // O la lógica adecuada para obtener el cliente
+            // dd($cliente);
+            if ($cliente) {
+                // Obtener solo los cursos asociados al cliente
+                $cursos = $cliente->cursos;
+            } else {
+                $cursos = collect(); // No hay cursos si no hay cliente
+            }
+        }
+    //    dd($cursos);
         $profesores = Profesor::all();
         $events = CalendarEvent::all();
+    
         return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'events', 'total_configuraciones'));
     }
+    
     public function ver_reservas($id)
     { // echo $id;
         $eventos = CalendarEvent::where('user_id', $id)->get();

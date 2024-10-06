@@ -26,7 +26,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                  <a href="{{ route('admin.doctores.pdf')}}" class="btn btn-success"><i class="fas fa-print">Listado de personal Medico</i></a><br><br>
-                                 <a href="" class="btn btn-success"><i class="fas fa-print">Listado de personal Medico</i></a>
+                                 <a href="" class="btn btn-success"><i class="fas fa-print">Listado de personal</i></a>
                                     </div>
                                 </div>
                             </div>

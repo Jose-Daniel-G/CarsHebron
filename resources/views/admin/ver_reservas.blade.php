@@ -42,13 +42,13 @@
                                     <td scope="row" class="text-center">{{ \Carbon\Carbon::parse($evento->end)->format('H:i') }}</td>
                                     <td scope="row" class="text-center">{{ $evento->created_at }}</td>
                                     <td scope="row">
-                                        <a href=""  class="btn btn-info btn-sm">Ver</a>
+                                        {{-- <a href=""  class="btn btn-info btn-sm">Ver</a> --}}
                                         <div class="btn-group" role="group" aria-label="basic example">
                                             <form action="{{ route('admin.eventos.destroy', $evento->profesor->id)}}" method="POST"
                                                 onsubmit="return confirm('¿Estás seguro de que deseas eliminar este curso?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                             </form>
                                             </div>
                                     </td>

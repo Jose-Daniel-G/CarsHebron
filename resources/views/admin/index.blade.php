@@ -122,157 +122,160 @@
         @endcan
 
         @can('admin.reservas.index')
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-secondary">
-                <div class="inner">
-                    <h3>{{ $total_eventos }}</h3>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-secondary">
+                    <div class="inner">
+                        <h3>{{ $total_eventos }}</h3>
 
-                    <p>Reservas</p>
+                        <p>Reservas</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion fas bi bi-calendar2-week"></i>
+                    </div>
+                    <a href="" class="small-box-footer"> <i class="fas fa-calendar-alt"></i></a>
                 </div>
-                <div class="icon">
-                    <i class="ion fas bi bi-calendar2-week"></i>
-                </div>
-                <a href="" class="small-box-footer"> <i class="fas fa-calendar-alt"></i></a>
             </div>
-        </div>
         @endcan
     </div>
-    @can('cargar_datos_cursos')
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-outline card-primary">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h3 class="card-title">Calendario de atencion de profesores </h3>
-                            </div>
-                            <div class="col-md-4 d-flex justify-content-end">
-                                <label for="curso_id">Cursos </label><b>*</b>
-                            </div>
-                            <div class="col-md-4">
-                                <select name="curso_id" id="curso_select" class="form-control">
-                                    <option value="" selected disabled>Seleccione una opción</option>
-                                    @foreach ($cursos as $curso)
-                                        <option value="{{ $curso->id }}">
-                                            {{ $curso->nombre }} </option>
-                                        {{-- {{ $curso->nombre . ' - ' . $curso->ubicacion }} </option> --}}
-                                    @endforeach
-                                </select>
-                            </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-outline card-primary">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h3 class="card-title">Calendario de atencion de profesores </h3>
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-end">
+                            <label for="curso_id">Cursos </label><b>*</b>
+                        </div>
+                        <div class="col-md-4">
+                            <select name="curso_id" id="curso_select" class="form-control">
+                                <option value="" selected disabled>Seleccione una opción</option>
+                                @foreach ($cursos as $curso)
+                                    <option value="{{ $curso->id }}">
+                                        {{ $curso->nombre }} </option>
+                                    {{-- {{ $curso->nombre . ' - ' . $curso->ubicacion }} </option> --}}
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <hr>
-                        <div id="curso_info"></div>
-                    </div>
+                </div>
+                <div class="card-body">
+                    <hr>
+                    <div id="curso_info"></div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-outline card-warning">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h3 class="card-title">Calendario de reserva </h3>
-                            </div>
-                            <div class="col-md-4 d-flex justify-content-end">
-                                <label for="curso_id">Profesores </label><b>*</b>
-                            </div>
-                            <div class="col-md-4">
-                                <select name="profesor_id" id="profesor_select" class="form-control">
-                                    <option value="" selected disabled>Seleccione una opción</option>
-                                    @foreach ($profesores as $profesore)
-                                        <option value="{{ $profesore->id }}">
-                                            {{ $profesore->nombres . ' ' . $profesore->apellidos . ' - ' . $profesore->especialidad }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-outline card-warning">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h3 class="card-title">Calendario de reserva </h3>
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-end">
+                            <label for="curso_id">Profesores </label><b>*</b>
+                        </div>
+                        <div class="col-md-4">
+                            <select name="profesor_id" id="profesor_select" class="form-control">
+                                <option value="" selected disabled>Seleccione una opción</option>
+                                @foreach ($profesores as $profesore)
+                                    <option value="{{ $profesore->id }}">
+                                        {{ $profesore->nombres . ' ' . $profesore->apellidos . ' - ' . $profesore->especialidad }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#claseModal">
-                                Agendar Clase
-                            </button>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#claseModal">
+                            Agendar Clase
+                        </button>
+                        @can('cargar_datos_cursos')
                             <a href="{{ route('admin.ver_reservas', Auth::user()->id) }}" class="btn btn-success">
                                 <i class="bi bi-calendar-check"></i>Ver las reservas
                             </a>
-                            <!-- Modal -->
-                            <form action="{{ route('admin.eventos.store') }}" method="POST">
-                                @csrf
-                                <div class="modal fade" id="claseModal" tabindex="-1" aria-labelledby="claseModal"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="claseModal">Profesores</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group"><label for="profesor_id">Profesor</label>
-                                                            <select name="profesor_id" class="form-control">
-                                                                <option value="" selected disabled>Selecione un Profesor
+                        @endcan
+
+                        <!-- Modal -->
+                        <form action="{{ route('admin.eventos.store') }}" method="POST">
+                            @csrf
+                            <div class="modal fade" id="claseModal" tabindex="-1" aria-labelledby="claseModal"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="claseModal">Profesores</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group"><label for="profesor_id">Profesor</label>
+                                                        <select name="profesor_id" class="form-control">
+                                                            <option value="" selected disabled>Selecione un Profesor
+                                                            </option>
+                                                            @foreach ($profesores as $profesore)
+                                                                <option value="{{ $profesore->id }}">
+                                                                    {{ $profesore->nombres . ' ' . $profesore->apellidos . ' - ' . $profesore->especialidad }}
                                                                 </option>
-                                                                @foreach ($profesores as $profesore)
-                                                                    <option value="{{ $profesore->id }}">
-                                                                        {{ $profesore->nombres . ' ' . $profesore->apellidos . ' - ' . $profesore->especialidad }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                            @error('profesor_id')
-                                                                <small
-                                                                    class="bg-danger text-white p-1">{{ $message }}</small>
-                                                            @enderror
-                                                        </div>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('profesor_id')
+                                                            <small
+                                                                class="bg-danger text-white p-1">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group"><label for="profesor">Fecha de reserva</label>
-                                                            <input type="date" class="form-control" name="fecha_reserva"
-                                                                id="fecha_reserva" value="<?php echo date('Y-m-d'); ?>">
-                                                        </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group"><label for="profesor">Fecha de reserva</label>
+                                                        <input type="date" class="form-control" name="fecha_reserva"
+                                                            id="fecha_reserva" value="<?php echo date('Y-m-d'); ?>">
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group"><label for="hora_reserva">Hora de
-                                                                reserva</label>
-                                                            <input type="time" class="form-control" name="hora_reserva"
-                                                                id="hora_reserva">
-                                                            @error('hora_reserva')
-                                                                <small
-                                                                    class="bg-danger text-white p-1">{{ $message }}</small>
-                                                            @enderror
-                                                        </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group"><label for="hora_reserva">Hora de
+                                                            reserva</label>
+                                                        <input type="time" class="form-control" name="hora_reserva"
+                                                            id="hora_reserva">
+                                                        @error('hora_reserva')
+                                                            <small
+                                                                class="bg-danger text-white p-1">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" class="btn btn-primary">Registrar</button>
-                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn btn-primary">Registrar</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div id="profesor_info"></div>
-                        <div id="calendar"></div>
+                            </div>
+                        </form>
                     </div>
+                    <div id="profesor_info"></div>
+                    <div id="calendar"></div>
                 </div>
             </div>
         </div>
-    @endcan
+    </div>
     @if (Auth::check() && (Auth::user()->profesor || Auth::user()->cliente))
         <div class="row">
             <div class="col-md-12">

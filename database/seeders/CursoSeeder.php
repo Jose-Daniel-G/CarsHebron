@@ -41,7 +41,6 @@ class CursoSeeder extends Seeder
             'estado' => 'A',
         ]);
 
-        User::factory(9)->create();
 
 
     }

@@ -80,7 +80,7 @@ class EventController extends Controller
 
         // Redirigir con un mensaje de éxito
         return redirect()->route('admin.index')
-            ->with('info', 'Se registró la reserva de la cita médica de forma correcta.')
+            ->with('info', 'Se ha agendado de forma correcta.')
             ->with('icono', 'success')
             ->with('title', 'Éxito');
     }
