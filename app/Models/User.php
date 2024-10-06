@@ -34,7 +34,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
     public function adminlte_image(){
-        return url($this->profile_photo_url);
+        // return auth()->user()->profile_photo_url;
+        // return url($this->profile_photo_url);
+        return asset('storage/'.$this->profile_photo_path);
         // return 'https://picsum.photos/300/300';
     }
     public function adminlte_desc(){
