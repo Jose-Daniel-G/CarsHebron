@@ -71,6 +71,11 @@ Route::get('/historial/pdf',[HistorialController::class,'pdf'])->name('admin.his
 Route::resource('/historial', HistorialController::class)->names('admin.historial')->middleware('auth', 'can:admin.historial');
 
 
+
+
+
+
+
 // Route::post('events/editar/{id}', [EventController::class, 'edit'])->name('admin.events.edit');
 // Route::put('events/actualizar/{evento}', [EventController::class, 'update'])->name('admin.events.update');
 // Route::post('events/actualizar/{evento}', [EventController::class, 'edit'])->name('admin.events.update');

@@ -426,12 +426,12 @@ return [
 
             ],
         ],
-        [
-            'text'        => 'Reservas',
-            'route'         => 'admin.reservas.reportes',
-            'icon' => 'fas fa-envelope',
-            'can'  => 'admin.reservas.reportes',
-        ],
+        // [
+        //     'text'        => 'Agenda',
+        //     'route'         => 'admin.users.index',
+        //     'icon' => 'fas fa-envelope',
+        // ],
+        
         // [
         //     'text' => 'information',
         //     'icon_color' => 'cyan',

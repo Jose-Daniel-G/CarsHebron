@@ -24,6 +24,7 @@
                             <tr>
                                 <th>Nro</th>
                                 <th>Profesor</th>
+                                <th>Estudiante</th>
                                 <th>Especialidad</th>
                                 <th>Fecha de reserva</th>
                                 <th>Hora de inicio</th>
@@ -38,6 +39,14 @@
                                 <tr>
                                     <td scope="row">{{ $contador++ }}</td>
                                     <td scope="row">{{ $evento->profesor->nombres." ".$evento->profesor->apellidos }}</td>
+                                    <td scope="row">
+                                        @if($evento->cliente)
+                                            {{ $evento->cliente->nombres . " " . $evento->cliente->apellidos }}
+                                        @else
+                                            No Cliente
+                                        @endif
+                                    </td>
+                                    
                                     <td scope="row" class="text-center">{{ $evento->profesor->especialidad }}</td>
                                     <td scope="row" class="text-center">{{ \Carbon\Carbon::parse($evento->start)->format('Y-m-d') }}</td>
                                     <td scope="row" class="text-center">{{ \Carbon\Carbon::parse($evento->start)->format('H:i') }}</td>

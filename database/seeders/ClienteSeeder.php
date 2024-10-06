@@ -15,7 +15,7 @@ class ClienteSeeder extends Seeder
 {
     public function run(): void
     {
-          //--------------------------------------------]
+        //--------------------------------------------]
         // -------------[ Cliente ]----------------------
         User::create([
             'name' => 'Cliente',
@@ -24,7 +24,7 @@ class ClienteSeeder extends Seeder
             'password' => bcrypt('123123123'),
         ])->assignRole('cliente');
 
-        Cliente::create([
+        $cliente = Cliente::create([
             'nombres' => 'Cliente',
             'apellidos' => 'alracona',
             'cc' => '12312753',
@@ -38,14 +38,17 @@ class ClienteSeeder extends Seeder
             'observaciones' => 'le irrita estar cerca del povo',
             'user_id' => '7',
         ]);
-     
+        // Relacionar con los cursos (asumiendo que los cursos ya existen)
+        $cursos = Curso::whereIn('id', [1, 2])->get(); // Obtener los cursos con ID 1 y 2
+        $cliente->cursos()->attach($cursos); // Crear las relaciones
+
         User::create([
-            'name' => 'Fancisco Antonio Grijalba', 
+            'name' => 'Fancisco Antonio Grijalba',
             'email' => 'francisco.grijalba@email.com',
             'email_verified_at' => now(),
             'password' => bcrypt('123123123'),
         ])->assignRole('cliente');
-        Cliente::create([
+        $cliente = Cliente::create([
             'nombres' => 'Fancisco Antonio',
             'apellidos' => 'Grijalba',
             'cc' => '23548965',
@@ -59,8 +62,12 @@ class ClienteSeeder extends Seeder
             'observaciones' => 'migrana',
             'user_id' => '8',
         ]);
+        // Relacionar con los cursos (asumiendo que los cursos ya existen)
+        $cursos = Curso::whereIn('id', [1, 3])->get(); // Obtener los cursos con ID 1 y 2
+        $cliente->cursos()->attach($cursos); // Crear las relaciones
+        
         User::create([
-            'name' => 'ARGEMIRO ESCOBAR GUTIERRES', 
+            'name' => 'ARGEMIRO ESCOBAR GUTIERRES',
             'email' => 'argemiro.escobar@email.com',
             'email_verified_at' => now(),
             'password' => bcrypt('123123123'),
@@ -80,33 +87,33 @@ class ClienteSeeder extends Seeder
             'observaciones' => 'migrana',
             'user_id' => '9',
         ]);
-//    //-------------[ USUARIOS ]----------------]
-//         User::create([
-//             'name' => 'Juan David Grijalba Osorio',
-//             'email' => 'juandavidgo1997@email.com',
-//             'email_verified_at' => now(),
-//             'password' => bcrypt('123123123'),
-//         ])->assignRole('usuario');
+        //    //-------------[ USUARIOS ]----------------]
+        //         User::create([
+        //             'name' => 'Juan David Grijalba Osorio',
+        //             'email' => 'juandavidgo1997@email.com',
+        //             'email_verified_at' => now(),
+        //             'password' => bcrypt('123123123'),
+        //         ])->assignRole('usuario');
 
-//         User::factory()->create([
-//             'name' => 'Test User',
-//             'email' => 'test@email.com',
-//             'password' => bcrypt('123123123'),
-//         ])->assignRole('usuario');
+        //         User::factory()->create([
+        //             'name' => 'Test User',
+        //             'email' => 'test@email.com',
+        //             'password' => bcrypt('123123123'),
+        //         ])->assignRole('usuario');
 
-//         User::factory()->create([
-//             'name' => 'user',
-//             'email' => 'user@email.com',
-//             'password' => bcrypt('123123123'),
-//         ])->assignRole('usuario');
-    
-//         Curso::create([
-//             'nombre' => 'Curso B1',
-//             'descripcion' => 'Curso de conducción para obtener licencia tipo B1.',
-//             'horas_requeridas' => '11',
-//             'estado' => 'A',
-//         ]);
+        //         User::factory()->create([
+        //             'name' => 'user',
+        //             'email' => 'user@email.com',
+        //             'password' => bcrypt('123123123'),
+        //         ])->assignRole('usuario');
 
-//         User::factory(9)->create();
+        //         Curso::create([
+        //             'nombre' => 'Curso B1',
+        //             'descripcion' => 'Curso de conducción para obtener licencia tipo B1.',
+        //             'horas_requeridas' => '11',
+        //             'estado' => 'A',
+        //         ]);
+
+        //         User::factory(9)->create();
     }
 }

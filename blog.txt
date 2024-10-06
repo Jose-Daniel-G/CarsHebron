@@ -103,3 +103,13 @@ php artisan make:seeder PostSeeder
 
 De esa forma crea el controlador, y le asigna el modelo Category, entonces ya incluye al modelo y lo define como el tipo de variable de en los parámetros de las funciones -->
 
+despues del usuario porgramar la clase, que indique recuerda que no puedes faltar a tu clase, si faltas a las clases sin justificacion se cobran 20 mil pesos por hora no vista
+
+si el cliente falta auna clases ya  quien deberia agendar una clase seria la secretaria  o aministrador 
+una vez haya cancelado la penalidad, que la plataforma solo le deje programar la cantiad de horas que puede ver por curso
+el usuario solo podra agendar las clases correspondientes a la del curso que esta realizando NOTA: no puede elegir ninguna otra 
+
+
+15 motos
+20 carro b1
+30 carro publico

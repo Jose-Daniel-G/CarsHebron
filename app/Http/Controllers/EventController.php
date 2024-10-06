@@ -13,9 +13,9 @@ use Illuminate\Validation\ValidationException;
 
 class EventController extends Controller
 {
-    public function index(){}
+    public function index() {}
 
-    public function create(){}
+    public function create() {}
 
     public function store(Request $request)
     {
@@ -81,13 +81,21 @@ class EventController extends Controller
         $evento->user_id = Auth::user()->id;
         $evento->profesor_id  = $request->profesor_id;
         $evento->curso_id   = '1';
+
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
+            $evento->cliente_id = $request->cliente_id; // Asegúrate de tener este valor
+        } else {
+            $evento->cliente_id = Auth::user()->cliente->id; // Asegúrate de tener este valor
+        }
+        
+        // dd($request->cliente_id);
         $evento->save();
 
         // Redirigir con un mensaje de éxito
         return redirect()->route('admin.index')
-            ->with('info', 'Se ha agendado de forma correcta.')
+            ->with('info', ' Recuerda que no puedes faltar a tu clase, si faltas a las clases sin justificacion se cobran 20 mil pesos por hora no vista')
             ->with('icono', 'success')
-            ->with('title', 'Éxito');
+            ->with('title', 'Se ha agendado de forma correcta.');
     }
 
     private function traducir_dia($dia)
@@ -110,18 +118,19 @@ class EventController extends Controller
         try {
             // Aquí puedes obtener todos los eventos desde la base de datos
             // $events = Event::all(); // Cambia esto según la lógica que necesites
-             $events = Event::with('profesor', 'cliente')->get(); // Carga la relación 'profesor'
-            
+            $events = Event::with('profesor', 'cliente')->get(); // Carga la relación 'profesor'
+
             return response()->json($events); // Devuelve todos los eventos
         } catch (\Exception $e) {
             \Log::error($e); // Loguea el error para diagnóstico
             return response()->json(['error' => 'Error al obtener eventos'], 500);
         }
     }
-    
 
-    public function update(Request $request, Event $event){
-        $validatedData = $request->validate(['profesor_id' => 'required','hora_reserva' => 'required','fecha_reserva' => 'required|date']);
+
+    public function update(Request $request, Event $event)
+    {
+        $validatedData = $request->validate(['profesor_id' => 'required', 'hora_reserva' => 'required', 'fecha_reserva' => 'required|date']);
         $event->update($validatedData);
         return response()->json(['message' => 'Evento actualizado correctamente']);
     }
@@ -140,19 +149,20 @@ class EventController extends Controller
     //     return view('admin.reservas.reportes');
     // }
 
-    public function pdf(){
+    public function pdf()
+    {
         $configuracion = Config::latest()->first();
         $eventos = Event::all();
 
-        $pdf = Pdf::loadView('admin.reservas.pdf', compact('configuracion','eventos'));
+        $pdf = Pdf::loadView('admin.reservas.pdf', compact('configuracion', 'eventos'));
 
         // Incluir la numeración de páginas y el pie de página
         $pdf->output();
         $dompdf = $pdf->getDomPDF();
         $canvas = $dompdf->getCanvas();
-        $canvas->page_text(20, 800, "Impreso por: ".Auth::user()->email, null, 10, array(0,0,0));
-        $canvas->page_text(270, 800, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0,0,0));
-        $canvas->page_text(450, 800, "Fecha: " . \Carbon\Carbon::now()->format('d/m/Y')." - ".\Carbon\Carbon::now()->format('H:i:s'), null, 10, array(0,0,0));
+        $canvas->page_text(20, 800, "Impreso por: " . Auth::user()->email, null, 10, array(0, 0, 0));
+        $canvas->page_text(270, 800, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+        $canvas->page_text(450, 800, "Fecha: " . \Carbon\Carbon::now()->format('d/m/Y') . " - " . \Carbon\Carbon::now()->format('H:i:s'), null, 10, array(0, 0, 0));
 
 
         return $pdf->stream();
