@@ -29,7 +29,7 @@ class HomeController extends Controller
         $total_configuraciones = Config::count();
 
         // Verifica si el usuario autenticado es un administrador
-        if (Auth::user()->hasRole('admin')) {
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria') || Auth::user()->hasRole('profesor')) {
             // Obtener todos los cursos
             $cursos = Curso::all();
         } else {
@@ -59,32 +59,26 @@ class HomeController extends Controller
     {
         try {
             // Verifica si el usuario autenticado es un administrador
-            if (Auth::user()->hasRole('admin')) {
+            if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
                 // Obtener todos los eventos del profesor específico
                 $events = CalendarEvent::where('profesor_id', $id)->get();
-                // $events = ["hello" => 3, "hey" => 4];
-                $sql = null; // No hay consulta SQL para este caso
-                $bindings = null; // No hay parámetros para este caso
+                return response()->json($events);
             } else {
                 $cliente = Cliente::where('user_id', Auth::id())->first(); // O la lógica adecuada para obtener el cliente
-            
-                // NOTA: SIGUE OBTENINENDO LOS DATOS DE TODOS  LOS CLIENTES 
+
                 // Construir la consulta para obtener los eventos asociados al usuario autenticado
-                $query = CalendarEvent::where('profesor_id', $id)
-                    ->join('cliente_curso', 'events.curso_id', '=', 'cliente_curso.curso_id')
-                    ->where('cliente_curso.cliente_id', $cliente->id) // Usar el ID del cliente
-                    ->select('events.*'); // Seleccionar solo los campos de los eventos
+                $events = CalendarEvent::join('users', 'users.id', '=', 'events.profesor_id')
+                    ->where('events.profesor_id', $id)
+                    ->where('users.id', $cliente->id)
+                    ->select('events.*')
+                    ->limit(100)
+                    ->get();
 
-                // Obtener la consulta SQL y los parámetros
-                $sql = $query->toSql();
-                $bindings = $query->getBindings();
-
-                // Ejecutar la consulta
-                $events = $query->get();
+                return response()->json($events);
             }
 
             // Devolver la respuesta JSON
-            return response()->json($events);
+            // return response()->json($events);
             // return response()->json(['sql' => $sql, 'bindings' => $bindings, 'events' => $events]);
 
         } catch (\Exception $exception) {

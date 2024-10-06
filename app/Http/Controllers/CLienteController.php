@@ -94,7 +94,8 @@ class ClienteController extends Controller
 
 
     public function update(Request $request, Cliente $cliente)
-    {
+    {   
+        // dd($request->all());
         // Validación de los datos
         $validatedData = $request->validate([
             'nombres' => 'required',
@@ -112,8 +113,9 @@ class ClienteController extends Controller
         // Si el checkbox está marcado, restablecemos la contraseña
         if ($request->has('reset_password')) {
             // Restablecer la contraseña a la cédula
-            $usuario = User::find($cliente->user_id);
+            $usuario = User::find($cliente->user_id); //dd($cliente->user_id);
             $usuario->password = Hash::make($request->cc); // Establecer la contraseña a la cédula
+           
             $usuario->save();
         }
 

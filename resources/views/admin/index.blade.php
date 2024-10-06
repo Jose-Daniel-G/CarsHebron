@@ -194,11 +194,12 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+                         @can('cargar_datos_cursos')
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#claseModal">
                             Agendar Clase
                         </button>
-                        @can('cargar_datos_cursos')
+
                             <a href="{{ route('admin.ver_reservas', Auth::user()->id) }}" class="btn btn-success">
                                 <i class="bi bi-calendar-check"></i>Ver las reservas
                             </a>
@@ -287,7 +288,7 @@
             </div>
         </div>
     </div>
-    @if (Auth::check() && (Auth::user()->profesor || Auth::user()->cliente))
+    @if (Auth::check() && Auth::user()->profesor)
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-outline card-primary">
@@ -433,7 +434,7 @@
                     type: 'GET',
                     dataType: 'json',
                     success: function(data) {
-                        alert('hey ' + JSON.stringify(data));
+                        // alert('hey 's + JSON.stringify(data));
                         calendar.addEventSource(data);
                         // $('#profesor_info').html(data);
                     },
