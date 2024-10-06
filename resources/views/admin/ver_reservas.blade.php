@@ -26,7 +26,8 @@
                                 <th>Profesor</th>
                                 <th>Especialidad</th>
                                 <th>Fecha de reserva</th>
-                                <th>Hora de reserva</th>
+                                <th>Hora de inicio</th>
+                                <th>Hora de fin</th>
                                 <th>Fecha y hora de registro</th>
                                 <th>Acciones</th>
                             </tr>
@@ -39,6 +40,7 @@
                                     <td scope="row">{{ $evento->profesor->nombres." ".$evento->profesor->apellidos }}</td>
                                     <td scope="row" class="text-center">{{ $evento->profesor->especialidad }}</td>
                                     <td scope="row" class="text-center">{{ \Carbon\Carbon::parse($evento->start)->format('Y-m-d') }}</td>
+                                    <td scope="row" class="text-center">{{ \Carbon\Carbon::parse($evento->start)->format('H:i') }}</td>
                                     <td scope="row" class="text-center">{{ \Carbon\Carbon::parse($evento->end)->format('H:i') }}</td>
                                     <td scope="row" class="text-center">{{ $evento->created_at }}</td>
                                     <td scope="row">

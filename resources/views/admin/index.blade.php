@@ -248,11 +248,22 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <div class="form-group"><label for="hora_reserva">Hora de
-                                                            reserva</label>
-                                                        <input type="time" class="form-control" name="hora_reserva"
-                                                            id="hora_reserva">
-                                                        @error('hora_reserva')
+                                                    <div class="form-group"><label for="hora_inicio">Hora inicio</label>
+                                                        <input type="time" class="form-control" name="hora_inicio"
+                                                            id="hora_inicio">
+                                                        @error('hora_inicio')
+                                                            <small
+                                                                class="bg-danger text-white p-1">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group"><label for="hora_fin">Hora fin</label>
+                                                        <input type="time" class="form-control" name="hora_fin"
+                                                            id="hora_fin">
+                                                        @error('hora_fin')
                                                             <small
                                                                 class="bg-danger text-white p-1">{{ $message }}</small>
                                                         @enderror
@@ -351,9 +362,11 @@
             //----------------------------------------------------------------
             // VALIDAR SI LA HORA YA NO HA PASADO
             const HoraReservaInput = document.getElementById('hora_reserva');
+            const HoraIncioInput = document.getElementById('hora_inicio');
+            const HoraFinInput = document.getElementById('hora_fin');
 
             // Escuchar el evento de cambio en el campo de hora de reserva
-            HoraReservaInput.addEventListener('change', function() {
+            HoraIncioInput.addEventListener('change', function() {
                 let selectedTime = this.value; //Obtener fecha seleccionada
                 // verificar si la fecha selecionada es anterior a la fecha actual
                 if (selectedTime) {
@@ -368,6 +381,14 @@
                     alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
                 }
             })
+
+            // Agregar un evento de cambio al input
+            HoraFinInput.addEventListener('change', function() {
+                let selectedTime = this.value;
+                // Conservar solo la hora, ignorar los minutos
+                selectedTime = selectedTime.split(':')[0] + ':00'; // "14:00"
+                this.value = selectedTime;
+            });
         });
     </script>
     <script>
@@ -412,6 +433,7 @@
                     type: 'GET',
                     dataType: 'json',
                     success: function(data) {
+                        alert('hey ' + JSON.stringify(data));
                         calendar.addEventSource(data);
                         // $('#profesor_info').html(data);
                     },

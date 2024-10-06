@@ -27,7 +27,7 @@ class HomeController extends Controller
         $total_horarios = Horario::count();
         $total_eventos = CalendarEvent::count();
         $total_configuraciones = Config::count();
-    
+
         // Verifica si el usuario autenticado es un administrador
         if (Auth::user()->hasRole('admin')) {
             // Obtener todos los cursos
@@ -43,29 +43,56 @@ class HomeController extends Controller
                 $cursos = collect(); // No hay cursos si no hay cliente
             }
         }
-    //    dd($cursos);
+        //    dd($cursos);
         $profesores = Profesor::all();
         $events = CalendarEvent::all();
-    
+
         return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'events', 'total_configuraciones'));
     }
-    
+
     public function ver_reservas($id)
     { // echo $id;
         $eventos = CalendarEvent::where('user_id', $id)->get();
         return view('admin.ver_reservas', compact('eventos'));
     }
     public function cargar_reserva_profesores($id)
-    { //echo $id;
-        try { 
-            $events = CalendarEvent::where('profesor_id', $id)->get();
-                    // ->select('id','title', DB::raw('DATE_FORMAT(start, %Y-%m-%d) as start'),DB::raw('DATE_FORMAT(end, %Y-%m-%d) as end'),'color')
-                    // ->get();
+    {
+        try {
+            // Verifica si el usuario autenticado es un administrador
+            if (Auth::user()->hasRole('admin')) {
+                // Obtener todos los eventos del profesor específico
+                $events = CalendarEvent::where('profesor_id', $id)->get();
+                // $events = ["hello" => 3, "hey" => 4];
+                $sql = null; // No hay consulta SQL para este caso
+                $bindings = null; // No hay parámetros para este caso
+            } else {
+                $cliente = Cliente::where('user_id', Auth::id())->first(); // O la lógica adecuada para obtener el cliente
+            
+                // NOTA: SIGUE OBTENINENDO LOS DATOS DE TODOS  LOS CLIENTES 
+                // Construir la consulta para obtener los eventos asociados al usuario autenticado
+                $query = CalendarEvent::where('profesor_id', $id)
+                    ->join('cliente_curso', 'events.curso_id', '=', 'cliente_curso.curso_id')
+                    ->where('cliente_curso.cliente_id', $cliente->id) // Usar el ID del cliente
+                    ->select('events.*'); // Seleccionar solo los campos de los eventos
+
+                // Obtener la consulta SQL y los parámetros
+                $sql = $query->toSql();
+                $bindings = $query->getBindings();
+
+                // Ejecutar la consulta
+                $events = $query->get();
+            }
+
+            // Devolver la respuesta JSON
             return response()->json($events);
+            // return response()->json(['sql' => $sql, 'bindings' => $bindings, 'events' => $events]);
+
         } catch (\Exception $exception) {
-            return response()->json(['mesaje' => 'Error']);
+            return response()->json(['mensaje' => 'Error: ' . $exception->getMessage()]);
         }
     }
+
+
     public function create()
     {
         return view('admin.usuarios.create');

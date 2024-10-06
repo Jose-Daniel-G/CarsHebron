@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
             $table->foreignId('curso_id')->constrained('cursos')->onDelete('cascade');
+            $table->integer('horas_realizadas')->default(0);
+            $table->timestamp('fecha_realizacion')->nullable();
             $table->timestamps();
         });
     }

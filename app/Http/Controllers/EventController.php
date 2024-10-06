@@ -23,14 +23,17 @@ class EventController extends Controller
         // Validar los datos de la solicitud
         $request->validate([
             'fecha_reserva' => 'required',
-            'hora_reserva' => 'required',
+            'hora_inicio' => 'required',
+            'hora_fin' => 'required',
             'profesor_id' => 'required|exists:profesors,id'
         ]);
 
         // Buscar el profesor por su ID
         $profesor = Profesor::find($request->profesor_id);
         $fecha_reserva = $request->fecha_reserva;
-        $hora_reserva = $request->hora_reserva . ':00'; // Asegurarse de que la hora esté en formato correcto
+        // $hora_reserva = $request->hora_reserva . ':00'; // Asegurarse de que la hora esté en formato correcto
+        $hora_inicio = $request->hora_inicio . ':00'; // Asegurarse de que la hora esté en formato correcto
+        $hora_fin = $request->hora_fin . ':00'; // Asegurarse de que la hora esté en formato correcto
 
         // Obtener el día de la semana en español
         $dia = date('l', strtotime($fecha_reserva));
@@ -39,8 +42,8 @@ class EventController extends Controller
         // Consultar los horarios disponibles del profesor
         $horarios = Horario::where('profesor_id', $profesor->id)
             ->where('dia', $dia_de_reserva)
-            ->where('hora_inicio', '<=', $hora_reserva)
-            ->where('hora_fin', '>=', $hora_reserva)
+            ->where('hora_inicio', '<=', $hora_inicio)
+            ->where('hora_fin', '>=', $hora_fin)
             ->exists();
         // dd($horarios);
         if (!$horarios) {
@@ -52,11 +55,13 @@ class EventController extends Controller
         }
 
         //  dd($horarios);
-        $fecha_hora_reserva = $fecha_reserva . " " . $hora_reserva;
+        $fecha_hora_inicio = $fecha_reserva . " " . $hora_inicio;
+        $fecha_hora_fin = $fecha_reserva . " " . $hora_fin;
 
         /// valida si existen eventos duplicado
         $eventos_duplicados = Event::where('profesor_id', $profesor->id)
-            ->where('start', $fecha_hora_reserva)
+            ->where('start', $fecha_hora_fin)
+            ->where('end', $fecha_hora_fin)
             ->exists();
 
         if ($eventos_duplicados) {
@@ -70,8 +75,8 @@ class EventController extends Controller
         // Crear una nueva instancia de Event
         $evento = new Event();
         $evento->title = $request->hora_reserva . " " . $profesor->especialidad;
-        $evento->start = $request->fecha_reserva . " " . $hora_reserva;
-        $evento->end = $request->fecha_reserva . " " . $hora_reserva;
+        $evento->start = $fecha_hora_inicio;
+        $evento->end = $fecha_hora_fin;
         $evento->color = '#e82216';
         $evento->user_id = Auth::user()->id;
         $evento->profesor_id  = $request->profesor_id;
