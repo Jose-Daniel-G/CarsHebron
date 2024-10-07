@@ -329,6 +329,25 @@ return [
             'icon' => 'fas fa-fw fa-user',
             'can'  => 'admin.users.index',
         ],
+        [
+            'text'        => 'Gestión de Asistencias',
+            'icon' => 'fas fa-fw fa-user',
+            // 'can'  => 'admin.users.index',
+            'submenu' => [
+                [
+                    'text' => 'Registrar Asistencia',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.profesores.asistencia',
+                ],
+                [
+                    'text' => 'Listado de Inacistencias',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.secretarias.inasistencias',
+                ],
+
+            ],
+        ],
+
 
         ['header' => 'ADMINISTRADOR', 'can' => 'admin.secretarias.index',],
         [

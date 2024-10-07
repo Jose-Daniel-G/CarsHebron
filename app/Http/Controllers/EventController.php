@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\Config;
 use App\Models\Profesor;
 use App\Models\Event;
@@ -148,6 +149,19 @@ class EventController extends Controller
     // public function reportes(){
     //     return view('admin.reservas.reportes');
     // }
+    
+    public function agendarClase(Request $request)
+    {
+        $cliente = Cliente::find($request->cliente_id);
+    
+        // Revisar si tiene penalidades pendientes
+        if ($cliente->asistencias()->where('asistio', false)->where('penalidad', '>', 0)->exists()) {
+            return redirect()->back()->with('error', 'No puedes agendar nuevas clases hasta pagar la penalidad.');
+        }
+    
+        // Continuar con la creación del evento si no hay penalidades
+    }
+
 
     public function pdf()
     {

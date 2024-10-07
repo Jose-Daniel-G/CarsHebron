@@ -31,4 +31,8 @@ class Cliente extends Model
         ->withPivot('horas_realizadas', 'fecha_realizacion')
         ->withTimestamps();
     }
+    public function asistencias()
+    {
+        return $this->hasMany(Asistencia::class, 'cliente_id'); // Asegúrate de que 'cliente_id' sea la clave foránea en la tabla asistencias
+    }
 }
