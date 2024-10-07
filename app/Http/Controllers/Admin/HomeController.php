@@ -75,7 +75,8 @@ class HomeController extends Controller
                 $cliente = Cliente::where('user_id', Auth::id())->first(); // O la lógica adecuada para obtener el cliente
 
                 // Construir la consulta para obtener los eventos asociados al usuario autenticado
-                $events = CalendarEvent::join('users', 'users.id', '=', 'events.profesor_id')
+                $events = CalendarEvent::with(['profesor', 'cliente'])
+                    ->join('users', 'users.id', '=', 'events.profesor_id')
                     ->where('events.profesor_id', $id)
                     ->where('users.id', $cliente->id)
                     ->select('events.*')
