@@ -17,14 +17,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="profesor_id1">Profesor</label>
+                                <label>Profesor</label>
                                 <p id="nombres_teacher"> 
                                 </p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="profesor_id1">Cliente</label>
+                                <label>Cliente</label>
                                 <p id="nombres_cliente"> 
                                 </p>
                             </div>

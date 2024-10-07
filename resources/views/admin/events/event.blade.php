@@ -1,4 +1,4 @@
-<form action="{{ route('admin.events.store') }}" method="POST">
+<form action="{{ route('admin.eventos.store') }}" method="POST">
     @csrf
     <div class="modal fade" id="claseModal" tabindex="-1" aria-labelledby="claseModal"
         aria-hidden="true">
@@ -41,11 +41,22 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group"><label for="hora_reserva">Hora de
-                                    reserva</label>
-                                <input type="time" class="form-control" name="hora_reserva"
-                                    id="hora_reserva">
-                                @error('hora_reserva')
+                            <div class="form-group"><label for="hora_inicio">Hora inicio</label>
+                                <input type="time" class="form-control" name="hora_inicio"
+                                    id="hora_inicio">
+                                @error('hora_inicio')
+                                    <small
+                                        class="bg-danger text-white p-1">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group"><label for="hora_fin">Hora fin</label>
+                                <input type="time" class="form-control" name="hora_fin"
+                                    id="hora_fin">
+                                @error('hora_fin')
                                     <small
                                         class="bg-danger text-white p-1">{{ $message }}</small>
                                 @enderror

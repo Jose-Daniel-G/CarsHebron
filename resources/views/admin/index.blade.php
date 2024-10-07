@@ -194,11 +194,11 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                         @can('cargar_datos_cursos')
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#claseModal">
-                            Agendar Clase
-                        </button>
+                        @can('cargar_datos_cursos')
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#claseModal">
+                                Agendar Clase
+                            </button>
 
                             <a href="{{ route('admin.ver_reservas', Auth::user()->id) }}" class="btn btn-success">
                                 <i class="bi bi-calendar-check"></i>Ver las reservas
@@ -206,82 +206,11 @@
                         @endcan
 
                         <!-- Modal -->
-                        <form action="{{ route('admin.eventos.store') }}" method="POST">
-                            @csrf
-                            <div class="modal fade" id="claseModal" tabindex="-1" aria-labelledby="claseModal"
-                                aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="claseModal">Profesores</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group"><label for="profesor_id">Profesor</label>
-                                                        <select name="profesor_id" class="form-control">
-                                                            <option value="" selected disabled>Selecione un Profesor
-                                                            </option>
-                                                            @foreach ($profesores as $profesore)
-                                                                <option value="{{ $profesore->id }}">
-                                                                    {{ $profesore->nombres . ' ' . $profesore->apellidos . ' - ' . $profesore->especialidad }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('profesor_id')
-                                                            <small
-                                                                class="bg-danger text-white p-1">{{ $message }}</small>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group"><label for="profesor">Fecha de reserva</label>
-                                                        <input type="date" class="form-control" name="fecha_reserva"
-                                                            id="fecha_reserva" value="<?php echo date('Y-m-d'); ?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group"><label for="hora_inicio">Hora inicio</label>
-                                                        <input type="time" class="form-control" name="hora_inicio"
-                                                            id="hora_inicio">
-                                                        @error('hora_inicio')
-                                                            <small
-                                                                class="bg-danger text-white p-1">{{ $message }}</small>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group"><label for="hora_fin">Hora fin</label>
-                                                        <input type="time" class="form-control" name="hora_fin"
-                                                            id="hora_fin">
-                                                        @error('hora_fin')
-                                                            <small
-                                                                class="bg-danger text-white p-1">{{ $message }}</small>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Cancelar</button>
-                                                <button type="submit" class="btn btn-primary">Registrar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        @include('admin.events.event')
+                        <!-- Incluir Modal INFO-->
+                        @include('admin.events.show')
                     </div>
+
                     <div id="profesor_info"></div>
                     <div id="calendar"></div>
                 </div>
@@ -300,11 +229,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        {{-- @if (Auth::user()->profesor)
-                            {{ Auth::user()->profesor->nombres }}
-                        @elseif (Auth::user()->cliente)
-                            {{ Auth::user()->cliente->nombres }}
-                        @endif --}}
+                        {{ Auth::user()->profesor->nombres }}
                         <table id="reservas" class="table table-striped table-bordered table-hover table-sm">
                             <thead class="thead-dark">
                                 <tr>
@@ -340,8 +265,15 @@
 @stop
 
 @section('js')
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+    {{-- Axios JS --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> --}}
 
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             //-------------------------------------------------------------
@@ -391,8 +323,7 @@
                 this.value = selectedTime;
             });
         });
-    </script>
-    <script>
+
         // carga contenido de tabla en  curso_info
         $('#curso_select').on('change', function() {
             var curso_id = $('#curso_select').val();
@@ -416,13 +347,46 @@
         });
         // carga contenido de tabla en profesor_info
         $('#profesor_select').on('change', function() {
+            let form = document.getElementById('eventoForm');
             var profesor_id = $('#profesor_select').val();
             var calendarEl = document.getElementById('calendar');
             // alert(profesor_id)
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 locale: 'es',
-                events: []
+                // events: [] 
+                events: {
+                url: "{{ route('admin.events.show') }}",
+                method: 'GET',
+                extraParams: {
+                    profesor_id: profesor_id
+                },
+                failure: function() {
+                    alert('Error al cargar eventos');
+                }
+            },
+            eventClick: function(info) {
+                var evento = info.event;
+                var startTime = evento.start;
+
+                // Mostrar la información en el modal
+                if (evento.extendedProps.profesor) {
+                    var profesorNombres = evento.extendedProps.profesor.nombres || 'No disponible';
+                    var profesorApellidos = evento.extendedProps.profesor.apellidos || 'No disponible';
+                    var clienteNombres = evento.extendedProps.cliente.nombres || 'No disponible';
+                    var clienteApellidos = evento.extendedProps.cliente.apellidos || 'No disponible';
+                    document.getElementById('nombres_cliente').textContent = `${clienteNombres} ${clienteApellidos}`;
+                    document.getElementById('nombres_teacher').textContent = `${profesorNombres} ${profesorApellidos}`;
+                } else {
+                    document.getElementById('nombres_teacher').textContent = 'Profesor no asignado';
+                }
+
+                document.getElementById('fecha_reserva1').textContent = startTime.toISOString().split('T')[0]; // Fecha
+                document.getElementById('hora_reserva1').textContent = startTime.toLocaleTimeString(); // Hora de inicio
+
+                // Mostrar el modal
+                $("#mdalSelected").modal("show");
+            }
             });
 
             var url = "{{ route('admin.horarios.cargar_reserva_profesores', ':id') }}";
