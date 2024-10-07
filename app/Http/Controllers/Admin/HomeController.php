@@ -79,6 +79,7 @@ class HomeController extends Controller
                     ->select('events.*')
                     ->limit(100)
                     ->get();
+                // $events = CalendarEvent::with('profesor', 'cliente')->get(); // Carga la relación 'profesor'
 
                 return response()->json($events);
             }

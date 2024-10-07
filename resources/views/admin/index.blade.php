@@ -346,72 +346,82 @@
             }
         });
         // carga contenido de tabla en profesor_info
-        $('#profesor_select').on('change', function() {
-            let form = document.getElementById('eventoForm');
-            var profesor_id = $('#profesor_select').val();
-            var calendarEl = document.getElementById('calendar');
-            // alert(profesor_id)
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'es',
-                // events: [] 
-                events: {
-                url: "{{ route('admin.events.show') }}",
-                method: 'GET',
-                extraParams: {
-                    profesor_id: profesor_id
-                },
-                failure: function() {
-                    alert('Error al cargar eventos');
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    
+    // Crea una instancia del calendario una sola vez
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'es',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,listWeek'
+        },
+        events: {
+            url: "{{ route('admin.events.show') }}",
+            method: 'GET',
+            extraParams: function() {
+                // Extraer el ID del profesor seleccionado
+                return {
+                    profesor_id: $('#profesor_select').val()
+                };
             },
-            eventClick: function(info) {
-                var evento = info.event;
-                var startTime = evento.start;
-
-                // Mostrar la información en el modal
-                if (evento.extendedProps.profesor) {
-                    var profesorNombres = evento.extendedProps.profesor.nombres || 'No disponible';
-                    var profesorApellidos = evento.extendedProps.profesor.apellidos || 'No disponible';
-                    var clienteNombres = evento.extendedProps.cliente.nombres || 'No disponible';
-                    var clienteApellidos = evento.extendedProps.cliente.apellidos || 'No disponible';
-                    document.getElementById('nombres_cliente').textContent = `${clienteNombres} ${clienteApellidos}`;
-                    document.getElementById('nombres_teacher').textContent = `${profesorNombres} ${profesorApellidos}`;
-                } else {
-                    document.getElementById('nombres_teacher').textContent = 'Profesor no asignado';
-                }
-
-                document.getElementById('fecha_reserva1').textContent = startTime.toISOString().split('T')[0]; // Fecha
-                document.getElementById('hora_reserva1').textContent = startTime.toLocaleTimeString(); // Hora de inicio
-
-                // Mostrar el modal
-                $("#mdalSelected").modal("show");
+            failure: function() {
+                alert('Error al cargar eventos');
             }
-            });
+        },
+        eventClick: function(info) {
+            var evento = info.event;
+            var startTime = evento.start;
 
+            // Mostrar la información en el modal
+            var profesorNombres = evento.extendedProps.profesor ? evento.extendedProps.profesor.nombres : 'No disponible';
+            var profesorApellidos = evento.extendedProps.profesor ? evento.extendedProps.profesor.apellidos : 'No disponible';
+            var clienteNombres = evento.extendedProps.cliente ? evento.extendedProps.cliente.nombres : 'No disponible';
+            var clienteApellidos = evento.extendedProps.cliente ? evento.extendedProps.cliente.apellidos : 'No disponible';
+
+            document.getElementById('nombres_cliente').textContent = `${clienteNombres} ${clienteApellidos}`;
+            document.getElementById('nombres_teacher').textContent = `${profesorNombres} ${profesorApellidos}`;
+            document.getElementById('fecha_reserva1').textContent = startTime.toISOString().split('T')[0]; // Fecha
+            document.getElementById('hora_reserva1').textContent = startTime.toLocaleTimeString(); // Hora de inicio
+
+            // Mostrar el modal
+            $("#mdalSelected").modal("show");
+        }
+    });
+
+    // Renderizar el calendario
+    calendar.render();
+
+    // Evento cuando cambia la selección del profesor
+    $('#profesor_select').on('change', function() {
+        var profesor_id = $(this).val();
+
+        // Remover todas las fuentes de eventos del calendario
+        calendar.removeAllEventSources();
+
+        // Si hay un profesor seleccionado, cargar sus eventos
+        if (profesor_id) {
             var url = "{{ route('admin.horarios.cargar_reserva_profesores', ':id') }}";
             url = url.replace(':id', profesor_id);
-            // alert('hey '+profesor_id)
-            if (profesor_id) {
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        // alert('hey 's + JSON.stringify(data));
-                        calendar.addEventSource(data);
-                        // $('#profesor_info').html(data);
-                    },
-                    error: function() {
-                        alert('Error al obtener datos del profesor');
-                    }
-                });
-            } else {
-                $('#profesor_info').html('');
-            }
-            calendar.render();
 
-        });
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    // Asegúrate de que 'data' esté en el formato correcto
+                    calendar.addEventSource(data); // Añade los eventos al calendario
+                },
+                error: function() {
+                    alert('Error al obtener datos del profesor');
+                }
+            });
+        }
+    });
+});
+
     </script>
 
     <script>
