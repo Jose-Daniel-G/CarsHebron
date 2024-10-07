@@ -72,30 +72,27 @@ class HomeController extends Controller
                     ->get();
                 return response()->json($events);
             } else {
-                $cliente = Cliente::where('user_id', Auth::id())->first();
+                $cliente = Cliente::where('user_id', Auth::id())->first(); // O la lógica adecuada para obtener el cliente
 
-                // Consulta para obtener eventos con datos del profesor y cliente
-                $events = CalendarEvent::join('users as profesores', 'profesores.id', '=', 'events.profesor_id')
-                    ->join('clientes', 'clientes.id', '=', 'events.cliente_id') // Asegúrate de que el campo cliente_id esté correcto
+                // Construir la consulta para obtener los eventos asociados al usuario autenticado
+                $events = CalendarEvent::join('users', 'users.id', '=', 'events.profesor_id')
                     ->where('events.profesor_id', $id)
-                    ->where('clientes.user_id', Auth::id()) // Asegúrate de que esta relación esté bien definida
-                    ->select(
-                        'events.*',
-                        'profesores.nombres as profesor_nombres',
-                        'profesores.apellidos as profesor_apellidos',
-                        'clientes.nombres as cliente_nombres',
-                        'clientes.apellidos as cliente_apellidos'
-                    )
+                    ->where('users.id', $cliente->id)
+                    ->select('events.*')
                     ->limit(100)
                     ->get();
 
                 return response()->json($events);
             }
+
+            // Devolver la respuesta JSON
+            // return response()->json($events);
+            // return response()->json(['sql' => $sql, 'bindings' => $bindings, 'events' => $events]);
+
         } catch (\Exception $exception) {
             return response()->json(['mensaje' => 'Error: ' . $exception->getMessage()]);
         }
     }
-
 
 
     public function create()
