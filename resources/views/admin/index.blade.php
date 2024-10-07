@@ -347,81 +347,79 @@
         });
         // carga contenido de tabla en profesor_info
         document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    
-    // Crea una instancia del calendario una sola vez
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        locale: 'es',
-        headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,listWeek'
-        },
-        events: {
-            url: "{{ route('admin.events.show') }}",
-            method: 'GET',
-            extraParams: function() {
-                // Extraer el ID del profesor seleccionado
-                return {
-                    profesor_id: $('#profesor_select').val()
-                };
-            },
-            failure: function() {
-                alert('Error al cargar eventos');
-            }
-        },
-        eventClick: function(info) {
-            var evento = info.event;
-            var startTime = evento.start;
+            var calendarEl = document.getElementById('calendar');
 
-            // Mostrar la información en el modal
-            var profesorNombres = evento.extendedProps.profesor ? evento.extendedProps.profesor.nombres : 'No disponible';
-            var profesorApellidos = evento.extendedProps.profesor ? evento.extendedProps.profesor.apellidos : 'No disponible';
-            var clienteNombres = evento.extendedProps.cliente ? evento.extendedProps.cliente.nombres : 'No disponible';
-            var clienteApellidos = evento.extendedProps.cliente ? evento.extendedProps.cliente.apellidos : 'No disponible';
-
-            document.getElementById('nombres_cliente').textContent = `${clienteNombres} ${clienteApellidos}`;
-            document.getElementById('nombres_teacher').textContent = `${profesorNombres} ${profesorApellidos}`;
-            document.getElementById('fecha_reserva1').textContent = startTime.toISOString().split('T')[0]; // Fecha
-            document.getElementById('hora_reserva1').textContent = startTime.toLocaleTimeString(); // Hora de inicio
-
-            // Mostrar el modal
-            $("#mdalSelected").modal("show");
-        }
-    });
-
-    // Renderizar el calendario
-    calendar.render();
-
-    // Evento cuando cambia la selección del profesor
-    $('#profesor_select').on('change', function() {
-        var profesor_id = $(this).val();
-
-        // Remover todas las fuentes de eventos del calendario
-        calendar.removeAllEventSources();
-
-        // Si hay un profesor seleccionado, cargar sus eventos
-        if (profesor_id) {
-            var url = "{{ route('admin.horarios.cargar_reserva_profesores', ':id') }}";
-            url = url.replace(':id', profesor_id);
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    // Asegúrate de que 'data' esté en el formato correcto
-                    calendar.addEventSource(data); // Añade los eventos al calendario
+            // Crea una instancia del calendario una sola vez
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listWeek'
                 },
-                error: function() {
-                    alert('Error al obtener datos del profesor');
+                events: [], // Inicialmente vacío para evitar carga de eventos al inicio
+                eventClick: function(info) {
+                    var evento = info.event;
+                    var startTime = evento.start;
+
+                    // Mostrar la información en el modal
+                    var profesorNombres = evento.extendedProps.profesor ? evento.extendedProps.profesor
+                        .nombres : 'No disponible';
+                    var profesorApellidos = evento.extendedProps.profesor ? evento.extendedProps
+                        .profesor.apellidos : 'No disponible';
+                    var clienteNombres = evento.extendedProps.cliente ? evento.extendedProps.cliente
+                        .nombres : 'No disponible';
+                    var clienteApellidos = evento.extendedProps.cliente ? evento.extendedProps.cliente
+                        .apellidos : 'No disponible';
+
+                    document.getElementById('nombres_cliente').textContent =
+                        `${clienteNombres} ${clienteApellidos}`;
+                    document.getElementById('nombres_teacher').textContent =
+                        `${profesorNombres} ${profesorApellidos}`;
+                    document.getElementById('fecha_reserva1').textContent = startTime.toISOString()
+                        .split('T')[0]; // Fecha
+                    document.getElementById('hora_reserva1').textContent = startTime
+                    .toLocaleTimeString(); // Hora de inicio
+
+                    // Mostrar el modal
+                    $("#mdalSelected").modal("show");
                 }
             });
-        }
-    });
-});
 
+            // Renderizar el calendario
+            calendar.render();
+
+            // Evento cuando cambia la selección del profesor
+            $('#profesor_select').on('change', function() {
+                var profesor_id = $(this).val();
+
+                // Remover todas las fuentes de eventos del calendario
+                calendar.removeAllEventSources();
+
+                // Si hay un profesor seleccionado, cargar sus eventos
+                if (profesor_id) {
+                    var url = "{{ route('admin.horarios.cargar_reserva_profesores', ':id') }}";
+                    url = url.replace(':id', profesor_id);
+
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            // Asegúrate de que 'data' esté en el formato correcto
+                            calendar.addEventSource(data); // Añade los eventos al calendario
+                        },
+                        error: function() {
+                            alert('Error al obtener datos del profesor');
+                        }
+                    });
+                } else {
+                    // Si no hay profesor seleccionado, también puedes limpiar los eventos si es necesario
+                    calendar.removeAllEventSources();
+                }
+            });
+        });
     </script>
 
     <script>
@@ -463,9 +461,6 @@
 
     @if (session('info') && session('icono') && session('hora_reserva'))
         <script>
-            // document.addEventListener('DOMContentLoaded', function() {
-            //     $('#claseModal').show();
-            // });
             Swal.fire({
                 title: "{{ session('title') }}",
                 text: "{{ session('info') }}",

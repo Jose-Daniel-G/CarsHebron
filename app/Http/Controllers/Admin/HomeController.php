@@ -67,31 +67,35 @@ class HomeController extends Controller
             // Verifica si el usuario autenticado es un administrador
             if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
                 // Obtener todos los eventos del profesor específico
-                $events = CalendarEvent::where('profesor_id', $id)->get();
+                $events = CalendarEvent::with(['profesor', 'cliente']) // Asegúrate de que estas relaciones estén definidas en el modelo
+                    ->where('profesor_id', $id)
+                    ->get();
                 return response()->json($events);
             } else {
-                $cliente = Cliente::where('user_id', Auth::id())->first(); // O la lógica adecuada para obtener el cliente
+                $cliente = Cliente::where('user_id', Auth::id())->first();
 
-                // Construir la consulta para obtener los eventos asociados al usuario autenticado
-                $events = CalendarEvent::join('users', 'users.id', '=', 'events.profesor_id')
+                // Consulta para obtener eventos con datos del profesor y cliente
+                $events = CalendarEvent::join('users as profesores', 'profesores.id', '=', 'events.profesor_id')
+                    ->join('clientes', 'clientes.id', '=', 'events.cliente_id') // Asegúrate de que el campo cliente_id esté correcto
                     ->where('events.profesor_id', $id)
-                    ->where('users.id', $cliente->id)
-                    ->select('events.*')
+                    ->where('clientes.user_id', Auth::id()) // Asegúrate de que esta relación esté bien definida
+                    ->select(
+                        'events.*',
+                        'profesores.nombres as profesor_nombres',
+                        'profesores.apellidos as profesor_apellidos',
+                        'clientes.nombres as cliente_nombres',
+                        'clientes.apellidos as cliente_apellidos'
+                    )
                     ->limit(100)
                     ->get();
-                // $events = CalendarEvent::with('profesor', 'cliente')->get(); // Carga la relación 'profesor'
 
                 return response()->json($events);
             }
-
-            // Devolver la respuesta JSON
-            // return response()->json($events);
-            // return response()->json(['sql' => $sql, 'bindings' => $bindings, 'events' => $events]);
-
         } catch (\Exception $exception) {
             return response()->json(['mensaje' => 'Error: ' . $exception->getMessage()]);
         }
     }
+
 
 
     public function create()
