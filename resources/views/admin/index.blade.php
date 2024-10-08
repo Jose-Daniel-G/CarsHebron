@@ -1,7 +1,9 @@
 @extends('adminlte::page')
 
 @section('title', 'Dashboard')
+{{-- @section('plugins.Sweetalert2',true) --}}
 @section('css')
+
 @stop
 @section('content_header')
     <h1>Sistema de reservas </h1>

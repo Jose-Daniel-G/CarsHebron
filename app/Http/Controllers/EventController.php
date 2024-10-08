@@ -20,33 +20,38 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
+        // Depura para ver todos los datos enviados en la solicitud
         // dd($request->all());
+    
         // Validar los datos de la solicitud
         $request->validate([
             'fecha_reserva' => 'required',
             'hora_inicio' => 'required',
             'hora_fin' => 'required',
-            'profesor_id' => 'required|exists:profesors,id'
+            'profesor_id' => 'required|exists:profesors,id',
+            'cliente_id' => 'required_if:role,admin,secretaria' // Asegúrate de que cliente_id esté presente si es admin o secretaria
         ]);
-
+    
+        // Depura para verificar si cliente_id está presente
+        // dd($request->cliente_id);
+    
         // Buscar el profesor por su ID
         $profesor = Profesor::find($request->profesor_id);
         $fecha_reserva = $request->fecha_reserva;
-        // $hora_reserva = $request->hora_reserva . ':00'; // Asegurarse de que la hora esté en formato correcto
         $hora_inicio = $request->hora_inicio . ':00'; // Asegurarse de que la hora esté en formato correcto
         $hora_fin = $request->hora_fin . ':00'; // Asegurarse de que la hora esté en formato correcto
-
+    
         // Obtener el día de la semana en español
         $dia = date('l', strtotime($fecha_reserva));
         $dia_de_reserva = $this->traducir_dia($dia);
-
+    
         // Consultar los horarios disponibles del profesor
         $horarios = Horario::where('profesor_id', $profesor->id)
             ->where('dia', $dia_de_reserva)
             ->where('hora_inicio', '<=', $hora_inicio)
             ->where('hora_fin', '>=', $hora_fin)
             ->exists();
-        // dd($horarios);
+    
         if (!$horarios) {
             return redirect()->back()->with([
                 'info' => 'El profesor no está disponible en ese horario.',
@@ -54,17 +59,16 @@ class EventController extends Controller
                 'hora_reserva' => 'El profesor no está disponible en ese horario.',
             ]);
         }
-
-        //  dd($horarios);
+    
+        // Validar si existen eventos duplicados
         $fecha_hora_inicio = $fecha_reserva . " " . $hora_inicio;
         $fecha_hora_fin = $fecha_reserva . " " . $hora_fin;
-
-        /// valida si existen eventos duplicado
+    
         $eventos_duplicados = Event::where('profesor_id', $profesor->id)
-            ->where('start', $fecha_hora_fin)
+            ->where('start', $fecha_hora_inicio)
             ->where('end', $fecha_hora_fin)
             ->exists();
-
+    
         if ($eventos_duplicados) {
             return redirect()->back()->with([
                 'info' => 'Ya existe una reserva con el mismo profesor en esa fecha y hora.',
@@ -72,7 +76,7 @@ class EventController extends Controller
                 'title' => 'Ya existe una reserva con el mismo profesor en esa fecha y hora.',
             ]);
         }
-
+    
         // Crear una nueva instancia de Event
         $evento = new Event();
         $evento->title = $request->hora_reserva . " " . $profesor->especialidad;
@@ -80,24 +84,35 @@ class EventController extends Controller
         $evento->end = $fecha_hora_fin;
         $evento->color = '#e82216';
         $evento->user_id = Auth::user()->id;
-        $evento->profesor_id  = $request->profesor_id;
-        $evento->curso_id   = '1';
-
+        $evento->profesor_id = $request->profesor_id;
+        $evento->curso_id = '1';
+    
         if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
-            $evento->cliente_id = $request->cliente_id; // Asegúrate de tener este valor
+            // Asegúrate de que cliente_id está presente
+            if ($request->cliente_id) {
+                $evento->cliente_id = $request->cliente_id;
+            } else {
+                return redirect()->back()->withErrors(['cliente_id' => 'El campo cliente_id es obligatorio para administradores y secretarias.']);
+            }
         } else {
-            $evento->cliente_id = Auth::user()->cliente->id; // Asegúrate de tener este valor
+            // Asegúrate de que el usuario tiene un cliente asociado
+            if (Auth::user()->cliente) {
+                $evento->cliente_id = Auth::user()->cliente->id;
+            } else {
+                return redirect()->back()->withErrors(['cliente' => 'El usuario no tiene un cliente asociado.']);
+            }
         }
-        
-        // dd($request->cliente_id);
+    
+        // Guardar el evento
         $evento->save();
-
+    
         // Redirigir con un mensaje de éxito
         return redirect()->route('admin.index')
-            ->with('info', ' Recuerda que no puedes faltar a tu clase, si faltas a las clases sin justificacion se cobran 20 mil pesos por hora no vista')
+            ->with('info', 'Recuerda que no puedes faltar a tu clase, si faltas a las clases sin justificación se cobran 20 mil pesos por hora no vista.')
             ->with('icono', 'success')
             ->with('title', 'Se ha agendado de forma correcta.');
     }
+    
 
     private function traducir_dia($dia)
     {

@@ -27,7 +27,7 @@ class CursoController extends Controller
             'nombre' => 'required',
             'descripcion' => 'required',
             'horas_requeridas' => 'required',
-            // 'ubicacion' => 'required',
+            'ubicacion' => 'required',
             // 'capacidad' => 'required',
             // 'especialidad' => 'required',
             'estado' => 'required',
