@@ -36,11 +36,11 @@ Route::get('/admin/horarios/curso/{id}', [HorarioController::class, 'cargar_dato
 // CHATGPT
 // Route::middleware('auth')->group(function () {
      // Rutas para profesores
-     Route::get('/admin/profesor/asistencia', [AsistenciaController::class, 'verFormulario'])->name('admin.profesores.asistencia');
+     Route::get('/admin/profesor/asistencia', [AsistenciaController::class, 'verFormulario'])->name('admin.profesores.asistencia');//Registrar Asistencia
      Route::post('/admin/asistencia/registrar', [AsistenciaController::class, 'registrarAsistencia'])->name('asistencia.registrar');
  
      // Rutas para secretarias
-     Route::get('/admin/secretaria/inasistencias', [AsistenciaController::class, 'verInasistencias'])->name('admin.secretarias.inasistencias');
+     Route::get('/admin/secretaria/inasistencias', [AsistenciaController::class, 'verInasistencias'])->name('admin.secretarias.inasistencias');//Listado de Inacistencias
      Route::post('/admin/asistencia/habilitar/{id}', [AsistenciaController::class, 'habilitarCliente'])->name('asistencia.habilitar');
 //  });
  
