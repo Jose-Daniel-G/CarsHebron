@@ -22,12 +22,17 @@ class AsistenciaController extends Controller
     }
 
     // Función para la secretaria de ver inasistencias y habilitar cliente
-    public function verInasistencias()//asistencia.registrar
+    public function verInasistencias()
     {
-        $clientes = Cliente::with('asistencias')->whereHas('asistencias', function ($query) {
-            $query->where('asistio', false)->where('penalidad', '>', 0);
-        })->get();
-        // dd($clientes);
+        // Filtra los clientes que tengan inasistencias con penalidad
+        $clientes = Cliente::select('clientes.id', 'clientes.nombres AS nombre_cliente', 'asistencias.id AS asistencia_id', 'events.title AS nombre_evento', 'events.start', 'asistencias.asistio', 'asistencias.penalidad')
+            ->join('asistencias', 'clientes.id', '=', 'asistencias.cliente_id')
+            ->join('events', 'asistencias.evento_id', '=', 'events.id')
+            ->where('asistencias.asistio', 0)
+            ->where('asistencias.penalidad', '>=', 0)
+            ->limit(100)
+            ->get();
+
         return view('admin.secretarias.inasistencias', compact('clientes'));
     }
 
@@ -51,7 +56,11 @@ class AsistenciaController extends Controller
         // Obtenemos los clientes y eventos disponibles para el formulario
         $clientes = Cliente::all();
         $eventos = CalendarEvent::whereDate('start', '>=', now())->get(); // Filtra solo los eventos futuros o del día actual
-    //    dd($eventos,$clientes);
+
+        // // Filtra solo los eventos programados para el día actual
+        // $eventos = CalendarEvent::whereDate('start', '=', now()->toDateString())->get();
+        
+        //    dd($eventos,$clientes);
         return view('admin.profesores.asistencia', compact('clientes', 'eventos'));
     }
 }

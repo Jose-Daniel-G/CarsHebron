@@ -27,7 +27,7 @@
                             <td>
                                 <form action="{{ route('asistencia.habilitar', $cliente->id) }}" method="POST">
                                     @csrf
-                                    <button type="submit">Habilitar Cliente</button>
+                                    <button type="submit" class="form-control btn btn-success">Habilitar Cliente</button>
                                 </form>
                             </td>
                         </tr>

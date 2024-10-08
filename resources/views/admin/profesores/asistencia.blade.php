@@ -16,6 +16,7 @@
                         <div class="col-md-3">
                             <label for="cliente">Seleccionar Cliente:</label>
                             <select name="cliente_id" class="form-control">
+                                <option value="" selected disabled>Seleccione..</option>
                                 @foreach ($clientes as $cliente)
                                     <option value="{{ $cliente->id }}">{{ $cliente->nombres }}</option>
                                 @endforeach
@@ -35,7 +36,8 @@
                             <input type="radio" name="asistio" value="0"> No
                         </div>
                         <div class="col-md-3">
-                            <button type="submit" class="form-control btn btn-primary" style="margin-top: 28px;">Registrar</button>
+                            <button type="submit" class="form-control btn btn-primary"
+                                style="margin-top: 28px;">Registrar</button>
                         </div>
                     </div>
                 </form>
