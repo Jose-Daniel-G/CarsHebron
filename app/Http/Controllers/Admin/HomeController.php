@@ -28,26 +28,27 @@ class HomeController extends Controller
         $total_eventos = CalendarEvent::count();
         $total_configuraciones = Config::count();
 
+        $clientes = Cliente::all();
+        
+        $profesores = Profesor::all();
+        $events = CalendarEvent::all();
         // Verifica si el usuario autenticado es un administrador
         if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria') || Auth::user()->hasRole('profesor')) {
             // Obtener todos los cursos
+            $profesores = Profesor::all();
             $cursos = Curso::all();
+            $data = view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'clientes', 'events', 'total_configuraciones'));
         } else {
             // Obtener el cliente asociado al usuario autenticado
             $cliente = Cliente::where('user_id', Auth::id())->first(); // O la lógica adecuada para obtener el cliente
-            // dd($cliente);
-            if ($cliente) {
-                // Obtener solo los cursos asociados al cliente
-                $cursos = $cliente->cursos;
-            } else {
-                $cursos = collect(); // No hay cursos si no hay cliente
-            }
+            // Obtener solo los cursos asociados al cliente
+            $cursos = $cliente->cursos;
+            // dd( $cursos, $cliente); 
+            $data = view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'events', 'total_configuraciones'));
         }
         //    dd($cursos);
-        $profesores = Profesor::all();
-        $events = CalendarEvent::all();
 
-        return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'events', 'total_configuraciones'));
+        return $data;
     }
 
     public function ver_reservas($id)

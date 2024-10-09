@@ -20,20 +20,16 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-        // Depura para ver todos los datos enviados en la solicitud
-        // dd($request->all());
-    
-        // Validar los datos de la solicitud
         $request->validate([
             'fecha_reserva' => 'required',
             'hora_inicio' => 'required',
             'hora_fin' => 'required',
             'profesor_id' => 'required|exists:profesors,id',
-            'cliente_id' => 'required_if:role,admin,secretaria' // Asegúrate de que cliente_id esté presente si es admin o secretaria
         ]);
     
-        // Depura para verificar si cliente_id está presente
-        // dd($request->cliente_id);
+        // Depura para verificar si asistente_id está presente
+        // dd($request->all());
+        // dd($request->cliente->id);
     
         // Buscar el profesor por su ID
         $profesor = Profesor::find($request->profesor_id);
@@ -42,8 +38,7 @@ class EventController extends Controller
         $hora_fin = $request->hora_fin . ':00'; // Asegurarse de que la hora esté en formato correcto
     
         // Obtener el día de la semana en español
-        $dia = date('l', strtotime($fecha_reserva));
-        $dia_de_reserva = $this->traducir_dia($dia);
+        $dia = date('l', strtotime($fecha_reserva)); $dia_de_reserva = $this->traducir_dia($dia);
     
         // Consultar los horarios disponibles del profesor
         $horarios = Horario::where('profesor_id', $profesor->id)
@@ -83,21 +78,21 @@ class EventController extends Controller
         $evento->start = $fecha_hora_inicio;
         $evento->end = $fecha_hora_fin;
         $evento->color = '#e82216';
-        $evento->user_id = Auth::user()->id;
-        $evento->profesor_id = $request->profesor_id;
+        $evento->asistente_id = Auth::user()->id;
+        $evento->instructor_id = $request->profesor_id;
         $evento->curso_id = '1';
     
         if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
-            // Asegúrate de que cliente_id está presente
-            if ($request->cliente_id) {
-                $evento->cliente_id = $request->cliente_id;
+            // Asegúrate de que asistente_id está presente
+            if ($request->asistente_id) {
+                $evento->asistente_id = $request->cliente->id;
             } else {
-                return redirect()->back()->withErrors(['cliente_id' => 'El campo cliente_id es obligatorio para administradores y secretarias.']);
+                return redirect()->back()->withErrors(['asistente_id' => 'El campo asistente_id es obligatorio para administradores y secretarias.']);
             }
         } else {
             // Asegúrate de que el usuario tiene un cliente asociado
             if (Auth::user()->cliente) {
-                $evento->cliente_id = Auth::user()->cliente->id;
+                $evento->asistente_id = Auth::user()->cliente->id;
             } else {
                 return redirect()->back()->withErrors(['cliente' => 'El usuario no tiene un cliente asociado.']);
             }
@@ -167,7 +162,7 @@ class EventController extends Controller
     
     public function agendarClase(Request $request)
     {
-        $cliente = Cliente::find($request->cliente_id);
+        $cliente = Cliente::find($request->asistente_id);
     
         // Revisar si tiene penalidades pendientes
         if ($cliente->asistencias()->where('asistio', false)->where('penalidad', '>', 0)->exists()) {
