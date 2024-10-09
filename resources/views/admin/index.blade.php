@@ -388,50 +388,6 @@
             // Renderizar el calendario
             calendar.render();
 
-            // Evento cuando cambia la selección del profesor
-            // $('#curso_select').on('change', function() {
-            //     var curso_id = $(this).val(); // Obtener el ID del curso seleccionado
-
-            //     // Si hay un curso seleccionado, cargar los profesores
-            //     if (curso_id) {
-            //         var url = "{{ route('obtenerProfesores', ':id') }}";
-            //         url = url.replace(':id', curso_id);
-
-            //         // Realizar una llamada AJAX para obtener los profesores disponibles
-            //         $.ajax({
-            //             url: url, // URL a la que se realiza la solicitud
-            //             method: 'GET',
-            //             success: function(data) {
-            //                 const profesorSelect = $(
-            //                 '#profesor_id'); // Selecciona el campo de profesores
-            //                 profesorSelect.empty(); // Limpiar opciones anteriores
-            //                 profesorSelect.append(
-            //                     '<option value="" selected disabled>Seleccione un Profesor</option>'
-            //                     ); // Opción por defecto
-
-            //                 // Verificar si el resultado es un array
-            //                 if (Array.isArray(data)) {
-            //                     // Agregar las nuevas opciones de profesores
-            //                     data.forEach(profesor => {
-            //                         profesorSelect.append(
-            //                             `<option value="${profesor.id}">${profesor.nombres} ${profesor.apellidos} - ${profesor.especialidad}</option>`
-            //                         );
-            //                     });
-            //                 } else {
-            //                     console.error('Los datos devueltos no son válidos.');
-            //                 }
-            //             },
-            //             error: function(xhr) {
-            //                 console.error('Error al cargar los profesores:', xhr.responseText);
-            //                 alert('Error al cargar los profesores. Intenta nuevamente.');
-            //             }
-            //         });
-            //     } else {
-            //         // Si no hay curso seleccionado, vaciar el campo de profesores
-            //         $('#profesor_id').empty().append(
-            //             '<option value="" selected disabled>Seleccione un Profesor</option>');
-            //     }
-            // });
         });
     </script>
     <script>
@@ -534,4 +490,48 @@
         </script>
     @endif
 
+    <script>
+        $(document).ready(function() {
+            // Establece el evento para llamar a la función cargarProfesores al cambiar el curso
+            $('#cursoid').on('change', function() {
+                var cursoid = $(this).val(); // Obtén el valor seleccionado
+                // Función para cargar profesores
+                if (!cursoid) return; // Salir si no hay curso seleccionado
+                var url = "{{ route('obtenerProfesores', ':id') }}";
+                url = url.replace(':id', cursoid);
+                // alert('url ' + url);
+
+                // Realizar una llamada AJAX para obtener los profesores disponibles
+                $.ajax({
+                    url: url, // URL a la que se realiza la solicitud
+                    method: 'GET',
+
+                    success: function(data) {
+                        // console.log('Profesores: ',
+                        // data); // Debería mostrar la lista de profesores
+
+                        // Verifica si hay profesores y si es un array
+                        if (data && Array.isArray(data)) {
+                            // Limpia el select de profesores antes de llenarlo
+                            $('#profesorid').empty().append(
+                                '<option value="" selected disabled>Seleccione un Profesor</option>'
+                                );
+
+                            data.forEach(function(profesor) {
+                                $('#profesorid').append(
+                                    `<option value="${profesor.id}">${profesor.nombres} ${profesor.apellidos}</option>`
+                                );
+                            });
+                        } else {
+                            alert('No se encontraron profesores.');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Error al cargar los profesores:', xhr.responseText);
+                        alert('Error al cargar los profesores. Intenta nuevamente.');
+                    }
+                });
+            });
+        });
+    </script>
 @stop

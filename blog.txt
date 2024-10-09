@@ -134,7 +134,7 @@ VERSION ESTABLE-- schedule fixed
                             <div class="col-md-12">
                                 <div class="form-group"><label for="cliente_id">Estudiante</label>
                                     <select name="cliente_id" class="form-control">
-                                        <option value="" selected disabled>Selecione un Estudiante
+                                        <option value="" selected disabled>Seleccione un Estudiante
                                         </option>
                                         @foreach ($clientes as $cliente)
                                             <option value="{{ $cliente->id }}">
@@ -169,7 +169,7 @@ VERSION ESTABLE-- schedule fixed
                         <div class="col-md-12">
                             <div class="form-group"><label for="profesorid">Profesor</label>
                                 <select name="profesorid" class="form-control" id="profesorid">
-                                    <option value="" selected disabled>Selecione un Profesor</option>
+                                    <option value="" selected disabled>Seleccione un Profesor</option>
                                 </select>
                                 @error('profesorid')
                                     <small class="bg-danger text-white p-1">{{ $message }}</small>
@@ -274,6 +274,5 @@ VERSION ESTABLE-- schedule fixed
                 });
             });
         });
-    </script>
     </script>
 @stop

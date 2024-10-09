@@ -15,7 +15,7 @@
                             <div class="col-md-12">
                                 <div class="form-group"><label for="cliente_id">Estudiante</label>
                                     <select name="cliente_id" class="form-control">
-                                        <option value="" selected disabled>Selecione un Estudiante
+                                        <option value="" selected disabled>Seleccione un Estudiante
                                         </option>
                                         @foreach ($clientes as $cliente)
                                             <option value="{{ $cliente->id }}">
@@ -50,7 +50,7 @@
                         <div class="col-md-12">
                             <div class="form-group"><label for="profesorid">Profesor</label>
                                 <select name="profesorid" class="form-control" id="profesorid">
-                                    <option value="" selected disabled>Selecione un Profesor</option>
+                                    <option value="" selected disabled>Seleccione un Profesor</option>
                                 </select>
                                 @error('profesorid')
                                     <small class="bg-danger text-white p-1">{{ $message }}</small>
@@ -111,49 +111,3 @@
         </div>
     </div>
 </form>
-@section('js')
-    <script>
-        $(document).ready(function() {
-            // Establece el evento para llamar a la función cargarProfesores al cambiar el curso
-            $('#cursoid').on('change', function() {
-                var cursoid = $(this).val(); // Obtén el valor seleccionado
-                // Función para cargar profesores
-                if (!cursoid) return; // Salir si no hay curso seleccionado
-                var url = "{{ route('obtenerProfesores', ':id') }}";
-                url = url.replace(':id', cursoid);
-                // alert('url ' + url);
-
-                // Realizar una llamada AJAX para obtener los profesores disponibles
-                $.ajax({
-                    url: url, // URL a la que se realiza la solicitud
-                    method: 'GET',
-
-                    success: function(data) {
-                        // console.log('Profesores: ',
-                        // data); // Debería mostrar la lista de profesores
-
-                        // Verifica si hay profesores y si es un array
-                        if (data && Array.isArray(data)) {
-                            // Limpia el select de profesores antes de llenarlo
-                            $('#profesorid').empty().append(
-                                '<option value="" selected disabled>Seleccione un Profesor</option>'
-                                );
-
-                            data.forEach(function(profesor) {
-                                $('#profesorid').append(
-                                    `<option value="${profesor.id}">${profesor.nombres} ${profesor.apellidos}</option>`
-                                );
-                            });
-                        } else {
-                            alert('No se encontraron profesores.');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Error al cargar los profesores:', xhr.responseText);
-                        alert('Error al cargar los profesores. Intenta nuevamente.');
-                    }
-                });
-            });
-        });
-    </script>
-@stop
