@@ -113,3 +113,6 @@ el usuario solo podra agendar las clases correspondientes a la del curso que est
 15 motos
 20 carro b1
 30 carro publico
+
+VERSION ESTABLE-- schedule fixed
+--ERRORES EN ADMIN ASIGNAR AGENDA

@@ -26,13 +26,13 @@ class HorarioSeeder extends Seeder
         Horario::create([
             'dia' => 'MARTES',
             'hora_inicio' => '8:00:00',
-            'hora_fin' => '12:00:00',
+            'hora_fin' => '14:00:00',
             'profesor_id' => '2',
             'curso_id' => '1',
         ]);
         Horario::create([
             'dia' => 'MIERCOLES',
-            'hora_inicio' => '14:00:00',
+            'hora_inicio' => '8:00:00',
             'hora_fin' => '20:00:00',
             'profesor_id' => '1',
             'curso_id' => '1',
