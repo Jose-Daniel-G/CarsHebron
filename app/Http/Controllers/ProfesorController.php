@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Config;
+use App\Models\Curso;
 use App\Models\Profesor;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ProfesorController extends Controller
@@ -86,30 +88,30 @@ class ProfesorController extends Controller
             'email' => 'required|email|max:50|unique:users,email,' . $profesor->user_id, // Excluyendo el usuario actual
             'password' => 'nullable|min:8|confirmed', // Permitir que la contraseña sea opcional
         ]);
-    
+
         // Asignar el user_id actual a los datos
         $data['user_id'] = $profesor->user_id;
-    
+
         // Actualizar el profesor
         $profesor->update($data); // Actualiza el profesor
-    
+
         // Obtener el usuario asociado al profesor directamente a través de la relación
-        $usuario = $profesor->user; 
-    
+        $usuario = $profesor->user;
+
         // Actualizar el email del usuario
         $usuario->email = $data['email']; // Asegúrate de usar el nuevo email validado
         // Condición para saber si el campo password se ha tocado
         if ($request->filled('password')) {
             $usuario->password = Hash::make($request['password']);
         }
-    
+
         $usuario->save(); // Guardar cambios del usuario
-    
+
         return redirect()->route('admin.profesores.index')
             ->with('info', 'Profesor actualizado correctamente.')
             ->with('icono', 'success');
     }
-    
+
 
 
     public function destroy(Profesor $profesor)
@@ -147,4 +149,38 @@ class ProfesorController extends Controller
 
         return $pdf->stream();
     }
+    public function obtenerProfesores($cursoId)
+    {  
+         $cursoId = 1; // Cambia este valor según tu necesidad
+        $profesores = DB::table('horarios')
+                        ->join('profesors', 'horarios.profesor_id', '=', 'profesors.id')
+                        ->where('horarios.curso_id', $cursoId)
+                        ->select('profesors.*')
+                        ->get();
+        // dd($profesores);
+        return response()->json($profesores); // Asegúrate de devolver JSON
+    }
+    
+
+    // public function obtenerProfesoresPorCurso($cursoId)
+    // {
+    //     // Suponiendo que tienes una relación entre Curso y Profesor
+    //     $curso = Curso::find($cursoId);
+
+    //     if (!$curso) {
+    //         return response()->json(['message' => 'Curso no encontrado'], 404);
+    //     }
+
+    //     $profesores = $curso->profesores; // Asegúrate de que esta relación esté definida en el modelo Curso
+    //     return response()->json($profesores);
+    // }
+
+    // public function obtenerProfesoresPorCurso($cursoId)
+    // {
+    //     // Suponiendo que tienes un método en el modelo Curso que devuelve los profesores
+    //     $curso = Curso::find($cursoId);
+    //     $profesores = $curso->profesores; // Asumiendo que tienes la relación definida
+
+    //     return response()->json($profesores);
+    // }
 }

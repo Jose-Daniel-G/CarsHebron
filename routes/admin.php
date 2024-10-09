@@ -71,6 +71,7 @@ Route::get('/historial/pdf',[HistorialController::class,'pdf'])->name('admin.his
 Route::resource('/historial', HistorialController::class)->names('admin.historial')->middleware('auth', 'can:admin.historial');
 
 
+Route::get('/admin/profesores/evente/{cursoId}', [ProfesorController::class, 'obtenerProfesores'])->name('obtenerProfesores');
 
 
 
