@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+
 class HorarioController extends Controller
 {
     public function index()
@@ -28,12 +29,12 @@ class HorarioController extends Controller
         return view('admin.horarios.create', compact('profesores', 'cursos', 'horarios'));
     }
     public function cargar_datos_cursos($id)
-    { 
-        // echo $id;   
-      
+    {
         try {
+            // Obtener horarios con profesor y curso
             $horarios = Horario::with(['profesor', 'curso'])->where('curso_id', $id)->get();
-
+    
+            // Obtener horarios asignados
             $horarios_asignados = CalendarEvent::select(
                 'events.id',
                 'events.profesor_id',
@@ -43,24 +44,47 @@ class HorarioController extends Controller
                 'events.created_at',
                 'events.updated_at'
             )
-            ->selectRaw('DAYNAME(events.start) AS dia')
-            ->join('profesors', 'events.profesor_id', '=', 'profesors.id')
-            ->join('cursos', 'events.curso_id', '=', 'cursos.id')
-            ->join('cliente_curso', 'events.curso_id', '=', 'cliente_curso.curso_id')
-            ->join('clientes', 'cliente_curso.cliente_id', '=', 'clientes.id')
-            ->where('events.curso_id', $id) // Usa la variable $id para el filtro
-            ->distinct() // Para evitar duplicados
-            ->get();
-
+                ->selectRaw('DAYNAME(events.start) AS dia')
+                ->join('profesors', 'events.profesor_id', '=', 'profesors.id')
+                ->join('cursos', 'events.curso_id', '=', 'cursos.id')
+                ->join('cliente_curso', 'events.curso_id', '=', 'cliente_curso.curso_id')
+                ->join('clientes', 'cliente_curso.cliente_id', '=', 'clientes.id')
+                ->where('events.curso_id', $id)
+                ->distinct()
+                ->get();
+    
+            // Traducir los días al español
+            $horarios_asignados = $horarios_asignados->map(function ($horario) {
+                $horario->dia = $this->traducir_dia($horario->dia); // Traduce el día al español
+                return $horario;
+            });
+    
+            // Pasar los datos a la vista
             return view('admin.horarios.cargar_datos_cursos', compact('horarios', 'horarios_asignados'));
         } catch (\Exception $exception) {
-            return response()->json(['mesaje' => 'Error']);
+            return response()->json(['mensaje' => 'Error']);
         }
     }
+    
+    private function traducir_dia($dia)
+    {
+        $dias = [
+            'Monday' => 'LUNES',
+            'Tuesday' => 'MARTES',
+            'Wednesday' => 'MIERCOLES',
+            'Thursday' => 'JUEVES',
+            'Friday' => 'VIERNES',
+            'Saturday' => 'SABADO',
+            'Sunday' => 'DOMINGO',
+        ];
+    
+        return $dias[$dia] ?? $dia; // Devolver el día original si no se encuentra en el array
+    }
+    
     // public function cargar_datos_cursos($id)
     // { 
     //     // echo $id;   
-      
+
     //     try {
     //         $horarios = Horario::with(['profesor', 'curso'])->where('curso_id', $id)->get();
     //         // return view('admin.horarios.cargar_datos_cursos', compact('horarios'));

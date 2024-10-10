@@ -1,14 +1,18 @@
-<div class="table-responsive">
+{{-- Verifica los datos que están llegando a la vista --}}
+<pre>
+    {{-- {{ print_r($horarios, true) }}
+    {{ print_r('asigndos'.$horarios_asignados, true) }} --}}
+</pre><div class="table-responsive">
     <table class="table table-striped table-bordered table-hover table-sm">
         <thead>
             <tr>
                 <th scope="col">Hora</th>
                 <th scope="col">Lunes</th>
                 <th scope="col">Martes</th>
-                <th scope="col">Miercoles</th>
+                <th scope="col">Miércoles</th>
                 <th scope="col">Jueves</th>
                 <th scope="col">Viernes</th>
-                <th scope="col">Sabado</th>
+                <th scope="col">Sábado</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +46,8 @@
                         @php
                             $nombre_profesor = '';
                             $agendado = false; // Inicializa la variable $agendado en false
+
+                            // Recorremos los horarios disponibles
                             foreach ($horarios as $horario) {
                                 $horario_inicio_24 = date('H:i', strtotime($horario->hora_inicio));
                                 $horario_fin_24 = date('H:i', strtotime($horario->hora_fin));
@@ -54,17 +60,17 @@
                                 ) {
                                     $nombre_profesor = $horario->profesor->nombres . ' ' . $horario->profesor->apellidos;
 
-                                    // Verifica si hay un horario asignado
+                                    // Verificamos si está agendado
                                     foreach ($horarios_asignados as $horario_asignado) {
                                         $asignado_inicio_24 = date('H:i', strtotime($horario_asignado->hora_inicio));
                                         $asignado_fin_24 = date('H:i', strtotime($horario_asignado->hora_fin));
                                         $asignado_dia = strtoupper($horario_asignado->dia);
 
-                                        // Comparar horarios
+                                        // Comparación con mayor flexibilidad (solapamiento)
                                         if (
                                             $asignado_dia == $dia &&
-                                            $asignado_inicio_24 == $hora_inicio_24 &&
-                                            $asignado_fin_24 == $hora_fin_24
+                                            $hora_inicio_24 < $asignado_fin_24 && 
+                                            $hora_fin_24 > $asignado_inicio_24
                                         ) {
                                             $agendado = true; // Cambia a verdadero si hay coincidencia
                                             break; // Salir del bucle si se encuentra coincidencia
@@ -74,9 +80,9 @@
                                 }
                             }
                         @endphp
-                        <td class="{{ $agendado ? 'table-primary' : '' }}">{{ $nombre_profesor }}</td>
-                        {{-- Mensaje de depuración para verificar la variable $agendado --}}
-                        {{-- <td>{{ $agendado ? 'Agendado' : 'No Agendado' }}</td> --}}
+                        <td class="{{ $agendado ? 'table-primary' : '' }}">
+                            {{ $nombre_profesor }}
+                        </td>
                     @endforeach
                 </tr>
             @endforeach

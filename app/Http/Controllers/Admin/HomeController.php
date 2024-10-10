@@ -82,10 +82,6 @@ class HomeController extends Controller
                 return response()->json($events);
             }
 
-            // Devolver la respuesta JSON
-            // return response()->json($events);
-            // return response()->json(['sql' => $sql, 'bindings' => $bindings, 'events' => $events]);
-
         } catch (\Exception $exception) {
             return response()->json(['mensaje' => 'Error: ' . $exception->getMessage()]);
         }
