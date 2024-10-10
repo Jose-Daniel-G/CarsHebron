@@ -81,7 +81,6 @@ Route::get('/admin/profesores/evente/{cursoId}', [ProfesorController::class, 'ob
 // Route::put('events/actualizar/{evento}', [EventController::class, 'update'])->name('admin.events.update');
 // Route::post('events/actualizar/{evento}', [EventController::class, 'edit'])->name('admin.events.update');
 // Route::delete('events/eliminar/{id}', [EventController::class, 'destroy'])->name('admin.events.destroy');
-// Route::post('events/agregar', [EventController::class, 'store'])->name('admin.events.store');
 
 // Route::group(['middleware'=>['auth']], function(){
     Route::get('events', [EventController::class, 'index'])->name('admin.events.index');

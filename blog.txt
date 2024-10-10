@@ -117,7 +117,7 @@ el usuario solo podra agendar las clases correspondientes a la del curso que est
 VERSION ESTABLE-- schedule fixed
 --ERRORES EN ADMIN ASIGNAR AGENDA
 
-<form action="{{ route('admin.eventos.store') }}" method="POST">
+<form action="{{ route('admin.events.store') }}" method="POST">
     @csrf
     <div class="modal fade" id="claseModal" tabindex="-1" aria-labelledby="claseModal" aria-hidden="true">
         <div class="modal-dialog">

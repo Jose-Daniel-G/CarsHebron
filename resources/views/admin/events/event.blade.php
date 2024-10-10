@@ -1,15 +1,17 @@
-<form action="{{ route('admin.eventos.store') }}" method="POST">
-    @csrf
-    <div class="modal fade" id="claseModal" tabindex="-1" aria-labelledby="claseModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="claseModal">Profesores</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
+{{-- <form action="{{ route('admin.events.store') }}" method="POST"> --}}
+
+<div class="modal fade" id="claseModal" tabindex="-1" aria-labelledby="claseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="claseModal">Profesores</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('admin.events.store') }}" method="POST">
+                    @csrf
                     <div class="row">
                         @can('listUsers')
                             <div class="col-md-12">
@@ -106,8 +108,8 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Registrar</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-</form>
+</div>

@@ -14,18 +14,14 @@ use Illuminate\Validation\ValidationException;
 
 class EventController extends Controller
 {
-    public function index() {}
-
-    public function create() {}
+    public function index() {} public function create() {}
 
     public function store(Request $request)
     {
         // Depura para ver todos los datos enviados en la solicitud
-        // dd($request->all());
-    
-        // Validar los datos de la solicitud
+       
         $request->validate([
-            'profesor_id' => 'required|exists:profesors,id',
+            'profesorid' => 'required|exists:profesors,id',
             'cursoid' => 'required',
             'fecha_reserva' => 'required',
             'hora_inicio' => 'required',
@@ -33,8 +29,7 @@ class EventController extends Controller
 
             'cliente_id' => 'required_if:role,admin,secretaria' // Asegúrate de que cliente_id esté presente si es admin o secretaria
         ]);
-
-    
+//  dd($request->all());
         // Buscar el profesor por su ID
         $profesor = Profesor::find($request->profesorid);
         $cursoid = $request->cursoid;
@@ -87,7 +82,7 @@ class EventController extends Controller
     
         if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
             // Asegúrate de que cliente_id está presente
-            $evento->asistente_id = $request->clienteid;//cliente id
+            $evento->asistente_id = $request->cliente_id;//cliente id
         } else {
             // Asegúrate de que el usuario tiene un cliente asociado
             $evento->asistente_id = Auth::user()->cliente->id;//cliente id
