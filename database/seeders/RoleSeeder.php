@@ -9,7 +9,7 @@ use Spatie\Permission\Models\Permission;
 
 class RoleSeeder extends Seeder
 {
- 
+
     public function run()
     {
         //-----------------------------------------------------------------------------------------------        
@@ -78,11 +78,14 @@ class RoleSeeder extends Seeder
 
         Permission::create(['name' => 'admin.reservas.edit'])->syncRoles([$admin, $secretaria]);
         //----------------------------------------------------------------------------------------
-        Permission::create(['name' => 'cargar_datos_cursos'])->syncRoles([$admin, $cliente]);
+        Permission::create(['name' => 'cargar_datos_cursos'])->syncRoles([$admin, $secretaria, $cliente]);
         Permission::create(['name' => 'admin.horarios.cargar_reserva_profesores'])->syncRoles([$admin, $secretaria]);
         Permission::create(['name' => 'admin.ver_reservas'])->syncRoles([$admin, $secretaria, $cliente]);
         Permission::create(['name' => 'admin.events'])->syncRoles([$admin, $secretaria]);
-        Permission::create(['name' => 'listUsers'])->syncRoles([$admin, $secretaria]);
+        Permission::create(['name' => 'admin.listUsers'])->syncRoles([$admin, $secretaria]); //modal agendamiento de clase admin
+        //rutas para el admin - asistencias
+        Permission::create(['name' => 'admin.asistencias.registrar_asistencia'])->syncRoles([$admin, $secretaria, $profesor]);
+        Permission::create(['name' => 'admin.asistencias.list_inacistencias'])->syncRoles([$admin, $secretaria, $profesor]);
         //----------------------------------------------------------------------------------------
 
         // Permission::create(['name' => 'admin.users.index'])->syncRoles([$admin]);

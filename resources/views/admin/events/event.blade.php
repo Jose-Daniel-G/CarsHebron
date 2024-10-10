@@ -11,7 +11,7 @@
                 <form action="{{ route('admin.events.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        @can('listUsers')
+                        @can('admin.listUsers')
                             <div class="col-md-12">
                                 <div class="form-group"><label for="cliente_id">Estudiante</label>
                                     <select name="cliente_id" class="form-control">

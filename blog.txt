@@ -1,5 +1,31 @@
 php artisan make:migration create_cliente_curso_table --create=cliente_curso
-  public function cargar_datos_cursos($id)
+
+SELECT 
+    events.id,
+    events.profesor_id,
+    events.curso_id,
+    events.start AS hora_inicio,
+    events.end AS hora_fin,
+    DATE_FORMAT(events.start, '%Y-%m-%d %H:%i:%s') AS created_at,
+    DATE_FORMAT(events.updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at,
+    DAYNAME(events.start) AS dia
+FROM 
+    events
+JOIN 
+    profesors ON events.profesor_id = profesors.id
+JOIN 
+    cursos ON events.curso_id = cursos.id
+JOIN 
+    cliente_curso ON events.curso_id = cliente_curso.curso_id
+JOIN 
+    clientes ON cliente_curso.cliente_id = clientes.id
+WHERE 
+    events.curso_id = 1 -- Reemplaza ? por el ID del curso deseado
+    AND events.start >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) -- Inicio de la semana (lunes)
+    AND events.start < DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY) -- Fin de la semana (domingo)
+GROUP BY 
+    events.id LIMIT 100
+ public function cargar_datos_cursos($id)
     {
         try {
             if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {

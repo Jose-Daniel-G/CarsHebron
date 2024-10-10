@@ -28,13 +28,14 @@ class HorarioController extends Controller
 
         return view('admin.horarios.create', compact('profesores', 'cursos', 'horarios'));
     }
+
     public function cargar_datos_cursos($id)
     {
         try {
             // Obtener horarios con profesor y curso
             $horarios = Horario::with(['profesor', 'curso'])->where('curso_id', $id)->get();
     
-            // Obtener horarios asignados
+            // Obtener horarios asignados para la semana actual
             $horarios_asignados = CalendarEvent::select(
                 'events.id',
                 'events.profesor_id',
@@ -49,8 +50,10 @@ class HorarioController extends Controller
                 ->join('cursos', 'events.curso_id', '=', 'cursos.id')
                 ->join('cliente_curso', 'events.curso_id', '=', 'cliente_curso.curso_id')
                 ->join('clientes', 'cliente_curso.cliente_id', '=', 'clientes.id')
-                ->where('events.curso_id', $id)
-                ->distinct()
+                ->where('events.curso_id', $id) // Usa la variable $id para el filtro
+                ->where('events.start', '>=', \DB::raw('DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)')) // Inicio de la semana (lunes)
+                ->where('events.start', '<', \DB::raw('DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)')) // Fin de la semana (domingo)
+                ->distinct() // Para evitar duplicados
                 ->get();
     
             // Traducir los días al español
@@ -59,12 +62,12 @@ class HorarioController extends Controller
                 return $horario;
             });
     
-            // Pasar los datos a la vista
             return view('admin.horarios.cargar_datos_cursos', compact('horarios', 'horarios_asignados'));
         } catch (\Exception $exception) {
             return response()->json(['mensaje' => 'Error']);
         }
     }
+    
     
     private function traducir_dia($dia)
     {
@@ -77,9 +80,10 @@ class HorarioController extends Controller
             'Saturday' => 'SABADO',
             'Sunday' => 'DOMINGO',
         ];
-    
-        return $dias[$dia] ?? $dia; // Devolver el día original si no se encuentra en el array
+        return $dias[$dia] ?? $dia; // Cambiado para devolver el día original si no se encuentra
     }
+    
+
     
     // public function cargar_datos_cursos($id)
     // { 

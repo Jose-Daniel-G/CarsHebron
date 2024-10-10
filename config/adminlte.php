@@ -256,7 +256,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => '/',
+    'dashboard_url' => '/admin',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -293,7 +293,7 @@ return [
     */
 
     'menu' => [
-        
+
         [
             'text' => 'Dashboard',
             'route' => 'admin.home',
@@ -338,11 +338,14 @@ return [
                     'text' => 'Registrar Asistencia',
                     'icon'        => 'far fa-circle nav-icon',
                     'route' => 'admin.profesores.asistencia',
+                    'can' => 'admin.asistencias.registrar_asistencia',
                 ],
                 [
                     'text' => 'Listado de Inacistencias',
                     'icon'        => 'far fa-circle nav-icon',
                     'route' => 'admin.secretarias.inasistencias',
+                    'can' => 'admin.asistencias.list_inacistencias',
+
                 ],
 
             ],
@@ -450,7 +453,7 @@ return [
         //     'route'         => 'admin.users.index',
         //     'icon' => 'fas fa-envelope',
         // ],
-        
+
         // [
         //     'text' => 'information',
         //     'icon_color' => 'cyan',
