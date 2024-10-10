@@ -54,7 +54,7 @@ class HomeController extends Controller
             // $eventos = CalendarEvent::all();
             // dd($eventos);
         } else {
-            $eventos = CalendarEvent::where('asistente_id', $id)->get();
+            $eventos = CalendarEvent::where('cliente_id', $id)->get();
             // dd($id);
         }
         return view('admin.ver_reservas', compact('eventos'));

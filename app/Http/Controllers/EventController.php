@@ -82,10 +82,10 @@ class EventController extends Controller
     
         if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
             // Asegúrate de que cliente_id está presente
-            $evento->asistente_id = $request->cliente_id;//cliente id
+            $evento->cliente_id = $request->cliente_id;//cliente id
         } else {
             // Asegúrate de que el usuario tiene un cliente asociado
-            $evento->asistente_id = Auth::user()->cliente->id;//cliente id
+            $evento->cliente_id = Auth::user()->cliente->id;//cliente id
         }
     
         // Guardar el evento
