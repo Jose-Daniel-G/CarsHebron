@@ -50,7 +50,7 @@
                                                 <option value="{{ $curso->id }}"
                                                     {{ (old('curso_id') == $curso->id || $horario->curso_id == $curso->id) ? 'selected' : '' }}>
 
-                                                    {{ $curso->nombres . ' Ubicacion: ' . $curso->ubicacion }}
+                                                    {{ $curso->nombres  .'  '. $curso->ubicacion }}
                                                 </option>
                                             @endforeach
                                         </select>

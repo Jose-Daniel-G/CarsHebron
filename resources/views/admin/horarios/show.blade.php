@@ -30,7 +30,7 @@
                                 <div class="form-group">
                                     <label for="curso_id">Cursos </label>
                                     <p>
-                                        {{ $horario->curso->nombres . ' Ubicacion: ' . $horario->curso->ubicacion }}
+                                        {{ $horario->curso->nombres  .'  '. $horario->curso->ubicacion }}
                                     </p>
                                     </select>
                                 </div>

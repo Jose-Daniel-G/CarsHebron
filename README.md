@@ -144,3 +144,7 @@ npm install jquery-ui
 <i class="fas fa-edit"></i>
 <i class="fas fa-trash"></i>
 HABILITAR EXTENCION EN PHP.INI Xampp u otro: extension=gd
+npm install laravel-mix --save-dev
+npm install @fullcalendar/core @fullcalendar/daygrid @fullcalendar/timegrid
+
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=views
