@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('title', 'Dashboard')
-{{-- @section('plugins.Sweetalert2', true) --}}
+{{-- @section('plugins.Sweetalert2',true) --}}
 @section('css')
 
 @stop
@@ -206,10 +206,7 @@
                                 <i class="bi bi-calendar-check"></i>Ver las reservas
                             </a>
                         @endcan
-                        {{-- 
-                        <a href="{{ route('obtenerProfesores', 1) }}" class="btn btn-success">
-                            <i class="bi bi-calendar-check"></i>create events
-                        </a> --}}
+
                         <!-- Modal -->
                         @include('admin.events.event')
                         <!-- Incluir Modal INFO-->
@@ -378,7 +375,7 @@
                     document.getElementById('fecha_reserva1').textContent = startTime.toISOString()
                         .split('T')[0]; // Fecha
                     document.getElementById('hora_reserva1').textContent = startTime
-                        .toLocaleTimeString(); // Hora de inicio
+                    .toLocaleTimeString(); // Hora de inicio
 
                     // Mostrar el modal
                     $("#mdalSelected").modal("show");
@@ -388,51 +385,38 @@
             // Renderizar el calendario
             calendar.render();
 
+            // Evento cuando cambia la selección del profesor
+            $('#profesor_select').on('change', function() {
+                var profesor_id = $(this).val();
+
+                // Remover todas las fuentes de eventos del calendario
+                calendar.removeAllEventSources();
+
+                // Si hay un profesor seleccionado, cargar sus eventos
+                if (profesor_id) {
+                    var url = "{{ route('admin.horarios.cargar_reserva_profesores', ':id') }}";
+                    url = url.replace(':id', profesor_id);
+
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            // Asegúrate de que 'data' esté en el formato correcto
+                            calendar.addEventSource(data); // Añade los eventos al calendario
+                        },
+                        error: function() {
+                            alert('Error al obtener datos del profesor');
+                        }
+                    });
+                } else {
+                    // Si no hay profesor seleccionado, también puedes limpiar los eventos si es necesario
+                    calendar.removeAllEventSources();
+                }
+            });
         });
     </script>
-    <script>
-        // $(document).ready(function() {
-        //     // Establece el evento para llamar a la función cargarProfesores al cambiar el curso
-        //     $('#curso_id').on('change', function() {
-        //         var cursoId = $(this).val(); // Obtén el valor seleccionado
 
-        //         // Función para cargar profesores
-        //         if (!cursoId) return; // Salir si no hay curso seleccionado
-        //         var url = "{{ route('obtenerProfesores', ':id') }}";
-        //         url = url.replace(':id', cursoId);
-        //         // alert('url ' + url);
-
-        //         // Realizar una llamada AJAX para obtener los profesores disponibles
-        //         $.ajax({
-        //             url: url, // URL a la que se realiza la solicitud
-        //             method: 'GET',
-
-        //             success: function(data) {
-        //                 // console.log('Profesores: ', data); // Debería mostrar la lista de profesores
-        //                 $('#profesor_id').html(data);
-
-        //                 // // Verifica si hay profesores y si es un array
-        //                 // if (data && Array.isArray(data)) {
-        //                 //     // Limpia el select de profesores antes de llenarlo
-        //                 //     $('#profesor_id').empty().append('<option value="" selected disabled>Seleccione un Profesor</option>');
-
-        //                 //     data.forEach(function(profesor) {
-        //                 //         $('#profesor_id').append(
-        //                 //             `<option value="${profesor.id}">${profesor.nombres} ${profesor.apellidos}</option>`
-        //                 //         );
-        //                 //     });
-        //                 // } else {
-        //                 //     alert('No se encontraron profesores.');
-        //                 // }
-        //             },
-        //             error: function(xhr) {
-        //                 console.error('Error al cargar los profesores:', xhr.responseText);
-        //                 alert('Error al cargar los profesores. Intenta nuevamente.');
-        //             }
-        //         });
-        //     });
-        // });
-    </script>
     <script>
         //NOTA: NO SE ESTA VISUALIZANDO 
         new DataTable('#reservas', {
@@ -489,7 +473,6 @@
             });
         </script>
     @endif
-
     <script>
         $(document).ready(function() {
             // Establece el evento para llamar a la función cargarProfesores al cambiar el curso

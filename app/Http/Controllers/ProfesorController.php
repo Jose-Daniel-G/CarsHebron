@@ -72,10 +72,7 @@ class ProfesorController extends Controller
         return view('admin.profesores.show', compact('profesor'));
     }
 
-    public function edit(Profesor $profesor)
-    {
-        return view('admin.profesores.edit', compact('profesor'));
-    }
+    public function edit(Profesor $profesor){return view('admin.profesores.edit', compact('profesor'));}
 
     public function update(Request $request, Profesor $profesor)
     {
@@ -151,11 +148,11 @@ class ProfesorController extends Controller
     }
     public function obtenerProfesores($cursoId)
     {  
-         $cursoId = 1; // Cambia este valor según tu necesidad
         $profesores = DB::table('horarios')
                         ->join('profesors', 'horarios.profesor_id', '=', 'profesors.id')
                         ->where('horarios.curso_id', $cursoId)
                         ->select('profesors.*')
+                        ->distinct()
                         ->get();
         // dd($profesores);
         return response()->json($profesores); // Asegúrate de devolver JSON

@@ -25,18 +25,19 @@ class EventController extends Controller
     
         // Validar los datos de la solicitud
         $request->validate([
+            'profesor_id' => 'required|exists:profesors,id',
+            'cursoid' => 'required',
             'fecha_reserva' => 'required',
             'hora_inicio' => 'required',
             'hora_fin' => 'required',
-            'profesor_id' => 'required|exists:profesors,id',
+
             'cliente_id' => 'required_if:role,admin,secretaria' // Asegúrate de que cliente_id esté presente si es admin o secretaria
         ]);
-    
-        // Depura para verificar si cliente_id está presente
-        // dd($request->cliente_id);
+
     
         // Buscar el profesor por su ID
-        $profesor = Profesor::find($request->profesor_id);
+        $profesor = Profesor::find($request->profesorid);
+        $cursoid = $request->cursoid;
         $fecha_reserva = $request->fecha_reserva;
         $hora_inicio = $request->hora_inicio . ':00'; // Asegurarse de que la hora esté en formato correcto
         $hora_fin = $request->hora_fin . ':00'; // Asegurarse de que la hora esté en formato correcto
@@ -54,8 +55,7 @@ class EventController extends Controller
     
         if (!$horarios) {
             return redirect()->back()->with([
-                'info' => 'El profesor no está disponible en ese horario.',
-                'icono' => 'error',
+                'info' => 'El profesor no está disponible en ese horario.','icono' => 'error',
                 'hora_reserva' => 'El profesor no está disponible en ese horario.',
             ]);
         }
@@ -71,8 +71,7 @@ class EventController extends Controller
     
         if ($eventos_duplicados) {
             return redirect()->back()->with([
-                'info' => 'Ya existe una reserva con el mismo profesor en esa fecha y hora.',
-                'icono' => 'error',
+                'info' => 'Ya existe una reserva con el mismo profesor en esa fecha y hora.','icono' => 'error',
                 'title' => 'Ya existe una reserva con el mismo profesor en esa fecha y hora.',
             ]);
         }
@@ -83,24 +82,15 @@ class EventController extends Controller
         $evento->start = $fecha_hora_inicio;
         $evento->end = $fecha_hora_fin;
         $evento->color = '#e82216';
-        $evento->user_id = Auth::user()->id;
-        $evento->profesor_id = $request->profesor_id;
-        $evento->curso_id = '1';
+        $evento->profesor_id = $request->profesorid;
+        $evento->curso_id = $cursoid;
     
         if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
             // Asegúrate de que cliente_id está presente
-            if ($request->cliente_id) {
-                $evento->cliente_id = $request->cliente_id;
-            } else {
-                return redirect()->back()->withErrors(['cliente_id' => 'El campo cliente_id es obligatorio para administradores y secretarias.']);
-            }
+            $evento->asistente_id = $request->clienteid;//cliente id
         } else {
             // Asegúrate de que el usuario tiene un cliente asociado
-            if (Auth::user()->cliente) {
-                $evento->cliente_id = Auth::user()->cliente->id;
-            } else {
-                return redirect()->back()->withErrors(['cliente' => 'El usuario no tiene un cliente asociado.']);
-            }
+            $evento->asistente_id = Auth::user()->cliente->id;//cliente id
         }
     
         // Guardar el evento
