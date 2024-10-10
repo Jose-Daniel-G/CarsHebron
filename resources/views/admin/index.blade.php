@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('title', 'Dashboard')
-{{-- @section('plugins.Sweetalert2',true) --}}
+{{-- @section('plugins.Sweetalert2', true) --}}
 @section('css')
 
 @stop
@@ -140,10 +140,35 @@
         @endcan
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-outline card-primary">
-                <div class="card-header">
+    <div class="card card-primary card-outline card-tabs">
+        <div class="card-header p-0 pt-1 border-bottom-0">
+            <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link " id="custom-tabs-three-home-tab" data-toggle="pill"
+                        href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home"
+                        aria-selected="false">Horario de profesores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" id="custom-tabs-three-profile-tab" data-toggle="pill"
+                        href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile"
+                        aria-selected="false">Calendario de reserva</a>
+                </li>
+                {{-- <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-messages-tab" data-toggle="pill"
+                            href="#custom-tabs-three-messages" role="tab" aria-controls="custom-tabs-three-messages"
+                            aria-selected="false">Messages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-settings-tab" data-toggle="pill"
+                            href="#custom-tabs-three-settings" role="tab" aria-controls="custom-tabs-three-settings"
+                            aria-selected="true">Settings</a>
+                    </li> --}}
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="custom-tabs-three-tabContent">
+                <div class="tab-pane fade" id="custom-tabs-three-home" role="tabpanel"
+                    aria-labelledby="custom-tabs-three-home-tab">
                     <div class="row">
                         <div class="col-md-4">
                             <h3 class="card-title">Calendario de atencion de profesores </h3>
@@ -162,24 +187,19 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <hr>
-                    <div id="curso_info"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-outline card-warning">
-                <div class="card-header">
                     <div class="row">
-                        <div class="col-md-4">
-                            <h3 class="card-title">Calendario de reserva </h3>
+                        <div class="col-md-12">
+                            <hr>
+                            <div id="curso_info"></div>
                         </div>
-                        <div class="col-md-4 d-flex justify-content-end">
+
+                    </div>
+                </div>
+                <div class="tab-pane fade active show" id="custom-tabs-three-profile" role="tabpanel"
+                    aria-labelledby="custom-tabs-three-profile-tab">
+
+                    <div class="row">
+                        <div class="col-md-8 d-flex justify-content-end">
                             <label for="curso_id">Profesores </label><b>*</b>
                         </div>
                         <div class="col-md-4">
@@ -193,31 +213,48 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
                     <div class="row">
-                        @can('cargar_datos_cursos')
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#claseModal">
-                                Agendar Clase
-                            </button>
+                        <div class="col-md-12">
+                            @can('cargar_datos_cursos')
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#claseModal">
+                                    Agendar Clase
+                                </button>
 
-                            <a href="{{ route('admin.ver_reservas', Auth::user()->id) }}" class="btn btn-success">
-                                <i class="bi bi-calendar-check"></i>Ver las reservas
-                            </a>
-                        @endcan
+                                <a href="{{ route('admin.ver_reservas', Auth::user()->id) }}" class="btn btn-success">
+                                    <i class="bi bi-calendar-check"></i>Ver las reservas
+                                </a>
+                            @endcan
+                        </div>
+
 
                         <!-- Modal -->
                         @include('admin.events.event')
                         <!-- Incluir Modal INFO-->
                         @include('admin.events.show')
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="profesor_info"></div>
+                            <div id="calendar"></div>
 
-                    <div id="profesor_info"></div>
-                    <div id="calendar"></div>
+                        </div>
+
+                    </div>
                 </div>
+                {{-- <div class="tab-pane fade" id="custom-tabs-three-messages" role="tabpanel"
+                        aria-labelledby="custom-tabs-three-messages-tab">
+                        Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus volutpat augue id mi
+
+                    </div>
+                    <div class="tab-pane fade active show" id="custom-tabs-three-settings" role="tabpanel"
+                        aria-labelledby="custom-tabs-three-settings-tab">
+                        Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis tempus turpis ac, ornare
+                    </div> --}}
             </div>
         </div>
+
     </div>
     @if (Auth::check() && Auth::user()->profesor)
         <div class="row">
@@ -375,15 +412,26 @@
                     document.getElementById('fecha_reserva1').textContent = startTime.toISOString()
                         .split('T')[0]; // Fecha
                     document.getElementById('hora_reserva1').textContent = startTime
-                    .toLocaleTimeString(); // Hora de inicio
+                        .toLocaleTimeString(); // Hora de inicio
 
                     // Mostrar el modal
                     $("#mdalSelected").modal("show");
                 }
             });
 
-            // Renderizar el calendario
-            calendar.render();
+            // Renderizar el calendario cuando se activa la pestaña correspondiente
+            $('a[data-toggle="pill"]').on('shown.bs.tab', function(e) {
+                var target = $(e.target).attr("href"); // Obtener la pestaña activa
+                if (target === '#custom-tabs-three-profile') {
+                    calendar
+                .render(); // Renderizar el calendario solo si la pestaña activa es la del calendario
+                }
+            });
+
+            // Forzar el renderizado al cargar la página si ya está activa la pestaña del calendario
+            if ($('#custom-tabs-three-profile').hasClass('active')) {
+                calendar.render();
+            }
 
             // Evento cuando cambia la selección del profesor
             $('#profesor_select').on('change', function() {
@@ -498,7 +546,7 @@
                             // Limpia el select de profesores antes de llenarlo
                             $('#profesorid').empty().append(
                                 '<option value="" selected disabled>Seleccione un Profesor</option>'
-                                );
+                            );
 
                             data.forEach(function(profesor) {
                                 $('#profesorid').append(

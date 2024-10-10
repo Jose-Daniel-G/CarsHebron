@@ -59,7 +59,7 @@ class HomeController extends Controller
         }
         return view('admin.ver_reservas', compact('eventos'));
     }
-    public function cargar_reserva_profesores($id)
+    public function cargar_reserva_profesores($id)//calendar
     {
         try {
             // Verifica si el usuario autenticado es un administrador
