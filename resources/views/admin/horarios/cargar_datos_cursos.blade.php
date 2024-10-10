@@ -33,31 +33,50 @@
             @foreach ($horas as $hora)
                 @php
                     [$hora_inicio, $hora_fin] = explode(' - ', $hora);
-                    // Convertimos las horas a formato de 24 horas sin segundos para las comparaciones
                     $hora_inicio_24 = date('H:i', strtotime($hora_inicio));
                     $hora_fin_24 = date('H:i', strtotime($hora_fin));
                 @endphp
                 <tr>
-                    <td scope="row">{{ $hora }}</td> <!-- Muestra en formato de 12 horas -->
+                    <td scope="row">{{ $hora }}</td>
                     @foreach ($diasSemana as $dia)
                         @php
                             $nombre_profesor = '';
+                            $agendado = false; // Inicializa la variable $agendado en false
                             foreach ($horarios as $horario) {
                                 $horario_inicio_24 = date('H:i', strtotime($horario->hora_inicio));
                                 $horario_fin_24 = date('H:i', strtotime($horario->hora_fin));
 
-                                // Comparar las horas en formato de 24 horas (sin segundos)
+                                // Comparar los horarios
                                 if (
                                     strtoupper($horario->dia) == $dia &&
                                     $hora_inicio_24 >= $horario_inicio_24 &&
                                     $hora_fin_24 <= $horario_fin_24
                                 ) {
                                     $nombre_profesor = $horario->profesor->nombres . ' ' . $horario->profesor->apellidos;
+
+                                    // Verifica si hay un horario asignado
+                                    foreach ($horarios_asignados as $horario_asignado) {
+                                        $asignado_inicio_24 = date('H:i', strtotime($horario_asignado->hora_inicio));
+                                        $asignado_fin_24 = date('H:i', strtotime($horario_asignado->hora_fin));
+                                        $asignado_dia = strtoupper($horario_asignado->dia);
+
+                                        // Comparar horarios
+                                        if (
+                                            $asignado_dia == $dia &&
+                                            $asignado_inicio_24 == $hora_inicio_24 &&
+                                            $asignado_fin_24 == $hora_fin_24
+                                        ) {
+                                            $agendado = true; // Cambia a verdadero si hay coincidencia
+                                            break; // Salir del bucle si se encuentra coincidencia
+                                        }
+                                    }
                                     break; // Salir del bucle si se encuentra el profesor adecuado
                                 }
                             }
                         @endphp
-                        <td>{{ $nombre_profesor }}</td>
+                        <td class="{{ $agendado ? 'table-primary' : '' }}">{{ $nombre_profesor }}</td>
+                        {{-- Mensaje de depuración para verificar la variable $agendado --}}
+                        {{-- <td>{{ $agendado ? 'Agendado' : 'No Agendado' }}</td> --}}
                     @endforeach
                 </tr>
             @endforeach

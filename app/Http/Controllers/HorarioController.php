@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Curso;
 use App\Models\Profesor;
 use App\Models\Horario;
+use App\Models\Event as CalendarEvent;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -32,7 +33,26 @@ class HorarioController extends Controller
       
         try {
             $horarios = Horario::with(['profesor', 'curso'])->where('curso_id', $id)->get();
-            return view('admin.horarios.cargar_datos_cursos', compact('horarios'));
+
+            $horarios_asignados = CalendarEvent::select(
+                'events.id',
+                'events.profesor_id',
+                'events.curso_id',
+                'events.start AS hora_inicio',
+                'events.end AS hora_fin',
+                'events.created_at',
+                'events.updated_at'
+            )
+            ->selectRaw('DAYNAME(events.start) AS dia')
+            ->join('profesors', 'events.profesor_id', '=', 'profesors.id')
+            ->join('cursos', 'events.curso_id', '=', 'cursos.id')
+            ->join('cliente_curso', 'events.curso_id', '=', 'cliente_curso.curso_id')
+            ->join('clientes', 'cliente_curso.cliente_id', '=', 'clientes.id')
+            ->where('events.curso_id', $id) // Usa la variable $id para el filtro
+            ->distinct() // Para evitar duplicados
+            ->get();
+
+            return view('admin.horarios.cargar_datos_cursos', compact('horarios', 'horarios_asignados'));
         } catch (\Exception $exception) {
             return response()->json(['mesaje' => 'Error']);
         }

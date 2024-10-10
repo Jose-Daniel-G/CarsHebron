@@ -50,14 +50,12 @@ class HomeController extends Controller
     public function ver_reservas($id)
     { // echo $id;
         if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
-            $eventos = CalendarEvent::with('cliente')->get();
-            // $eventos = CalendarEvent::all();
-            // dd($eventos);
+            $events = CalendarEvent::with('cliente')->get();
+            // $events = CalendarEvent::all();
         } else {
-            $eventos = CalendarEvent::where('cliente_id', $id)->get();
-            // dd($id);
+            $events = CalendarEvent::where('cliente_id',  Auth::user()->cliente->id)->get();
         }
-        return view('admin.ver_reservas', compact('eventos'));
+        return view('admin.ver_reservas', compact('events'));
     }
     public function cargar_reserva_profesores($id)//calendar
     {

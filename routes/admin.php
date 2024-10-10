@@ -18,15 +18,9 @@ use App\Http\Controllers\HistorialController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\UsuarioController;
 
-// use App\Http\Controllers\UsuarioController;
-// use App\Http\Controllers\ClaseController;
-// use App\Http\Controllers\CursoController;
 
 Route::get("/", [HomeController::class, "index"])->name("admin.home")->middleware('can:admin.home');
 Route::resource('users', UserController::class)->only(['index', 'edit', 'update'])->names('admin.users');
-
-// Route::resource('cursos', CursoController::class)->names('admin.cursos');
-// Route::resource('clases', ClaseController::class)->names('admin.clases');
 
 //RUTAS ADMIN
 Route::get('/admin', [HomeController::class, 'index'])->name('admin.index')->middleware('auth');
@@ -48,23 +42,9 @@ Route::resource('/clientes', ClienteController::class)->names('admin.clientes')-
 //RUTAS CURSOS ADMIN
 Route::resource('/cursos', CursoController::class)->names('admin.cursos')->middleware('auth', 'can:admin.cursos');
 
-//RUTAS REPORTES DOCTORES ADMIN
-Route::get('/profesores/pdf/{id}', [ProfesorController::class, 'reportes'])->name('admin.profesores.pdf');
-// ->middleware('auth', 'can:admin.profesores.pdf');
-Route::get('/profesores/reportes', [ProfesorController::class, 'reportes'])->name('admin.profesores.reportes')->middleware('auth', 'can:admin.profesores.reportes');
-Route::resource('/profesores', ProfesorController::class)->names('admin.profesores')->parameters(['profesores' => 'profesor'])->middleware('auth', 'can:admin.profesores');
+// //RUTAS PARA LOS EVENTOS
+// Route::resource('/eventos', EventController::class)->names('admin.events');
 
-
-// Route::resource('/events/create', EventController::class)->names('admin.events');
-// Route::get('events/mostrar', [EventController::class, 'show'])->name('admin.events.show');// This isn't working is an example
-
-//RUTAS PARA LOS EVENTOS
-Route::resource('/eventos', EventController::class)->names('admin.eventos');
-
-//RUTAS para las reservas
-Route::get('/reservas/reportes', [EventController::class, 'reportes'])->name('admin.reservas.reportes')->middleware('auth', 'can:admin.reservas.reportes');
-Route::get('/reservas/pdf/{id}', [EventController::class, 'pdf'])->name('admin.reservas.pdf')->middleware('auth', 'can:admin.reservas.pdf');
-Route::get('/reservas/pdf_fechas', [EventController::class, 'pdf_fechas'])->name('admin.reservas.pdf_fechas')->middleware('auth', 'can:admin.event.pdf_fechas');
 
 //RUTAS para el historial clinico
 Route::get('/historial/pdf',[HistorialController::class,'pdf'])->name('admin.historial.pdf')->middleware('auth', 'can:admin.historial');
@@ -74,22 +54,26 @@ Route::resource('/historial', HistorialController::class)->names('admin.historia
 Route::get('/admin/profesores/evente/{cursoId}', [ProfesorController::class, 'obtenerProfesores'])->name('obtenerProfesores');
 
 
-
-
-
-// Route::post('events/editar/{id}', [EventController::class, 'edit'])->name('admin.events.edit');
-// Route::put('events/actualizar/{evento}', [EventController::class, 'update'])->name('admin.events.update');
-// Route::post('events/actualizar/{evento}', [EventController::class, 'edit'])->name('admin.events.update');
-// Route::delete('events/eliminar/{id}', [EventController::class, 'destroy'])->name('admin.events.destroy');
-
-// Route::group(['middleware'=>['auth']], function(){
+Route::group(['middleware'=>['auth']], function(){
     Route::get('events', [EventController::class, 'index'])->name('admin.events.index');
     Route::get('events/mostrar', [EventController::class, 'show'])->name('admin.events.show');
     // Route::post('events/editar/{id}', [EventController::class, 'edit'])->name('admin.events.edit');
     // Route::put('events/actualizar/{evento}', [EventController::class, 'update'])->name('admin.events.update');
 
     // Route::post('events/actualizar/{evento}', [EventController::class, 'edit'])->name('admin.events.update');
-    // Route::delete('events/eliminar/{id}', [EventController::class, 'destroy'])->name('admin.events.destroy');
+    Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('admin.events.destroy');
+
     Route::post('events/agregar', [EventController::class, 'store'])->name('admin.events.store');
 
-// });
+});
+
+
+//RUTAS REPORTES PROFESORES ADMIN
+/*NO INCLUDO */Route::get('/profesores/pdf/{id}', [ProfesorController::class, 'reportes'])->name('admin.profesores.pdf');// ->middleware('auth', 'can:admin.profesores.pdf');
+/*NO INCLUDO */Route::get('/profesores/reportes', [ProfesorController::class, 'reportes'])->name('admin.profesores.reportes')->middleware('auth', 'can:admin.profesores.reportes');
+/*NO INCLUDO */Route::resource('/profesores', ProfesorController::class)->names('admin.profesores')->parameters(['profesores' => 'profesor'])->middleware('auth', 'can:admin.profesores');
+//RUTAS para las reservas
+
+/*NO INCLUDO */Route::get('/reservas/reportes', [EventController::class, 'reportes'])->name('admin.reservas.reportes')->middleware('auth', 'can:admin.reservas.reportes');
+/*NO INCLUDO */Route::get('/reservas/pdf/{id}', [EventController::class, 'pdf'])->name('admin.reservas.pdf')->middleware('auth', 'can:admin.reservas.pdf');
+/*NO INCLUDO */Route::get('/reservas/pdf_fechas', [EventController::class, 'pdf_fechas'])->name('admin.reservas.pdf_fechas')->middleware('auth', 'can:admin.event.pdf_fechas');

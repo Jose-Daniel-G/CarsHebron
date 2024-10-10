@@ -144,25 +144,17 @@
         <div class="card-header p-0 pt-1 border-bottom-0">
             <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link " id="custom-tabs-three-home-tab" data-toggle="pill"
-                        href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home"
-                        aria-selected="false">Horario de profesores</a>
+                    <a class="nav-link " id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home"
+                        role="tab" aria-controls="custom-tabs-three-home" aria-selected="false">Horario de
+                        profesores</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" id="custom-tabs-three-profile-tab" data-toggle="pill"
-                        href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile"
-                        aria-selected="false">Calendario de reserva</a>
-                </li>
-                {{-- <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-three-messages-tab" data-toggle="pill"
-                            href="#custom-tabs-three-messages" role="tab" aria-controls="custom-tabs-three-messages"
-                            aria-selected="false">Messages</a>
-                    </li>
+                @can('cargar_datos_cursos')
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-three-settings-tab" data-toggle="pill"
-                            href="#custom-tabs-three-settings" role="tab" aria-controls="custom-tabs-three-settings"
-                            aria-selected="true">Settings</a>
-                    </li> --}}
+                        <a class="nav-link active" id="custom-tabs-three-profile-tab" data-toggle="pill"
+                            href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile"
+                            aria-selected="false">Calendario de reserva</a>
+                    </li>
+                @endcan
             </ul>
         </div>
         <div class="card-body">
@@ -181,8 +173,8 @@
                                 <option value="" selected disabled>Seleccione una opción</option>
                                 @foreach ($cursos as $curso)
                                     <option value="{{ $curso->id }}">
-                                        {{ $curso->nombre }} </option>
-                                    {{-- {{ $curso->nombre . ' - ' . $curso->ubicacion }} </option> --}}
+                                        {{-- {{ $curso->nombre }} </option> --}}
+                                    {{ $curso->nombre . ' - ' . $curso->ubicacion }} </option>
                                 @endforeach
                             </select>
                         </div>
@@ -195,27 +187,29 @@
 
                     </div>
                 </div>
-                <div class="tab-pane fade active show" id="custom-tabs-three-profile" role="tabpanel"
-                    aria-labelledby="custom-tabs-three-profile-tab">
+                @can('cargar_datos_cursos')
+                    <div class="tab-pane fade active show" id="custom-tabs-three-profile" role="tabpanel"
+                        aria-labelledby="custom-tabs-three-profile-tab">
 
-                    <div class="row">
-                        <div class="col-md-8 d-flex justify-content-end">
-                            <label for="curso_id">Profesores </label><b>*</b>
+                        <div class="row">
+                            <div class="col-md-8 d-flex justify-content-end">
+                                <label for="curso_id">Profesores </label><b>*</b>
+                            </div>
+                            <div class="col-md-4">
+                                <select name="profesor_id" id="profesor_select" class="form-control">
+                                    <option value="" selected disabled>Seleccione una opción</option>
+                                    @foreach ($profesores as $profesore)
+                                        <option value="{{ $profesore->id }}">
+                                            {{ $profesore->nombres . ' ' . $profesore->apellidos . ' - ' . $profesore->especialidad }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <select name="profesor_id" id="profesor_select" class="form-control">
-                                <option value="" selected disabled>Seleccione una opción</option>
-                                @foreach ($profesores as $profesore)
-                                    <option value="{{ $profesore->id }}">
-                                        {{ $profesore->nombres . ' ' . $profesore->apellidos . ' - ' . $profesore->especialidad }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            @can('cargar_datos_cursos')
+
+                        <div class="row">
+                            <div class="col-md-12">
+
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
                                     data-target="#claseModal">
@@ -225,33 +219,22 @@
                                 <a href="{{ route('admin.ver_reservas', Auth::user()->id) }}" class="btn btn-success">
                                     <i class="bi bi-calendar-check"></i>Ver las reservas
                                 </a>
-                            @endcan
+                            </div>
+
+
+                            <!-- Modal -->
+                            @include('admin.events.event')
+                            <!-- Incluir Modal INFO-->
+                            @include('admin.events.show')
                         </div>
-
-
-                        <!-- Modal -->
-                        @include('admin.events.event')
-                        <!-- Incluir Modal INFO-->
-                        @include('admin.events.show')
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="profesor_info"></div>
-                            <div id="calendar"></div>
-
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="profesor_info"></div>
+                                <div id="calendar"></div>
+                            </div>
                         </div>
-
                     </div>
-                </div>
-                {{-- <div class="tab-pane fade" id="custom-tabs-three-messages" role="tabpanel"
-                        aria-labelledby="custom-tabs-three-messages-tab">
-                        Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus volutpat augue id mi
-
-                    </div>
-                    <div class="tab-pane fade active show" id="custom-tabs-three-settings" role="tabpanel"
-                        aria-labelledby="custom-tabs-three-settings-tab">
-                        Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis tempus turpis ac, ornare
-                    </div> --}}
+                @endcan
             </div>
         </div>
 
@@ -424,7 +407,7 @@
                 var target = $(e.target).attr("href"); // Obtener la pestaña activa
                 if (target === '#custom-tabs-three-profile') {
                     calendar
-                .render(); // Renderizar el calendario solo si la pestaña activa es la del calendario
+                        .render(); // Renderizar el calendario solo si la pestaña activa es la del calendario
                 }
             });
 

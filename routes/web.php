@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {return view('welcome');});
 Route::get('/', function () {return view('auth.login');});
-// Route::get('/', function () {
-//     return redirect()->route('login'); // Redirige a la página de login
-// });
+
 
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
 ->group(function () {Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.home');});

@@ -1,5 +1,3 @@
-{{-- <form action="{{ route('admin.events.store') }}" method="POST"> --}}
-
 <div class="modal fade" id="claseModal" tabindex="-1" aria-labelledby="claseModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
