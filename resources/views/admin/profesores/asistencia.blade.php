@@ -3,7 +3,8 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h2>Marcar Asistencia</h2>
+    {{-- <h2>Marcar Asistencia</h2> --}}
+    <h2>Asistencia a Clase de Conducción</h2>
 @endsection
 
 @section('content')
@@ -51,5 +52,42 @@
 @endsection
 
 @section('js')
-    <!-- Aquí puedes agregar scripts adicionales si es necesario -->
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const HoraIncioInput = document.getElementById('hora_inicio');
+            const HoraFinInput = document.getElementById('hora_fin');
+
+            // Escuchar el evento de cambio en el campo de hora de reserva
+            HoraIncioInput.addEventListener('change', function() {
+                let selectedTime = this.value; //Obtener fecha seleccionada
+                // verificar si la fecha selecionada es anterior a la fecha actual
+                if (selectedTime) {
+                    selectedTime = selectedTime.split(':'); //Dividir la cadena en horas y minutos
+                    selectedTime = selectedTime[0] + ':00'; //conservar la hora, ignorar los minutos
+                    this.value = selectedTime; // Establecer la hora modificada en el campo de entrada
+                }
+                // verificar si la fecha selecionada es anterior a la fecha actual
+                if (selectedTime < '08:00' || selectedTime > '20:00') {
+                    // si es asi, establecer la hora seleccionada en null
+                    this.value = null;
+                    alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
+                }
+            })
+
+            // Agregar un evento de cambio al input
+            HoraFinInput.addEventListener('change', function() {
+                let selectedTime = this.value;
+                // Conservar solo la hora, ignorar los minutos
+                selectedTime = selectedTime.split(':')[0] + ':00'; // "14:00"
+                this.value = selectedTime;
+                // verificar si la fecha selecionada es anterior a la fecha actual
+                if (selectedTime < '08:00' || selectedTime > '20:00') {
+                    // si es asi, establecer la hora seleccionada en null
+                    this.value = null;
+                    alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
+                }
+            });
+        });
+    </script> --}}
 @endsection

@@ -174,7 +174,7 @@
                                 @foreach ($cursos as $curso)
                                     <option value="{{ $curso->id }}">
                                         {{-- {{ $curso->nombre }} </option> --}}
-                                    {{ $curso->nombre . ' - ' . $curso->ubicacion }} </option>
+                                        {{ $curso->nombre . ' - ' . $curso->ubicacion }} </option>
                                 @endforeach
                             </select>
                         </div>
@@ -336,6 +336,12 @@
                 // Conservar solo la hora, ignorar los minutos
                 selectedTime = selectedTime.split(':')[0] + ':00'; // "14:00"
                 this.value = selectedTime;
+                // verificar si la fecha selecionada es anterior a la fecha actual
+                if (selectedTime < '08:00' || selectedTime > '20:00') {
+                    // si es asi, establecer la hora seleccionada en null
+                    this.value = null;
+                    alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
+                }
             });
         });
 

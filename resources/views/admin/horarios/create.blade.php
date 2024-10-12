@@ -131,59 +131,51 @@
             }
         });
     </script>
-    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.bootstrap4.js"></script>
-    <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
-
-    <!-- Buttons JS -->
-    <script src="https://cdn.datatables.net/buttons/2.3.0/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.flash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.colVis.min.js"></script>
     <script>
-        new DataTable('#horarios', {
-            responsive: true,
-            autoWidth: false, //no le vi la funcionalidad
-            dom: 'Bfrtip', // Añade el contenedor de botones
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print', 'colvis' // Botones que aparecen en la imagen
-            ],
-            "language": {
-                "decimal": "",
-                "emptyTable": "No hay datos disponibles en la tabla",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ horarios",
-                "infoEmpty": "Mostrando 0 a 0 de 0 horarios",
-                "infoFiltered": "(filtrado de _MAX_ horarios totales)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ horarios",
-                "loadingRecords": "Cargando...",
-                "processing": "",
-                "search": "Buscar:",
-                "zeroRecords": "No se encontraron registros coincidentes",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Último",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                },
-                "aria": {
-                    "orderable": "Ordenar por esta columna",
-                    "orderableReverse": "Invertir el orden de esta columna"
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const HoraIncioInput = document.getElementById('hora_inicio');
+            const HoraFinInput = document.getElementById('hora_fin');
+
+            // Escuchar el evento de cambio en el campo de hora de reserva
+            HoraIncioInput.addEventListener('change', function() {
+                let selectedTime = this.value; //Obtener fecha seleccionada
+                // verificar si la fecha selecionada es anterior a la fecha actual
+                if (selectedTime) {
+                    selectedTime = selectedTime.split(':'); //Dividir la cadena en horas y minutos
+                    selectedTime = selectedTime[0] + ':00'; //conservar la hora, ignorar los minutos
+                    this.value = selectedTime; // Establecer la hora modificada en el campo de entrada
                 }
-            }
+                // verificar si la fecha selecionada es anterior a la fecha actual
+                if (selectedTime < '08:00' || selectedTime > '20:00') {
+                    // si es asi, establecer la hora seleccionada en null
+                    this.value = null;
+                    alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
+                }
+            })
 
+            // Agregar un evento de cambio al input
+            HoraFinInput.addEventListener('change', function() {
+                let selectedTime = this.value;
+                // Conservar solo la hora, ignorar los minutos
+                selectedTime = selectedTime.split(':')[0] + ':00'; // "14:00"
+                this.value = selectedTime;
+                // verificar si la fecha selecionada es anterior a la fecha actual
+                if (selectedTime < '08:00' || selectedTime > '20:00') {
+                    // si es asi, establecer la hora seleccionada en null
+                    this.value = null;
+                    alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
+                }
+            });
         });
-
-        @if (session('mensaje') && session('icono'))
+    </script>
+    @if (session('info') && session('icono') && session('title'))
+        <script>
             Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "{{ session('mensaje') }}",
+                title: "{{ session('title') }}",
+                text: "{{ session('info') }}",
                 icon: "{{ session('icono') }}"
             });
-        @endif
-    </script>
+        </script>
+    @endif
 @stop

@@ -167,6 +167,7 @@ class HorarioController extends Controller
         return redirect()->route('admin.horarios.create')
             ->with('info', 'Se registró el horario de forma correcta')
             ->with('icono', 'success');
+            
     }
 
 
@@ -213,6 +214,7 @@ class HorarioController extends Controller
 
         return redirect()->route('admin.horarios.index')
             ->with('info', 'El horario se eliminó con éxito')
-            ->with('icono', 'success');
+            ->with('title', 'Exito')
+            ->with('icon', 'success');
     }
 }

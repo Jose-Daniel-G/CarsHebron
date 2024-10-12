@@ -68,6 +68,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <a class="btn btn-secondary" href="/admin">Regresar</a>
                 </div>
             </div>
         </div>

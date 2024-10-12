@@ -45,7 +45,7 @@
                                     <td scope="row">{{ $horario->profesor->nombres }}</td>
                                     <td scope="row">{{ $horario->profesor->especialidad }}</td>
                                     <td scope="row">
-                                        {{ $horario->curso->nombre  .'  '. $horario->curso->ubicacion }}
+                                        {{ $horario->curso->nombre . '  ' . $horario->curso->ubicacion }}
                                     </td>
                                     <td scope="row">{{ $horario->dia }}</td>
                                     <td scope="row" class="text-center">{{ $horario->hora_inicio }}</td>
@@ -54,18 +54,20 @@
                                         <div class="btn-group" role="group" aria-label="basic example">
                                             <a href="{{ route('admin.horarios.show', $horario->id) }}"
                                                 class="btn btn-info btn-sm"><i class="fas fa-eye"></i>
-                                              </a>
+                                            </a>
                                             <a href="{{ route('admin.horarios.edit', $horario->id) }}"
-                                                class="btn btn-success btn-sm">  <i class="fas fa-edit"></i>
-                                                </a>
-                                            <form action="{{ route('admin.horarios.destroy', $horario->id) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('¿Estás seguro de que deseas eliminar este horario?');">
+                                                class="btn btn-success btn-sm"> <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form id="delete-form-{{ $horario->id }}"
+                                                action="{{ route('admin.horarios.destroy', $horario->id) }}"
+                                                method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                                <button type="button" class="btn btn-danger"
+                                                    onclick="confirmDelete({{ $horario->id }})">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
                                             </form>
-
                                         </div>
                                     </td>
                                 </tr>
@@ -85,7 +87,7 @@
                             <h3 class="card-title">Calendario de atencion de Profesores</h3>
                         </div>
                         <div class="col-md-4 d-flex justify-content-end">
-                                <label for="curso_id">Cursos </label><b>*</b>
+                            <label for="curso_id">Cursos </label><b>*</b>
                         </div>
                         <div class="col-md-4">
                             <select name="curso_id" id="curso_select" class="form-control">
@@ -93,7 +95,7 @@
                                 @foreach ($cursos as $curso)
                                     <option value="{{ $curso->id }}">
                                         {{ $curso->nombre }} </option>
-                                        {{-- {{ $curso->nombre . ' - ' . $curso->ubicacion }} </option> --}}
+                                    {{-- {{ $curso->nombre . ' - ' . $curso->ubicacion }} </option> --}}
                                 @endforeach
                             </select>
                         </div>
@@ -110,13 +112,39 @@
 @stop
 
 @section('js')
+
     <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, se envía el formulario.
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+        @if (session('info') && session('icon'))
+            Swal.fire({
+                title: "{{ session('title') }}",
+                text: "{{ session('info') }}",
+                icon: "{{ session('icon') }}"
+            });
+        @endif
+
         // carga contenido de tabla en  curso_info
         $('#curso_select').on('change', function() {
             var curso_id = $('#curso_select').val();
             var url = "{{ route('admin.horarios.cargar_datos_cursos', ':id') }}";
             url = url.replace(':id', curso_id);
-            
+
             if (curso_id) {
                 $.ajax({
                     url: url,
@@ -150,7 +178,6 @@
             responsive: true,
             autoWidth: false, //no le vi la funcionalidad
             dom: 'Bfrtip', // Añade el contenedor de botones
-            // buttons: [ 'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'  ], // Botones que aparecen en la imagen
             "language": {
                 "decimal": "",
                 "emptyTable": "No hay datos disponibles en la tabla",
@@ -174,15 +201,36 @@
                     "orderable": "Ordenar por esta columna",
                     "orderableReverse": "Invertir el orden de esta columna"
                 }
-            }
+            },
+            initComplete: function() {
+                // Apply custom styles after initialization
+                $('.dt-button').css({
+                    'background-color': '#4a4a4a',
+                    'color': 'white',
+                    'border': 'none',
+                    'border-radius': '4px',
+                    'padding': '8px 12px',
+                    'margin': '0 5px',
+                    'font-size': '14px'
+                });
+            },
+            responsive: true,
+            autoWidth: false, //no le vi la funcionalidad
+            dom: 'Bfrtip', // Añade el contenedor de botones
+            buttons: [{
+                extend: 'collection',
+                text: 'Reportes',
+                orientation: 'landscape',
+                buttons: [{ extend: 'copy',text: '<i class="bi bi-clipboard-check btn btn-success">Copiar</i>'},
+                          { extend: 'print',text: '<i class="bi bi-file-pdf-fill btn btn-danger">Imprimir</i>'},
+                          { extend: 'pdf'},
+                          { extend: 'csv', text: '<i class="bi bi-filetype-csv btn btn-primary">csv</i> '},
+                          { extend: 'excel', text: '<i class="bi bi-file-earmark-excel btn btn-secondary">Excel</i> '},
+               ]
+            }, ],
 
         });
-        @if (session('info') && session('icono'))
-            Swal.fire({
-                title: "Good job!",
-                text: "{{ session('info') }}",
-                icon: "{{ session('icono') }}"
-            });
-        @endif
+
+        // ,//NO SE ESTA VISUALIZANDO ICONO DE  BOOTSTRAP 4
     </script>
 @stop
