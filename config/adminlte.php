@@ -410,15 +410,14 @@ return [
         [
             'text' => 'Vehiculos',
             'icon' => 'bi bi-car-front',
-            // 'can' => 'admin.cursos.index',
+            'route'  => 'admin.vehiculos.index',
+            'can'  => 'admin.vehiculos.index',
             // 'submenu' => [
-            //     [
-            //         'text' => 'Creacion de vehiculos',
+            //     [   'text' => 'Creacion de vehiculos',
             //         'icon'        => 'far fa-circle nav-icon',
             //         'route' => 'admin.vehiculos.create',
             //     ],
-            //     [
-            //         'text' => 'Listado de vehiculos',
+            //     [   'text' => 'Listado de vehiculos',
             //         'icon'        => 'far fa-circle nav-icon',
             //         'route' => 'admin.cursos.index',
             //     ],

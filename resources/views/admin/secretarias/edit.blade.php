@@ -70,7 +70,7 @@
                                     <div class="form-group">
                                         <label for="fecha_nacimiento">Fecha de Nacimientos </label><b>*</b>
                                         <input type="date" class="form-control" name="fecha_nacimiento"
-                                            value="{{ $secretaria->fecha_nacimiento }}" required>
+                                            value="{{ old('fecha_nacimiento', $secretaria->fecha_nacimiento) }}" required>
                                         @error('fecha_nacimiento')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
                                         @enderror

@@ -21,17 +21,19 @@ class VehiculoController extends Controller
 
     public function store(Request $request)
     {
+        // Dump and die para depurar los datos del request
         // dd($request->all());
+    
+        // Validar los datos del request
         $request->validate([
-            // 'marca' => 'required|string|max:255','anio' => 'required|integer','color' => 'required|string|max:50',
-            // 'placa' => 'required|string|max:10',
-            'nombre' => 'required|string|max:30',
+            'placa' => 'required|string|max:10',
             'modelo' => 'required|string|max:255',
-            'tipo' => 'required|string|max:50',
+            'tipo' => 'required|string|max:50', // Asegúrate que 'tipo' sea válido
         ]);
+    
         // Intentar encontrar el vehículo por la placa
         $vehiculo = Vehiculo::where('placa', $request->placa)->first();
-
+    
         if ($vehiculo) {
             // Si el vehículo ya existe, redirigir con un mensaje de error
             return redirect()->back()->withErrors(['placa' => 'El vehículo con esa placa ya existe.']);
@@ -39,15 +41,15 @@ class VehiculoController extends Controller
             // Si no existe, crear uno nuevo con los datos proporcionados
             $vehiculo = new Vehiculo();
             $vehiculo->placa = $request->placa;
-            $vehiculo->nombre = $request->nombre;
             $vehiculo->modelo = $request->modelo;
-            $vehiculo->tipo = $request->tipo;
+            $vehiculo->tipo = $request->tipo; // Asegúrate de que 'tipo' sea un string válido
             $vehiculo->save();
-
+    
             // Redirigir con un mensaje de éxito
             return redirect()->route('admin.vehiculos.index')->with('success', 'Vehículo creado correctamente.');
         }
     }
+    
 
     public function show(Vehiculo $vehiculo) {}
 

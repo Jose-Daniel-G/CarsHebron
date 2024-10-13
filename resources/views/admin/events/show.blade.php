@@ -42,10 +42,17 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="hora_reserva1">Hora de reserva</label>
-                                <p id="hora_reserva1"> 
+                                <label for="hora_inicio1">Hora de inicio</label>
+                                <p id="hora_inicio1"> 
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="hora_fin1">Hora fin</label>
+                                <p id="hora_fin1"> 
                                 </p>
                             </div>
                         </div>

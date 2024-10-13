@@ -111,7 +111,7 @@
         // carga contenido de tabla en  curso_info
         $('#curso_select').on('change', function() {
             var curso_id = $('#curso_select').val();
-            var url = "{{ route('admin.horarios.cargar_datos_cursos', ':id') }}";
+            var url = "{{ route('admin.horarios.show_datos_cursos', ':id') }}";
             url = url.replace(':id', curso_id);
             // alert(curso_id);
 

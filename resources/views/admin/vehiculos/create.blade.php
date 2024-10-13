@@ -15,22 +15,15 @@
                     <!-- Campo: Placa -->
                     <div class="mb-3">
                         <label for="placa" class="form-label">{{ __('Placa') }}</label>
-                        <input type="text" class="form-control" id="placa" name="placa"
-                            value="" required>
-                    </div>
-
-                    <!-- Campo: Nombre -->
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">{{ __('Nombre del Vehículo') }}</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre"
-                            value="" required>
+                        <input type="text" class="form-control" id="placa" name="placa" value=""
+                            required>
                     </div>
 
                     <!-- Campo: Modelo -->
                     <div class="mb-3">
                         <label for="modelo" class="form-label">{{ __('Modelo') }}</label>
-                        <input type="text" class="form-control" id="modelo" name="modelo"
-                            value="" required>
+                        <input type="text" class="form-control" id="modelo" name="modelo" value=""
+                            required>
                     </div>
 
                     <!-- Campo: Tipo de Vehículo -->
@@ -40,6 +33,7 @@
                             @php
                                 $tipos = ['automovil', 'motocicleta', 'camioneta'];
                             @endphp
+                                <option value="" selected disabled>Seleccione una opción</option>
 
                             @foreach ($tipos as $value)
                                 <option value="{{ $value }}">

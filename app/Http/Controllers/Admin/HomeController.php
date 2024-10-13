@@ -30,38 +30,34 @@ class HomeController extends Controller
 
         $profesores = Profesor::all();
         $events = CalendarEvent::all();
-        // Verifica si el usuario autenticado es un administrador
-        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria') || Auth::user()->hasRole('profesor')) {
-            // Obtener todos los cursos
+        // dd(Auth::user()->getRoleNames());
+        
+        if (Auth::user()->hasRole('superAdmin') ||  Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria') || Auth::user()->hasRole('profesor')) {
             $cursos = Curso::all();
             $clientes = Cliente::all();
             return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'clientes', 'events', 'total_configuraciones'));
         } else {
-            // Obtener el cliente asociado al usuario autenticado
-            $cliente = Cliente::where('user_id', Auth::id())->first(); // O la lógica adecuada para obtener el cliente
-            // Obtener solo los cursos asociados al cliente
+            $cliente = Cliente::where('user_id', Auth::id())->first(); 
             $cursos = $cliente->cursos;
             return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'events', 'total_configuraciones'));
         }
-        //    dd($cursos);
-
     }
 
-    public function ver_reservas($id)
+    public function show_reservas($id)
     { // echo $id;
-        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
+        if (Auth::user()->hasRole('superAdmin') ||  Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
             $events = CalendarEvent::with('cliente')->get();
             // $events = CalendarEvent::all();
         } else {
             $events = CalendarEvent::where('cliente_id',  Auth::user()->cliente->id)->get();
         }
-        return view('admin.ver_reservas', compact('events'));
+        return view('admin.show_reservas', compact('events'));
     }
-    public function cargar_reserva_profesores($id)//calendar
+    public function show_reserva_profesores($id)//calendar
     {
         try {
             // Verifica si el usuario autenticado es un administrador
-            if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
+            if (Auth::user()->hasRole('superAdmin') ||  Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
                 // Obtener todos los eventos del profesor específico
                 $events = CalendarEvent::with(['profesor', 'cliente']) // Asegúrate de que estas relaciones estén definidas en el modelo
                     ->where('profesor_id', $id)

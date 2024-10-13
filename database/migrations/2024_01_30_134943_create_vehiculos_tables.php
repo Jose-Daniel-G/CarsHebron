@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('placa')->unique();
             $table->string('modelo');
             $table->boolean('disponible')->default(true);
-            $table->enum('tipo', ['moto', 'carro'])->default('carro');
+            $table->string('tipo');
             $table->timestamps();
             $table->unsignedBigInteger('picoyplaca_id')->nullable();
             $table->unsignedBigInteger('usuario_id')->nullable();

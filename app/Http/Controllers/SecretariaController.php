@@ -62,6 +62,9 @@ class SecretariaController extends Controller
 
     public function edit(Secretaria $secretaria)
     {
+        // dd($secretaria);
+        $secretaria->fecha_nacimiento = \Carbon\Carbon::createFromFormat('d/m/Y', $secretaria->fecha_nacimiento)->format('Y-m-d');
+
         return view('admin.secretarias.edit', compact('secretaria'));
     }
 
@@ -77,13 +80,13 @@ class SecretariaController extends Controller
             'fecha_nacimiento' => 'required|max:150',
             'password' => 'nullable|max:20|confirmed',
         ]);
+     
         $secretaria->nombres = $request->nombres;
         $secretaria->apellidos = $request->apellidos;
         $secretaria->cc = $request->cc;
         $secretaria->celular = $request->celular;
         $secretaria->direccion = $request->direccion;
         $secretaria->fecha_nacimiento = $request->fecha_nacimiento;
-
         $secretaria->save();
 
         // $usuario = new User::find($secretaria->user->id);

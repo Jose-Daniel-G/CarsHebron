@@ -16,7 +16,8 @@
     </div>
 
     <div class="row">
-        @can('admin.users.index')
+        {{-- Configuracion --}}
+        @can('admin.config.index')
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-info">
                     <div class="inner">
@@ -24,34 +25,20 @@
                         <p>Configuracion</p>
                     </div>
                     <div class="icon">
-                        <i class="ion fas bi bi-file-person"></i>
+                        <i class="bi bi-gear"></i>
                     </div>
-                    <a href="{{ route('admin.config.index') }}" class="small-box-footer"><i class="fas fa-sync-alt"></i></a>
-                </div>
-            </div>
-        @endcan
-        @can('admin.users.index')
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-info">
-                    <div class="inner">
-                        <h3>{{ $total_usuarios }}</h3>
-                        <p>Usuarios</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-bag"></i>
-                    </div>
-                    <a href="{{ route('admin.users.index') }}" class="small-box-footer">Mas informacion <i
+                    <a href="{{ route('admin.config.index') }}" class="small-box-footer">Mas info <i
                             class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         @endcan
+        {{-- Secretarias --}}
         @can('admin.secretarias.index')
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>{{ $total_secretarias }}
-                            {{-- <sup style="font-size: 20px">%</sup></h3> --}}
-                            <p>Secretarias</p>
+                        <h3>{{ $total_secretarias }}</h3>
+                        <p>Secretarias</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-laptop"></i>
@@ -61,6 +48,7 @@
                 </div>
             </div>
         @endcan
+        {{-- Clientes --}}
         @can('admin.clientes.index')
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-warning">
@@ -77,6 +65,7 @@
                 </div>
             </div>
         @endcan
+        {{-- Cursos --}}
         @can('admin.cursos.index')
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-danger">
@@ -93,22 +82,7 @@
                 </div>
             </div>
         @endcan
-        @can('admin.cursos.index')
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-info">
-                    <div class="inner">
-                        <h3>{{ $total_cursos }}</h3>
-
-                        <p>Vehiculos</p>
-                    </div>
-                    <div class="icon">
-                        <i class="bi bi-car-front"></i>
-                    </div>
-                    <a href="{{ route('admin.vehiculos.index') }}" class="small-box-footer">Mas info <i
-                            class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-        @endcan
+        {{-- Profesores --}}
         @can('admin.clientes.index')
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-primary">
@@ -120,11 +94,12 @@
                     <div class="icon">
                         <i class="ion fas bi bi-person-lines-fill"></i>
                     </div>
-                    <a href="{{ route('admin.profesores.index') }}" class="small-box-footer">Mas informacion <i
+                    <a href="{{ route('admin.profesores.index') }}" class="small-box-footer">Mas info <i
                             class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         @endcan
+        {{-- Horarios --}}
         @can('admin.horarios.index')
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-secondary">
@@ -136,11 +111,12 @@
                     <div class="icon">
                         <i class="ion fas bi bi-calendar2-week"></i>
                     </div>
-                    <a href="{{ route('admin.horarios.index') }}" class="small-box-footer">Mas informacion <i
+                    <a href="{{ route('admin.horarios.index') }}" class="small-box-footer">Mas info <i
                             class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         @endcan
+        {{-- Reservas --}}
         @can('admin.reservas.index')
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-secondary">
@@ -156,8 +132,24 @@
                 </div>
             </div>
         @endcan
-    </div>
+        {{-- Vehiculos --}}
+        @can('admin.vehiculos.index')
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ $total_cursos }}</h3>
 
+                        <p>Vehiculos</p>
+                    </div>
+                    <div class="icon">
+                        <i class="bi bi-car-front"></i>
+                    </div>
+                    <a href="{{ route('admin.vehiculos.index') }}" class="small-box-footer">Mas info <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        @endcan
+    </div>
     <div class="card card-primary card-outline card-tabs">
         <div class="card-header p-0 pt-1 border-bottom-0">
             <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
@@ -166,7 +158,7 @@
                         role="tab" aria-controls="custom-tabs-three-home" aria-selected="false">Horario de
                         profesores</a>
                 </li>
-                @can('cargar_datos_cursos')
+                @can('show_datos_cursos')
                     <li class="nav-item">
                         <a class="nav-link active" id="custom-tabs-three-profile-tab" data-toggle="pill"
                             href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile"
@@ -205,7 +197,7 @@
 
                     </div>
                 </div>
-                @can('cargar_datos_cursos')
+                @can('show_datos_cursos')
                     <div class="tab-pane fade active show" id="custom-tabs-three-profile" role="tabpanel"
                         aria-labelledby="custom-tabs-three-profile-tab">
 
@@ -233,7 +225,7 @@
                                     Agendar Clase
                                 </button>
 
-                                <a href="{{ route('admin.ver_reservas', Auth::user()->id) }}" class="btn btn-success">
+                                <a href="{{ route('admin.show_reservas', Auth::user()->id) }}" class="btn btn-success">
                                     <i class="bi bi-calendar-check"></i>Ver las reservas
                                 </a>
                             </div>
@@ -371,7 +363,7 @@
         // carga contenido de tabla en  curso_info
         $('#curso_select').on('change', function() {
             var curso_id = $('#curso_select').val();
-            var url = "{{ route('admin.horarios.cargar_datos_cursos', ':id') }}";
+            var url = "{{ route('admin.horarios.show_datos_cursos', ':id') }}";
             url = url.replace(':id', curso_id);
 
             if (curso_id) {
@@ -406,6 +398,7 @@
                 eventClick: function(info) {
                     var evento = info.event;
                     var startTime = evento.start;
+                    var endTime = evento.end;
 
                     // Mostrar la información en el modal
                     var profesorNombres = evento.extendedProps.profesor ? evento.extendedProps.profesor
@@ -423,8 +416,10 @@
                         `${profesorNombres} ${profesorApellidos}`;
                     document.getElementById('fecha_reserva1').textContent = startTime.toISOString()
                         .split('T')[0]; // Fecha
-                    document.getElementById('hora_reserva1').textContent = startTime
+                    document.getElementById('hora_inicio1').textContent = startTime
                         .toLocaleTimeString(); // Hora de inicio
+                    document.getElementById('hora_fin1').textContent = endTime
+                        .toLocaleTimeString(); // Hora de FIN
 
                     // Mostrar el modal
                     $("#mdalSelected").modal("show");
@@ -454,7 +449,7 @@
 
                 // Si hay un profesor seleccionado, cargar sus eventos
                 if (profesor_id) {
-                    var url = "{{ route('admin.horarios.cargar_reserva_profesores', ':id') }}";
+                    var url = "{{ route('admin.horarios.show_reserva_profesores', ':id') }}";
                     url = url.replace(':id', profesor_id);
 
                     $.ajax({

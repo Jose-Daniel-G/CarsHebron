@@ -28,7 +28,6 @@ class EventController extends Controller
             'fecha_reserva' => 'required',
             'hora_inicio' => 'required',
             'hora_fin' => 'required|numeric|min:1',
-
             'cliente_id' => 'required_if:role,admin,secretaria' // Asegúrate de que cliente_id esté presente si es admin o secretaria
         ]);
         // Buscar el profesor por su ID
@@ -86,7 +85,7 @@ class EventController extends Controller
         $evento->profesor_id = $request->profesorid;
         $evento->curso_id = $cursoid;
 
-        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
+        if (Auth::user()->hasRole('superAdmin') || Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
             // Asegúrate de que cliente_id está presente
             $evento->cliente_id = $request->cliente_id; //cliente id
             // Guardar el evento

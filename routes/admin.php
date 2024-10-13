@@ -24,7 +24,7 @@ Route::resource('users', UserController::class)->only(['index', 'edit', 'update'
 
 //RUTAS ADMIN
 Route::get('/admin', [HomeController::class, 'index'])->name('admin.index')->middleware('auth');
-Route::get('/ver_reservas/{id}', [HomeController::class, 'ver_reservas'])->name('admin.ver_reservas')->middleware('auth','can:admin.ver_reservas');
+Route::get('/show_reservas/{id}', [HomeController::class, 'show_reservas'])->name('admin.show_reservas')->middleware('auth', 'can:admin.show_reservas');
 
 
 //RUTAS USUARIOS ADMIN
@@ -45,22 +45,35 @@ Route::resource('/cursos', CursoController::class)->names('admin.cursos')->middl
 // //RUTAS PARA LOS EVENTOS
 Route::resource('/eventos', EventController::class)->names('admin.events');
 
+// //RUTAS PARA LOS VEHICULOS
+// Route::resource('vehiculos', VehiculoController::class)->names('admin.vehiculos');
+
 //RUTAS para el historial clinico
-Route::get('/historial/pdf',[HistorialController::class,'pdf'])->name('admin.historial.pdf')->middleware('auth', 'can:admin.historial');
+Route::get('/historial/pdf', [HistorialController::class, 'pdf'])->name('admin.historial.pdf')->middleware('auth', 'can:admin.historial');
 Route::resource('/historial', HistorialController::class)->names('admin.historial')->middleware('auth', 'can:admin.historial');
 Route::get('/admin/profesores/evente/{cursoId}', [ProfesorController::class, 'obtenerProfesores'])->name('obtenerProfesores');
-Route::resource('vehiculos', VehiculoController::class)->names('admin.vehiculos');
+
+// Route::middleware('can:admin.vehiculos')->group(function () {
+    Route::resource('vehiculos', VehiculoController::class)->names('admin.vehiculos');
+// });
+
 
 
 //RUTAS REPORTES PROFESORES ADMIN
-/*NO INCLUDO */Route::get('/profesores/pdf/{id}', [ProfesorController::class, 'reportes'])->name('admin.profesores.pdf');// ->middleware('auth', 'can:admin.profesores.pdf');
-/*NO INCLUDO */Route::get('/profesores/reportes', [ProfesorController::class, 'reportes'])->name('admin.profesores.reportes')->middleware('auth', 'can:admin.profesores.reportes');
-/*NO INCLUDO */Route::resource('/profesores', ProfesorController::class)->names('admin.profesores')->parameters(['profesores' => 'profesor'])->middleware('auth', 'can:admin.profesores');
+/*NO INCLUDO */
+Route::get('/profesores/pdf/{id}', [ProfesorController::class, 'reportes'])->name('admin.profesores.pdf'); // ->middleware('auth', 'can:admin.profesores.pdf');
+/*NO INCLUDO */
+Route::get('/profesores/reportes', [ProfesorController::class, 'reportes'])->name('admin.profesores.reportes')->middleware('auth', 'can:admin.profesores.reportes');
+/*NO INCLUDO */
+Route::resource('/profesores', ProfesorController::class)->names('admin.profesores')->parameters(['profesores' => 'profesor'])->middleware('auth', 'can:admin.profesores');
 //RUTAS para las reservas
 
-/*NO INCLUDO */Route::get('/reservas/reportes', [EventController::class, 'reportes'])->name('admin.reservas.reportes')->middleware('auth', 'can:admin.reservas.reportes');
-/*NO INCLUDO */Route::get('/reservas/pdf/{id}', [EventController::class, 'pdf'])->name('admin.reservas.pdf')->middleware('auth', 'can:admin.reservas.pdf');
-/*NO INCLUDO */Route::get('/reservas/pdf_fechas', [EventController::class, 'pdf_fechas'])->name('admin.reservas.pdf_fechas')->middleware('auth', 'can:admin.event.pdf_fechas');
+/*NO INCLUDO */
+Route::get('/reservas/reportes', [EventController::class, 'reportes'])->name('admin.reservas.reportes')->middleware('auth', 'can:admin.reservas.reportes');
+/*NO INCLUDO */
+Route::get('/reservas/pdf/{id}', [EventController::class, 'pdf'])->name('admin.reservas.pdf')->middleware('auth', 'can:admin.reservas.pdf');
+/*NO INCLUDO */
+Route::get('/reservas/pdf_fechas', [EventController::class, 'pdf_fechas'])->name('admin.reservas.pdf_fechas')->middleware('auth', 'can:admin.event.pdf_fechas');
 // Route::group(['middleware'=>['auth']], function(){
 //     Route::get('events', [EventController::class, 'index'])->name('admin.events.index');
 //     Route::get('events/mostrar', [EventController::class, 'show'])->name('admin.events.show');

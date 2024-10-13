@@ -29,7 +29,7 @@ class HorarioController extends Controller
         return view('admin.horarios.create', compact('profesores', 'cursos', 'horarios'));
     }
 
-    public function cargar_datos_cursos($id)
+    public function show_datos_cursos($id)
     {
         try {
             // Obtener horarios con profesor y curso
@@ -62,7 +62,7 @@ class HorarioController extends Controller
                 return $horario;
             });
     
-            return view('admin.horarios.cargar_datos_cursos', compact('horarios', 'horarios_asignados'));
+            return view('admin.horarios.show_datos_cursos', compact('horarios', 'horarios_asignados'));
         } catch (\Exception $exception) {
             return response()->json(['mensaje' => 'Error']);
         }
@@ -85,13 +85,13 @@ class HorarioController extends Controller
     
 
     
-    // public function cargar_datos_cursos($id)
+    // public function show_datos_cursos($id)
     // { 
     //     // echo $id;   
 
     //     try {
     //         $horarios = Horario::with(['profesor', 'curso'])->where('curso_id', $id)->get();
-    //         // return view('admin.horarios.cargar_datos_cursos', compact('horarios'));
+    //         // return view('admin.horarios.show_datos_cursos', compact('horarios'));
     //         return response()->json($horarios);
 
     //     } catch (\Exception $exception) {
