@@ -408,8 +408,26 @@ return [
             ],
         ],
         [
+            'text' => 'Vehiculos',
+            'icon' => 'bi bi-car-front',
+            // 'can' => 'admin.cursos.index',
+            // 'submenu' => [
+            //     [
+            //         'text' => 'Creacion de vehiculos',
+            //         'icon'        => 'far fa-circle nav-icon',
+            //         'route' => 'admin.vehiculos.create',
+            //     ],
+            //     [
+            //         'text' => 'Listado de vehiculos',
+            //         'icon'        => 'far fa-circle nav-icon',
+            //         'route' => 'admin.cursos.index',
+            //     ],
+
+            // ],
+        ],
+        [
             'text' => 'Profesores',
-            'icon' => 'nav-icon fas fa-copy',
+            'icon' => 'ion fas bi bi-person-lines-fill',
             'can' => 'admin.profesores.index',
             'submenu' => [
                 [

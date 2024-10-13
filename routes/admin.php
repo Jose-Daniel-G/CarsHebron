@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
-
+use App\Http\Controllers\Admin\VehiculoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\ClienteController;
@@ -43,29 +43,13 @@ Route::resource('/clientes', ClienteController::class)->names('admin.clientes')-
 Route::resource('/cursos', CursoController::class)->names('admin.cursos')->middleware('auth', 'can:admin.cursos');
 
 // //RUTAS PARA LOS EVENTOS
-// Route::resource('/eventos', EventController::class)->names('admin.events');
-
+Route::resource('/eventos', EventController::class)->names('admin.events');
 
 //RUTAS para el historial clinico
 Route::get('/historial/pdf',[HistorialController::class,'pdf'])->name('admin.historial.pdf')->middleware('auth', 'can:admin.historial');
 Route::resource('/historial', HistorialController::class)->names('admin.historial')->middleware('auth', 'can:admin.historial');
-
-
 Route::get('/admin/profesores/evente/{cursoId}', [ProfesorController::class, 'obtenerProfesores'])->name('obtenerProfesores');
-
-
-Route::group(['middleware'=>['auth']], function(){
-    Route::get('events', [EventController::class, 'index'])->name('admin.events.index');
-    Route::get('events/mostrar', [EventController::class, 'show'])->name('admin.events.show');
-    // Route::post('events/editar/{id}', [EventController::class, 'edit'])->name('admin.events.edit');
-    // Route::put('events/actualizar/{evento}', [EventController::class, 'update'])->name('admin.events.update');
-
-    // Route::post('events/actualizar/{evento}', [EventController::class, 'edit'])->name('admin.events.update');
-    Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('admin.events.destroy');
-
-    Route::post('events/agregar', [EventController::class, 'store'])->name('admin.events.store');
-
-});
+Route::resource('vehiculos', VehiculoController::class)->names('admin.vehiculos');
 
 
 //RUTAS REPORTES PROFESORES ADMIN
@@ -77,3 +61,15 @@ Route::group(['middleware'=>['auth']], function(){
 /*NO INCLUDO */Route::get('/reservas/reportes', [EventController::class, 'reportes'])->name('admin.reservas.reportes')->middleware('auth', 'can:admin.reservas.reportes');
 /*NO INCLUDO */Route::get('/reservas/pdf/{id}', [EventController::class, 'pdf'])->name('admin.reservas.pdf')->middleware('auth', 'can:admin.reservas.pdf');
 /*NO INCLUDO */Route::get('/reservas/pdf_fechas', [EventController::class, 'pdf_fechas'])->name('admin.reservas.pdf_fechas')->middleware('auth', 'can:admin.event.pdf_fechas');
+// Route::group(['middleware'=>['auth']], function(){
+//     Route::get('events', [EventController::class, 'index'])->name('admin.events.index');
+//     Route::get('events/mostrar', [EventController::class, 'show'])->name('admin.events.show');
+//     // Route::post('events/editar/{id}', [EventController::class, 'edit'])->name('admin.events.edit');
+//     // Route::put('events/actualizar/{evento}', [EventController::class, 'update'])->name('admin.events.update');
+
+//     // Route::post('events/actualizar/{evento}', [EventController::class, 'edit'])->name('admin.events.update');
+//     Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('admin.events.destroy');
+
+//     Route::post('events/agregar', [EventController::class, 'store'])->name('admin.events.store');
+
+// });

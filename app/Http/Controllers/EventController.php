@@ -8,6 +8,7 @@ use App\Models\Profesor;
 use App\Models\Event;
 use App\Models\Horario;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -26,26 +27,30 @@ class EventController extends Controller
             'cursoid' => 'required',
             'fecha_reserva' => 'required',
             'hora_inicio' => 'required',
-            'hora_fin' => 'required',
+            'hora_fin' => 'required|numeric|min:1',
 
             'cliente_id' => 'required_if:role,admin,secretaria' // Asegúrate de que cliente_id esté presente si es admin o secretaria
         ]);
         // Buscar el profesor por su ID
         $profesor = Profesor::find($request->profesorid);
-        $cursoid = $request->cursoid;
         $fecha_reserva = $request->fecha_reserva;
         $hora_inicio = $request->hora_inicio . ':00'; // Asegurarse de que la hora esté en formato correcto
-        $hora_fin = $request->hora_fin . ':00'; // Asegurarse de que la hora esté en formato correcto
+        $fecha_hora_inicio = Carbon::parse("{$fecha_reserva} {$hora_inicio}"); // Crear un objeto Carbon para la fecha y hora de inicio
+        $fecha_hora_fin = $fecha_hora_inicio->copy()->addHours($request->hora_fin); // Sumamos las horas ingresadas en el campo 'hora_fin'
+        $cursoid = $request->cursoid;
 
         // Obtener el día de la semana en español
         $dia = date('l', strtotime($fecha_reserva));
         $dia_de_reserva = $this->traducir_dia($dia);
 
+        // Formatear las horas para compararlas en la consulta
+        $hora_inicio_formato = $fecha_hora_inicio->format('H:i:s');
+        $hora_fin_formato = $fecha_hora_fin->format('H:i:s');
         // Consultar los horarios disponibles del profesor
         $horarios = Horario::where('profesor_id', $profesor->id)
             ->where('dia', $dia_de_reserva)
-            ->where('hora_inicio', '<=', $hora_inicio)
-            ->where('hora_fin', '>=', $hora_fin)
+            ->where('hora_inicio', '<=', $hora_inicio_formato)
+            ->where('hora_fin', '>=', $hora_fin_formato)
             ->exists();
 
         if (!$horarios) {
@@ -57,8 +62,7 @@ class EventController extends Controller
         }
 
         // Validar si existen eventos duplicados
-        $fecha_hora_inicio = $fecha_reserva . " " . $hora_inicio;
-        $fecha_hora_fin = $fecha_reserva . " " . $hora_fin;
+
 
         $eventos_duplicados = Event::where('profesor_id', $profesor->id)
             ->where('start', $fecha_hora_inicio)
@@ -75,7 +79,7 @@ class EventController extends Controller
 
         // Crear una nueva instancia de Event
         $evento = new Event();
-        $evento->title = $request->hora_inicio . " " . $profesor->especialidad;
+        $evento->title = $request->hora_inicio_formato . " " . $profesor->especialidad;
         $evento->start = $fecha_hora_inicio;
         $evento->end = $fecha_hora_fin;
         $evento->color = '#e82216';
@@ -90,7 +94,7 @@ class EventController extends Controller
         } else {
             // Asegúrate de que el usuario tiene un cliente asociado
             $evento->cliente_id = Auth::user()->cliente->id; //cliente id
-        //  dd($request->all());
+            //  dd($request->all());
 
             // Guardar el evento
             $evento->save();
@@ -104,7 +108,6 @@ class EventController extends Controller
             ->with('icono', 'success')
             ->with('title', 'Se ha agendado de forma correcta.');
     }
-
 
     private function traducir_dia($dia)
     {
@@ -144,7 +147,7 @@ class EventController extends Controller
     }
 
     public function destroy(Event $event)
-    {   
+    {
         // dd($event);
         $event->delete(); // Cambiar destroy() por delete()
         return redirect()->back()->with([

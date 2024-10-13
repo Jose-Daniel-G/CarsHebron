@@ -16,24 +16,34 @@ class AsistenciaController extends Controller
         $clientes = Cliente::all();
         $eventos = CalendarEvent::whereDate('start', '>=', now())->get(); // Filtra solo los eventos futuros o del día actual
 
-        // // Filtra solo los eventos programados para el día actual
-        // $eventos = CalendarEvent::whereDate('start', '=', now()->toDateString())->get();
+        // // Filtra solo los eventos programados para el día actual// $eventos = CalendarEvent::whereDate('start', '=', now()->toDateString())->get();
 
         //    dd($eventos,$clientes);
-        return view('admin.profesores.asistencia', compact('clientes', 'eventos'));
+        // return view('admin.asistencias.asistencia', compact('clientes', 'eventos'));
+        return view('admin.asistencias.index', compact('clientes', 'eventos'));
     }
     // public function registrarAsistencia(Request $request)
     public function create(Request $request)
     {
-        $asistencia = Asistencia::create([
-            'cliente_id' => $request->cliente_id,
-            'evento_id' => $request->evento_id,
-            'asistio' => $request->asistio, // Se pasa true o false según la asistencia
-            'penalidad' => $request->asistio ? 0 : $request->duracion * 20000 // Si no asistió, calcula la penalidad
+        // Validamos los datos requeridos
+        $validatedData = $request->validate([
+            'cliente_id' => 'required|exists:clientes,id',
+            'evento_id'  => 'required|exists:calendar_events,id',
+            'asistio'    => 'required|boolean',
+            'duracion'   => 'required_if:asistio,false|numeric|min:1'
         ]);
-        // dd($asistencia);
+    
+        // Creamos la asistencia con penalidad en caso de inasistencia
+        $asistencia = Asistencia::create([
+            'cliente_id' => $validatedData['cliente_id'],
+            'evento_id'  => $validatedData['evento_id'],
+            'asistio'    => $validatedData['asistio'],
+            'penalidad'  => $validatedData['asistio'] ? 0 : $validatedData['duracion'] * 20000
+        ]);
+    
         return redirect()->back()->with('success', 'Asistencia registrada correctamente');
     }
+    
     // Función para la secretaria de ver inasistencias y habilitar cliente
     // public function verInasistencias()
     public function show()
@@ -65,5 +75,18 @@ class AsistenciaController extends Controller
         }
 
         return redirect()->back()->with('success', 'Cliente habilitado correctamente');
+    }
+    public function update(Request $request)
+    {
+        foreach ($request->eventos as $evento_id => $data) {
+            $evento = CalendarEvent::find($evento_id);
+            $asistio = isset($data['asistio']) ? 1 : 0;
+
+            $evento->update([
+                'asistio' => $asistio,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Asistencia registrada correctamente');
     }
 }

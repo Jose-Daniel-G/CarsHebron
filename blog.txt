@@ -1,5 +1,9 @@
 php artisan make:migration create_cliente_curso_table --create=cliente_curso
 
+Administrador y Secretaria: Podrían ver las inasistencias completas.
+Cliente: Solo debería poder ver sus propias inasistencias.
+Profesor: Podría ver las inasistencias de los clientes relacionados a sus eventos.
+
 SELECT 
     events.id,
     events.profesor_id,

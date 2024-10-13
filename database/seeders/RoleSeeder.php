@@ -84,8 +84,10 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'admin.events'])->syncRoles([$admin, $secretaria]);
         Permission::create(['name' => 'admin.listUsers'])->syncRoles([$admin, $secretaria]); //modal agendamiento de clase admin
         //rutas para el admin - asistencias
-        Permission::create(['name' => 'admin.asistencias.registrar_asistencia'])->syncRoles([$admin, $secretaria, $profesor]);
-        Permission::create(['name' => 'admin.asistencias.list_inacistencias'])->syncRoles([$admin, $secretaria, $profesor]);
+        /*OLD*///Permission::create(['name' => 'admin.asistenciass.registrar_asistencia'])->syncRoles([$admin, $secretaria, $profesor]);
+        /*OLD*///Permission::create(['name' => 'admin.asistenciass.list_inacistencias'])->syncRoles([$admin, $secretaria, $profesor]);
+        Permission::create(['name' => 'admin.asistenciass.registrar_asistencia'])->syncRoles([$admin, $secretaria, $profesor]);
+        Permission::create(['name' => 'admin.asistenciass.list_inacistencias'])->syncRoles([$admin, $secretaria, $profesor]);
         //----------------------------------------------------------------------------------------
 
         // Permission::create(['name' => 'admin.users.index'])->syncRoles([$admin]);

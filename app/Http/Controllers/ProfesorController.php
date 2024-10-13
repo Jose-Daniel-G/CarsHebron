@@ -112,12 +112,9 @@ class ProfesorController extends Controller
 
 
     public function destroy(Profesor $profesor)
-    {
-        // dd($profesor);
-        if ($profesor->user) {
-            $profesor->user->delete(); // Si el profesor tiene un usuario asociado, eliminarlo
-        }
-
+    {// dd($profesor);
+        if ($profesor->user) {$profesor->user->delete();} // Si el profesor tiene un usuario asociado, eliminarlo
+        
         // Eliminar el profesor
         $profesor->delete();
 

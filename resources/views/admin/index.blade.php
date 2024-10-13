@@ -23,6 +23,9 @@
                         <h3>{{ $total_configuraciones }}</h3>
                         <p>Configuracion</p>
                     </div>
+                    <div class="icon">
+                        <i class="ion fas bi bi-file-person"></i>
+                    </div>
                     <a href="{{ route('admin.config.index') }}" class="small-box-footer"><i class="fas fa-sync-alt"></i></a>
                 </div>
             </div>
@@ -51,9 +54,9 @@
                             <p>Secretarias</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-person-add"></i>
+                        <i class="fas fa-laptop"></i>
                     </div>
-                    <a href="{{ route('admin.secretarias.index') }}" class="small-box-footer">More info <i
+                    <a href="{{ route('admin.secretarias.index') }}" class="small-box-footer">Mas info <i
                             class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
@@ -67,9 +70,9 @@
                         <p>Clientes</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-person-add"></i>
+                        <i class="fas fa-users mr-2"></i>
                     </div>
-                    <a href="{{ route('admin.clientes.index') }}" class="small-box-footer">More info <i
+                    <a href="{{ route('admin.clientes.index') }}" class="small-box-footer">Mas info <i
                             class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
@@ -83,9 +86,25 @@
                         <p>Cursos</p>
                     </div>
                     <div class="icon">
-                        <i class="ion fas bi bi-building-fill-add"></i>
+                        <i class="fas fa-book"></i>
                     </div>
-                    <a href="{{ route('admin.cursos.index') }}" class="small-box-footer">More info <i
+                    <a href="{{ route('admin.cursos.index') }}" class="small-box-footer">Mas info <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        @endcan
+        @can('admin.cursos.index')
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ $total_cursos }}</h3>
+
+                        <p>Vehiculos</p>
+                    </div>
+                    <div class="icon">
+                        <i class="bi bi-car-front"></i>
+                    </div>
+                    <a href="{{ route('admin.vehiculos.index') }}" class="small-box-footer">Mas info <i
                             class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
@@ -122,7 +141,6 @@
                 </div>
             </div>
         @endcan
-
         @can('admin.reservas.index')
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-secondary">
@@ -209,7 +227,6 @@
 
                         <div class="row">
                             <div class="col-md-12">
-
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
                                     data-target="#claseModal">
@@ -220,8 +237,6 @@
                                     <i class="bi bi-calendar-check"></i>Ver las reservas
                                 </a>
                             </div>
-
-
                             <!-- Modal -->
                             @include('admin.events.event')
                             <!-- Incluir Modal INFO-->
@@ -323,26 +338,34 @@
                     this.value = selectedTime; // Establecer la hora modificada en el campo de entrada
                 }
                 // verificar si la fecha selecionada es anterior a la fecha actual
-                if (selectedTime < '08:00' || selectedTime > '20:00') {
+                if (selectedTime < '06:00' || selectedTime > '20:00') {
                     // si es asi, establecer la hora seleccionada en null
                     this.value = null;
-                    alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
+                    Swal.fire({
+                        text: "Por favor seleccione una fecha entre 06:00 am y las 8:00 pm",
+                        icon: "error"
+                    });
+                    // alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
                 }
             })
 
             // Agregar un evento de cambio al input
-            HoraFinInput.addEventListener('change', function() {
-                let selectedTime = this.value;
-                // Conservar solo la hora, ignorar los minutos
-                selectedTime = selectedTime.split(':')[0] + ':00'; // "14:00"
-                this.value = selectedTime;
-                // verificar si la fecha selecionada es anterior a la fecha actual
-                if (selectedTime < '08:00' || selectedTime > '20:00') {
-                    // si es asi, establecer la hora seleccionada en null
-                    this.value = null;
-                    alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
-                }
-            });
+            // HoraFinInput.addEventListener('change', function() {
+            //     let selectedTime = this.value;
+            //     // Conservar solo la hora, ignorar los minutos
+            //     selectedTime = selectedTime.split(':')[0] + ':00'; // "14:00"
+            //     this.value = selectedTime;
+            //     // verificar si la fecha selecionada es anterior a la fecha actual
+            //     if (selectedTime < '06:00' || selectedTime > '20:00') {
+            //         // si es asi, establecer la hora seleccionada en null
+            //         this.value = null;
+            //         Swal.fire({
+            //             text: "Por favor seleccione una fecha entre 06:00 am y las 8:00 pm",
+            //             icon: "error"
+            //         }); 
+            //         // alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
+            //     }
+            // });
         });
 
         // carga contenido de tabla en  curso_info

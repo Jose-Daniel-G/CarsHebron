@@ -2,7 +2,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="claseModal">Profesores</h5>
+                <h5 class="modal-title" id="claseModal">Agenda</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-9">
                             <div class="form-group"><label for="hora_inicio">Hora inicio</label>
                                 <input type="time" class="form-control" name="hora_inicio" id="hora_inicio">
                                 @error('hora_inicio')
@@ -91,11 +91,9 @@
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group"><label for="hora_fin">Hora fin</label>
-                                <input type="time" class="form-control" name="hora_fin" id="hora_fin">
+                        <div class="col-md-3">
+                            <div class="form-group"><label for="hora_fin">Horas</label>
+                                <input type="number" class="form-control" name="hora_fin" id="hora_fin">
                                 @error('hora_fin')
                                     <small class="bg-danger text-white p-1">{{ $message }}</small>
                                 @enderror
