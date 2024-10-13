@@ -296,6 +296,39 @@
 @section('js')
     {{-- Axios JS --}}
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+
+    <script>
+        // Pasar si el usuario tiene el rol de "admin" como una variable de JavaScript
+        let isAdmin = @json(Auth::check() && Auth::user()->hasRole('superAdmin'));
+        // alert(isAdmin); // Muestra true o false dependiendo del rol
+        console.log("isAdmin value: ", isAdmin); // Es
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let HoraFinInput = document.getElementById('hora_fin');
+            if (!isAdmin) {
+                if (HoraFinInput) {
+                    HoraFinInput.addEventListener('change', function() {
+                        let selectedTime = this.value;
+                        this.value = selectedTime;
+
+                        if (parseInt(selectedTime) > 3) {
+                            this.value = null;
+                            Swal.fire({
+                                text: "Solo puede agendar hasta máximo 3 horas",
+                                icon: "error"
+                            });
+                        }
+                    });
+                } else {
+                    console.error("El elemento HoraFinInput no se encontró.");
+                }
+            }
+        });
+    </script>
+
+
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             //-------------------------------------------------------------
@@ -340,8 +373,23 @@
                     // alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
                 }
             })
-
             // Agregar un evento de cambio al input
+
+            // HoraFinInput.addEventListener('change', function() {
+            //     let selectedTime = this.value;
+            //     // Conservar solo la hora, ignorar los minutos
+            //     this.value = selectedTime;
+
+            //         if (selectedTime > '3') {
+            //             // si es asi, establecer la hora seleccionada en null
+            //             this.value = null;
+            //             Swal.fire({
+            //                 text: "solo puede agendar hasta maximo 3 horas",
+            //                 icon: "error"
+            //             });
+            //             // alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
+            //         }
+            // });
             // HoraFinInput.addEventListener('change', function() {
             //     let selectedTime = this.value;
             //     // Conservar solo la hora, ignorar los minutos
@@ -508,6 +556,16 @@
 
         });
     </script>
+
+    @if (session('info') && session('icono') && session('hora_reserva'))
+        <script>
+            Swal.fire({
+                title: "{{ session('title') }}",
+                text: "{{ session('info') }}",
+                icon: "{{ session('icono') }}"
+            });
+        </script>
+    @endif
 
     @if (session('info') && session('icono') && session('hora_reserva'))
         <script>

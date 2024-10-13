@@ -57,7 +57,7 @@ class AsistenciaController extends Controller
             ->limit(100)
             ->get();
 
-        return view('admin.secretarias.inasistencias', compact('clientes'));
+        return view('admin.asistencias.inasistencias', compact('clientes'));
     }
 
 

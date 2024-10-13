@@ -23,7 +23,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="nombre">Nombre de la Clínica/Hospital</label><b>*</b>
+                                        <label for="nombre">Nombre de la Escuela</label><b>*</b>
                                         <input type="text" class="form-control" name="nombre" value="{{ old('nombre') }}" required>
                                         @error('nombre')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>

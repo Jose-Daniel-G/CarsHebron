@@ -299,24 +299,24 @@ return [
             'route' => 'admin.home',
             'icon' => 'fas fa-home fa-fw ',
         ],
-        // [
-        //     'text'        => 'Configuraciones',
-        //     'route'         => 'admin.config.index',
-        //     'icon' => 'fas fa-sync-alt',
-        //     // 'can'  => 'admin.config.index',
-        //     'submenu' => [
-        //         [
-        //             'text' => 'Crear configuracion',
-        //             'icon'        => 'far fa-circle nav-icon',
-        //             'route' => 'admin.config.create',
-        //         ],
-        //         [
-        //             'text' => 'Listado de configuracion',
-        //             'icon'        => 'far fa-circle nav-icon',
-        //             'route' => 'admin.config.index',
-        //         ],
-        //     ],
-        // ],
+        [
+            'text'        => 'Configuraciones',
+            'route'         => 'admin.config.index',
+            'icon' => 'bi bi-gear',
+            'can'  => 'admin.config.index',
+            'submenu' => [
+                [
+                    'text' => 'Crear configuracion',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.config.create',
+                ],
+                [
+                    'text' => 'Listado de configuracion',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.config.index',
+                ],
+            ],
+        ],
         [
             'text'        => 'Usuarios',
             'route'         => 'admin.users.index',
@@ -332,7 +332,7 @@ return [
         [
             'text'        => 'Gestión de Asistencias',
             'icon' => 'fas fa-fw fa-user',
-            // 'can'  => 'admin.users.index',
+            // 'can'  => 'admin.asistencias.index',
             'submenu' => [
                 [
                     'text' => 'Registrar Asistencia',
@@ -408,23 +408,6 @@ return [
             ],
         ],
         [
-            'text' => 'Vehiculos',
-            'icon' => 'bi bi-car-front',
-            'route'  => 'admin.vehiculos.index',
-            'can'  => 'admin.vehiculos.index',
-            // 'submenu' => [
-            //     [   'text' => 'Creacion de vehiculos',
-            //         'icon'        => 'far fa-circle nav-icon',
-            //         'route' => 'admin.vehiculos.create',
-            //     ],
-            //     [   'text' => 'Listado de vehiculos',
-            //         'icon'        => 'far fa-circle nav-icon',
-            //         'route' => 'admin.cursos.index',
-            //     ],
-
-            // ],
-        ],
-        [
             'text' => 'Profesores',
             'icon' => 'ion fas bi bi-person-lines-fill',
             'can' => 'admin.profesores.index',
@@ -464,6 +447,22 @@ return [
                 ],
 
             ],
+        ],        [
+            'text' => 'Vehiculos',
+            'icon' => 'bi bi-car-front',
+            'route'  => 'admin.vehiculos.index',
+            'can'  => 'admin.vehiculos.index',
+            // 'submenu' => [
+            //     [   'text' => 'Creacion de vehiculos',
+            //         'icon'        => 'far fa-circle nav-icon',
+            //         'route' => 'admin.vehiculos.create',
+            //     ],
+            //     [   'text' => 'Listado de vehiculos',
+            //         'icon'        => 'far fa-circle nav-icon',
+            //         'route' => 'admin.cursos.index',
+            //     ],
+
+            // ],
         ],
         // [
         //     'text'        => 'Agenda',

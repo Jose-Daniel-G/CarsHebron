@@ -35,9 +35,12 @@ class HomeController extends Controller
         if (Auth::user()->hasRole('superAdmin') ||  Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria') || Auth::user()->hasRole('profesor')) {
             $cursos = Curso::all();
             $clientes = Cliente::all();
-            return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'clientes', 'events', 'total_configuraciones'));
+            // $role = Auth::user()->getRoleNames(); // Asegúrate de tener un campo 'role'
+            $role = 'admin'; // Asegúrate de tener un campo 'role'
+
+            return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'clientes', 'events', 'total_configuraciones', 'role'));
         } else {
-            $cliente = Cliente::where('user_id', Auth::id())->first(); 
+            $cliente = Cliente::where('user_id', Auth::id())->first();
             $cursos = $cliente->cursos;
             return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'events', 'total_configuraciones'));
         }
@@ -53,7 +56,7 @@ class HomeController extends Controller
         }
         return view('admin.show_reservas', compact('events'));
     }
-    public function show_reserva_profesores($id)//calendar
+    public function show_reserva_profesores($id) //calendar
     {
         try {
             // Verifica si el usuario autenticado es un administrador
@@ -77,7 +80,6 @@ class HomeController extends Controller
 
                 return response()->json($events);
             }
-
         } catch (\Exception $exception) {
             return response()->json(['mensaje' => 'Error: ' . $exception->getMessage()]);
         }
