@@ -337,7 +337,7 @@ return [
                 [
                     'text' => 'Registrar Asistencia',
                     'icon'        => 'far fa-circle nav-icon',
-                    'route' => 'admin.profesores.asistencia',
+                    'route' => 'admin.asistencias.index',
                     'can' => 'admin.asistencias.registrar_asistencia',
                 ],
                 [
@@ -594,6 +594,21 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'toastr' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.cs',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js',
                 ],
             ],
         ],

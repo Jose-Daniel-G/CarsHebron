@@ -5,45 +5,76 @@ namespace App\Http\Controllers;
 use App\Models\Asistencia;
 use App\Models\Cliente;
 use App\Models\Event as CalendarEvent;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AsistenciaController extends Controller
 {
     // public function verFormulario()
     public function index()
     {
-        // Obtenemos los clientes y eventos disponibles para el formulario
+        // Obtener los clientes
         $clientes = Cliente::all();
-        $eventos = CalendarEvent::whereDate('start', '>=', now())->get(); // Filtra solo los eventos futuros o del día actual
 
-        // // Filtra solo los eventos programados para el día actual// $eventos = CalendarEvent::whereDate('start', '=', now()->toDateString())->get();
+        // Filtrar solo los eventos programados para el día actual
+        $hoy = Carbon::now()->format('Y-m-d');
+        // $events = CalendarEvent::whereDate('start', '>=', now())->get(); // Filtra solo los eventos futuros o del día actual
+        $events = CalendarEvent::whereDate('start', $hoy)->get();
 
-        //    dd($eventos,$clientes);
-        // return view('admin.asistencias.asistencia', compact('clientes', 'eventos'));
-        return view('admin.asistencias.index', compact('clientes', 'eventos'));
+        // Obtener las asistencias registradas para el día actual
+        $asistencias = Asistencia::with('event', 'cliente')
+            ->whereHas('event', function ($query) use ($hoy) {
+                $query->whereDate('start', $hoy);
+            })
+            ->get();
+
+        return view('admin.asistencias.index', compact('clientes', 'events', 'asistencias'));
     }
+
     // public function registrarAsistencia(Request $request)
-    public function create(Request $request)
+    public function store(Request $request)
     {
-        // Validamos los datos requeridos
-        $validatedData = $request->validate([
-            'cliente_id' => 'required|exists:clientes,id',
-            'evento_id'  => 'required|exists:calendar_events,id',
-            'asistio'    => 'required|boolean',
-            'duracion'   => 'required_if:asistio,false|numeric|min:1'
-        ]);
+        foreach ($request->eventos as $eventoId => $evento) {
+            // Validamos los datos de cada evento
+            $validatedData = Validator::make($evento, [
+                'cliente_id' => 'required|exists:clientes,id',
+                'asistio'    => 'nullable|boolean', // Puede ser null si no está marcado
+            ])->validate();
     
-        // Creamos la asistencia con penalidad en caso de inasistencia
-        $asistencia = Asistencia::create([
-            'cliente_id' => $validatedData['cliente_id'],
-            'evento_id'  => $validatedData['evento_id'],
-            'asistio'    => $validatedData['asistio'],
-            'penalidad'  => $validatedData['asistio'] ? 0 : $validatedData['duracion'] * 20000
-        ]);
+            // Añadimos el evento_id al array de datos validados
+            $validatedData['evento_id'] = $eventoId;
     
-        return redirect()->back()->with('success', 'Asistencia registrada correctamente');
+            // Asignamos 0 si no está marcado el checkbox de 'asistió'
+            $validatedData['asistio'] = isset($validatedData['asistio']) ? $validatedData['asistio'] : 0;
+    
+            // Obtener el evento para calcular la duración
+            $event = CalendarEvent::find($eventoId);
+            if ($event) {
+                // Asegúrate de que start y end sean instancias de Carbon
+                $start = \Carbon\Carbon::parse($event->start);
+                $end = \Carbon\Carbon::parse($event->end);
+    
+                // Calcular la duración en horas
+                $duracionHoras = $end->diffInHours($start);
+                $validatedData['duracion'] = $duracionHoras; // Asegúrate de tener una columna 'duracion' en la tabla 'asistencias'
+            } else {
+                // Manejar el caso si no se encuentra el evento
+                continue; // O lanzar un error, según lo que necesites
+            }
+    
+            // Creamos la asistencia con los datos validados
+            Asistencia::create($validatedData);
+        }
+    
+        return redirect()->route('admin.asistencias.index')
+            ->with('info', 'Asistencia registrada correctamente.')
+            ->with('icono', 'success');
     }
     
+
+
+
     // Función para la secretaria de ver inasistencias y habilitar cliente
     // public function verInasistencias()
     public function show()

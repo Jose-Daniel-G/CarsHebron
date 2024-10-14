@@ -8,17 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     use HasFactory;
-
-    public function user(){
+    protected $table = 'events';
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function profesor(){
+    public function profesor()
+    {
         return $this->belongsTo(Profesor::class);
     }
-    public function cliente(){
+    public function cliente()
+    {
         return $this->belongsTo(Cliente::class);
     }
-    public function curso(){
+    public function curso()
+    {
         return $this->belongsTo(Curso::class);
+    }
+    // Relación con el modelo Asistencia
+    public function asistencias()
+    {
+        return $this->hasMany(Asistencia::class, 'evento_id');
     }
 }

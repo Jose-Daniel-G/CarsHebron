@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card card-outline card-primary">
-                <form action="{{ route('asistencia.registrar') }}" method="POST">
+                <form action="{{ route('admin.asistencias.store') }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-3">
@@ -52,6 +52,15 @@
 @endsection
 
 @section('js')
+@if (session('info') && session('icono') && session('title'))
+<script>
+    Swal.fire({
+        title: "{{ session('title') }}",
+        text: "{{ session('info') }}",
+        icon: "{{ session('icono') }}"
+    });
+</script>
+@endif
     {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
 

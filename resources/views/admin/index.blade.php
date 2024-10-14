@@ -225,7 +225,7 @@
                                     Agendar Clase
                                 </button>
 
-                                <a href="{{ route('admin.show_reservas', Auth::user()->id) }}" class="btn btn-success">
+                                <a href="{{ route('admin.reservas.show', Auth::user()->id) }}" class="btn btn-success">
                                     <i class="bi bi-calendar-check"></i>Ver las reservas
                                 </a>
                             </div>
@@ -586,6 +586,11 @@
             });
         </script>
     @endif
+    @if (session('info') )
+        <script>
+            toastr.success('{{ session('info') }}');
+        </script>
+    @endif
     <script>
         $(document).ready(function() {
             // Establece el evento para llamar a la función cargarProfesores al cambiar el curso
@@ -629,5 +634,21 @@
                 });
             });
         });
+    </script>
+    <script>
+        //no esta funcionando
+
+
+        @if (session('error'))
+            toastr.error('{{ session('error') }}');
+        @endif
+
+        @if (session('info'))
+            toastr.info('{{ session('info') }}');
+        @endif
+
+        @if (session('warning'))
+            toastr.warning('{{ session('warning') }}');
+        @endif
     </script>
 @stop

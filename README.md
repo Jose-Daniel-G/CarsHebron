@@ -146,5 +146,6 @@ npm install jquery-ui
 HABILITAR EXTENCION EN PHP.INI Xampp u otro: extension=gd
 npm install laravel-mix --save-dev
 npm install @fullcalendar/core @fullcalendar/daygrid @fullcalendar/timegrid
+npm install toastr
 
 php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=views

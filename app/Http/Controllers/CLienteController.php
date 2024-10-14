@@ -95,7 +95,6 @@ class ClienteController extends Controller
 
     public function update(Request $request, Cliente $cliente)
     {   
-        // dd($request->all());
         // Validación de los datos
         $validatedData = $request->validate([
             'nombres' => 'required',

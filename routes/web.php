@@ -23,15 +23,15 @@ Route::resource('/admin/horarios', HorarioController::class)->names('admin.horar
 // ->middleware('auth','can:show_datos_cursos');
 Route::get('/admin/horarios/show_reserva_profesores/{id}', [HomeController::class, 'show_reserva_profesores'])
      ->name('admin.horarios.show_reserva_profesores');
-Route::get('/admin/show_reservas/{id}', [HomeController::class, 'show_reservas'])->name('admin.show_reservas')->middleware('auth','can:admin.show_reservas');
+Route::get('/admin/show/{id}', [HomeController::class, 'show'])->name('admin.reservas.show')->middleware('auth','can:admin.show_reservas');
 Route::get('/admin/horarios/curso/{id}', [HorarioController::class, 'show_datos_cursos'])->name('admin.horarios.show_datos_cursos')->middleware('auth');
 // Route::get('/admin/profesores/reportes', [ProfesorController::class, 'reportes'])->name('admin.profesores.reportes');
 
 // CHATGPT
 Route::middleware('auth')->group(function () {
      // Rutas para profesores
-     Route::get('/admin/profesor/asistencia', [AsistenciaController::class, 'index'])->name('admin.profesores.asistencia');//Registrar Asistencia
-     Route::post('/admin/asistencia/registrar', [AsistenciaController::class, 'create'])->name('asistencia.registrar');
+     Route::post('/admin/asistencia/registrar', [AsistenciaController::class, 'store'])->name('admin.asistencias.create');//Registrar Asistencia
+     Route::get('/admin/profesor/asistencia', [AsistenciaController::class, 'index'])->name('admin.asistencias.index');
  
      // Rutas para secretarias
      Route::get('/admin/secretaria/inasistencias', [AsistenciaController::class, 'show'])->name('admin.secretarias.inasistencias');//Listado de Inacistencias

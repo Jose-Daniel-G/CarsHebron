@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card card-outline card-primary">
-                <form action="{{ route('asistencia.registrar') }}" method="POST">
+                <form action="{{ route('admin.asistencias.create') }}" method="POST">
                     @csrf
                     <div class="table-responsive">
                         <table class="table table-bordered">
@@ -23,14 +23,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($eventos as $evento)
+                                @foreach ($events as $event)
                                     <tr>
-                                        <td>{{ $evento->cliente->nombres }}</td>
-                                        <td>{{ $evento->title }}</td>
-                                        <td>{{ $evento->start }}</td>
+                                        <td>{{ $event->cliente->nombres }}</td>
+                                        <td>{{ $event->title }}</td>
+                                        <td>{{ $event->start }}</td>
                                         <td>
-                                            <input type="hidden" name="eventos[{{ $evento->id }}][cliente_id]" value="{{ $evento->cliente->id }}">
-                                            <input type="checkbox" name="eventos[{{ $evento->id }}][asistio]" value="1">
+                                            <input type="hidden" name="eventos[{{ $event->id }}][cliente_id]" value="{{ $event->cliente->id }}">
+                                            <input type="checkbox" name="eventos[{{ $event->id }}][asistio]" value="1"
+                                                @if($asistencias->where('evento_id', $event->id)->where('cliente_id', $event->cliente->id)->first() &&
+                                                   $asistencias->where('evento_id', $event->id)->where('cliente_id', $event->cliente->id)->first()->asistio)
+                                                    checked 
+                                                @endif>
                                         </td>
                                     </tr>
                                 @endforeach

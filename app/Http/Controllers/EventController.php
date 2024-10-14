@@ -59,10 +59,7 @@ class EventController extends Controller
                 'hora_inicio' => 'El profesor no está disponible en ese horario.',
             ]);
         }
-
         // Validar si existen eventos duplicados
-
-
         $eventos_duplicados = Event::where('profesor_id', $profesor->id)
             ->where('start', $fecha_hora_inicio)
             ->where('end', $fecha_hora_fin)
@@ -86,16 +83,10 @@ class EventController extends Controller
         $evento->curso_id = $cursoid;
 
         if (Auth::user()->hasRole('superAdmin') || Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
-            // Asegúrate de que cliente_id está presente
             $evento->cliente_id = $request->cliente_id; //cliente id
-            // Guardar el evento
             $evento->save();
         } else {
-            // Asegúrate de que el usuario tiene un cliente asociado
             $evento->cliente_id = Auth::user()->cliente->id; //cliente id
-            //  dd($request->all());
-
-            // Guardar el evento
             $evento->save();
         }
 
@@ -126,7 +117,6 @@ class EventController extends Controller
     public function show(Request $request)
     {
         try {
-            // Aquí puedes obtener todos los eventos desde la base de datos
             // $events = Event::all(); // Cambia esto según la lógica que necesites
             $events = Event::with('profesor', 'cliente')->get(); // Carga la relación 'profesor'
 
@@ -145,10 +135,10 @@ class EventController extends Controller
         return response()->json(['message' => 'Evento actualizado correctamente']);
     }
 
-    public function destroy(Event $event)
+    public function destroy(Event $evento)
     {
         // dd($event);
-        $event->delete(); // Cambiar destroy() por delete()
+        $evento->delete(); // Cambiar destroy() por delete()
         return redirect()->back()->with([
             'mensaje' => 'Se eliminó la reserva de manera correcta',
             'icono' => 'success',

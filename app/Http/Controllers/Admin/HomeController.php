@@ -28,14 +28,11 @@ class HomeController extends Controller
         $total_eventos = CalendarEvent::count();
         $total_configuraciones = Config::count();
 
-        $profesores = Profesor::all();
-        $events = CalendarEvent::all();
-        // dd(Auth::user()->getRoleNames());
+        $profesores = Profesor::all(); $events = CalendarEvent::all();// dd(Auth::user()->getRoleNames());
         
         if (Auth::user()->hasRole('superAdmin') ||  Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria') || Auth::user()->hasRole('profesor')) {
             $cursos = Curso::all();
             $clientes = Cliente::all();
-            // $role = Auth::user()->getRoleNames(); // Asegúrate de tener un campo 'role'
             $role = 'admin'; // Asegúrate de tener un campo 'role'
 
             return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'clientes', 'events', 'total_configuraciones', 'role'));
@@ -46,16 +43,16 @@ class HomeController extends Controller
         }
     }
 
-    public function show_reservas($id)
+    public function show($id)//show_reservas
     { // echo $id;
         if (Auth::user()->hasRole('superAdmin') ||  Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
-            $events = CalendarEvent::with('cliente')->get();
-            // $events = CalendarEvent::all();
+            $events = CalendarEvent::with('cliente')->get();// $events = CalendarEvent::all();
         } else {
             $events = CalendarEvent::where('cliente_id',  Auth::user()->cliente->id)->get();
         }
-        return view('admin.show_reservas', compact('events'));
+        return view('admin.reservas.show', compact('events'));
     }
+    
     public function show_reserva_profesores($id) //calendar
     {
         try {
@@ -85,8 +82,8 @@ class HomeController extends Controller
         }
     }
 
-    public function create()
-    {
-        return view('admin.usuarios.create');
-    }
+    // public function create()
+    // {
+    //     return view('admin.usuarios.create');
+    // }
 }
