@@ -27,30 +27,30 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="nombre">Nombre de la Escuela</label><b>*</b>
-                                        <input type="text" class="form-control" name="nombre"
-                                            value="{{ $config->nombre }}" required>
-                                        @error('nombre')
+                                        <label for="site_name">Nombre de la Escuela</label><b>*</b>
+                                        <input type="text" class="form-control" name="site_name"
+                                            value="{{ $config->site_name }}" required>
+                                        @error('site_name')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="direccion">Dirección</label><b>*</b>
-                                        <input type="text" class="form-control" name="direccion"
-                                            value="{{ $config->direccion }}" required>
-                                        @error('direccion')
+                                        <label for="address">Dirección</label><b>*</b>
+                                        <input type="text" class="form-control" name="address"
+                                            value="{{ $config->address }}" required>
+                                        @error('address')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="telefono">Teléfono</label><b>*</b>
-                                        <input type="number" class="form-control" name="telefono"
-                                            value="{{ $config->telefono }}" required>
-                                        @error('telefono')
+                                        <label for="phone">Teléfono</label><b>*</b>
+                                        <input type="number" class="form-control" name="phone"
+                                            value="{{ $config->phone }}" required>
+                                        @error('phone')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
                                         @enderror
                                     </div>
@@ -59,10 +59,10 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="correo">Correo</label><b>*</b>
-                                        <input type="email" class="form-control" name="correo"
-                                            value="{{ $config->correo }}" required>
-                                        @error('correo')
+                                        <label for="email_contact">Correo</label><b>*</b>
+                                        <input type="email" class="form-control" name="email_contact"
+                                            value="{{ $config->email_contact }}" required>
+                                        @error('email_contact')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
                                         @enderror
                                     </div>
@@ -71,7 +71,7 @@
                                     <div class="form-group">
                                         <label for="logo">Logo</label><b>*</b>
                                         <!-- Campo para subir un nuevo logo -->
-                                        <input type="file" id="file" class="form-control" name="logo">v>
+                                        <input type="file" id="file" class="form-control" name="logo">
                                         <!-- Mostrar el error si hay problemas con la carga de la imagen -->
                                         @error('logo')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>

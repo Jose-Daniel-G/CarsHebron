@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('configs', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('direccion');
-            $table->string('telefono');
-            $table->string('correo');
+            $table->string('site_name');
+            $table->string('address');
+            $table->string('phone');
+            $table->string('email_contact');
             $table->text('logo');
             $table->timestamps();
         });

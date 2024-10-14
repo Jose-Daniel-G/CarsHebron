@@ -18,67 +18,55 @@
                         <h3 class="card-title">Llene los Datos</h3>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('admin.config.store') }}" method="POST" autocomplete="off" enctype="multipart/form-data">
+                        <form action="{{ route('admin.config.store') }}" method="POST" autocomplete="off"
+                            enctype="multipart/form-data">
                             @csrf
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="nombre">Nombre de la Escuela</label><b>*</b>
-                                        <input type="text" class="form-control" name="nombre" value="{{ old('nombre') }}" required>
-                                        @error('nombre')
-                                            <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="direccion">Dirección</label><b>*</b>
-                                        <input type="text" class="form-control" name="direccion" value="{{ old('direccion') }}" required>
-                                        @error('direccion')
-                                            <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div> 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="telefono">Teléfono</label><b>*</b>
-                                        <input type="number" class="form-control" name="telefono" value="{{ old('telefono') }}" required>
-                                        @error('telefono')
-                                            <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="site_name">Nombre del sitio</label>
+                                <input type="text" class="form-control" name="site_name" value="{{ old('site_name') }}"
+                                    required>
+                                @error('site_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="correo">Correo</label><b>*</b>
-                                        <input type="email" class="form-control" name="correo" value="{{ old('correo') }}" required>
-                                        @error('correo')
-                                            <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="logo">Logo</label><b>*</b>
-                                        <input type="file" id="file" class="form-control" name="logo" required>
-                                        <div class="text-center"><output id="list"></output></div>
-                                        @error('logo')
-                                            <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="address">Dirección</label>
+                                <input type="text" class="form-control" name="address" value="{{ old('address') }}"
+                                    required>
+                                @error('address')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <a href="{{ route('admin.config.index') }}" class="btn btn-secondary">
-                                            Cancelar
-                                        </a>
-                                        <button type="submit" class="btn btn-primary">Registrar configuracion</button>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="phone">Teléfono</label>
+                                <input type="number" class="form-control" name="phone" value="{{ old('telefono') }}"
+                                    required>
+                                @error('telefono')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email_contact">Correo de contacto</label>
+                                <input type="email" class="form-control" name="email_contact"
+                                    value="{{ old('email_contact') }}" required>
+                                @error('email_contact')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="logo">Logo</label><b>*</b>
+                                <input type="file" id="file" class="form-control" name="logo" required>
+                                <div class="text-center"><output id="list"></output></div>
+                                @error('logo')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <a href="{{ route('admin.config.index') }}" class="btn btn-secondary">
+                                    Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary">Registrar configuracion</button>
                             </div>
                         </form>
                     </div>
@@ -106,7 +94,7 @@
 
                     var reader = new FileReader();
                     reader.onload = function(e) {
-                        document.getElementById("list").innerHTML = 
+                        document.getElementById("list").innerHTML =
                             `<img class="thumb thumbnail" src="${e.target.result}" width="100%" title="${file.name}"/>`;
                     };
                     reader.readAsDataURL(file);

@@ -14,7 +14,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Configuraciones registradas</h3>
                     <div class="card-tools">
-                        <a href="{{ route('admin.config.create') }}" class="btn btn-primary">Registrar
+                        <a href="{{ route('admin.config.store') }}" class="btn btn-primary">Registrar
                             {{-- <i class="fa-solid fa-plus"></i> --}}
                         </a>
                     </div>
@@ -38,13 +38,13 @@
                         </thead>
                         <tbody>
                             <?php $contador = 1; ?>
-                            @foreach ($configuraciones as $config)
+                            @foreach ($configs as $config)
                                 <tr>
                                     <td scope="row">{{ $contador++ }}</td>
-                                    <td scope="row">{{ $config->nombre }}</td>
-                                    <td scope="row">{{ $config->direccion }}</td>
-                                    <td scope="row">{{ $config->telefono }}</td>
-                                    <td scope="row">{{ $config->correo }}</td>
+                                    <td scope="row">{{ $config->site_name }}</td>
+                                    <td scope="row">{{ $config->address }}</td>
+                                    <td scope="row">{{ $config->phone }}</td>
+                                    <td scope="row">{{ $config->email_contact }}</td>
                                     <td scope="row">
                                         <img src="{{ asset('storage/' . $config->logo) }}" alt="logo" width="100">
                                     </td>

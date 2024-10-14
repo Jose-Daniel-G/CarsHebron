@@ -597,7 +597,7 @@ return [
                 ],
             ],
         ],
-        'toastr' => [
+        'toastr' => [//it isnt working
             'active' => true,
             'files' => [
                 [
