@@ -28,13 +28,13 @@ class AsistenciaController extends Controller
                 $query->whereDate('start', $hoy);
             })
             ->get();
-
         return view('admin.asistencias.index', compact('clientes', 'events', 'asistencias'));
     }
 
     // public function registrarAsistencia(Request $request)
     public function store(Request $request)
     {
+        // dd($request->all());
         foreach ($request->eventos as $eventoId => $evento) {
             // Validamos los datos de cada evento
             $validatedData = Validator::make($evento, [
@@ -52,8 +52,8 @@ class AsistenciaController extends Controller
             $event = CalendarEvent::find($eventoId);
             if ($event) {
                 // Asegúrate de que start y end sean instancias de Carbon
-                $start = \Carbon\Carbon::parse($event->start);
-                $end = \Carbon\Carbon::parse($event->end);
+                $start = Carbon::parse($event->start);
+                $end = Carbon::parse($event->end);
     
                 // Calcular la duración en horas
                 $duracionHoras = $end->diffInHours($start);
@@ -63,14 +63,25 @@ class AsistenciaController extends Controller
                 continue; // O lanzar un error, según lo que necesites
             }
     
-            // Creamos la asistencia con los datos validados
-            Asistencia::create($validatedData);
+            // Verificar si ya existe una asistencia para este cliente y evento
+            $asistenciaExistente = Asistencia::where('cliente_id', $validatedData['cliente_id'])
+                ->where('evento_id', $eventoId)
+                ->first();
+    
+            if ($asistenciaExistente) {
+                // Si existe, actualizamos el registro
+                $asistenciaExistente->update($validatedData);
+            } else {
+                // Si no existe, creamos un nuevo registro
+                Asistencia::create($validatedData);
+            }
         }
     
         return redirect()->route('admin.asistencias.index')
             ->with('info', 'Asistencia registrada correctamente.')
             ->with('icono', 'success');
     }
+    
     
 
 
@@ -80,14 +91,14 @@ class AsistenciaController extends Controller
     public function show()
     {
         // Filtra los clientes que tengan inasistencias con penalidad
-        $clientes = Cliente::select('clientes.id', 'clientes.nombres AS nombre_cliente', 'asistencias.id AS asistencia_id', 'events.title AS nombre_evento', 'events.start', 'asistencias.asistio', 'asistencias.penalidad')
+        $clientes = Cliente::select('clientes.id', 'clientes.nombres AS nombre', 'clientes.apellidos AS apellido', 'asistencias.id AS asistencia_id', 'events.title AS nombre_evento', 'events.start', 'asistencias.asistio', 'asistencias.penalidad')
             ->join('asistencias', 'clientes.id', '=', 'asistencias.cliente_id')
             ->join('events', 'asistencias.evento_id', '=', 'events.id')
             // ->where('asistencias.asistio', 0)
             ->where('asistencias.penalidad', '>=', 0)
             ->limit(100)
             ->get();
-
+        // dd($clientes);
         return view('admin.asistencias.inasistencias', compact('clientes'));
     }
 

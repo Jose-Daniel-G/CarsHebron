@@ -16,3 +16,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+# Ignorar imagen específica
+normalizacion_de_base_de_datos.png

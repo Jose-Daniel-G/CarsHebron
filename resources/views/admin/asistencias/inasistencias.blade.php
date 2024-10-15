@@ -21,7 +21,7 @@
                 <tbody>
                     @foreach ($clientes as $cliente)
                         <tr>
-                            <td>{{ $cliente->nombre }}</td>
+                            <td>{{ $cliente->nombre.' '.$cliente->apellido }}</td>
                             <td>{{ $cliente->asistencias->where('asistio', false)->sum('evento.duracion') }} horas</td>
                             <td>${{ $cliente->asistencias->where('asistio', false)->sum('penalidad') }}</td>
                             <td>

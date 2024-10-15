@@ -603,12 +603,12 @@ return [
                 [
                     'type' => 'css',
                     'asset' => true,
-                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.cs',
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css',
                 ],
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js',
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js',
                 ],
             ],
         ],

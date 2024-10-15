@@ -21,7 +21,6 @@ class EventController extends Controller
     public function store(Request $request)
     {
         // Depura para ver todos los datos enviados en la solicitud
-
         $request->validate([
             'profesorid' => 'required|exists:profesors,id',
             'cursoid' => 'required',
@@ -30,6 +29,7 @@ class EventController extends Controller
             'hora_fin' => 'required|numeric|min:1',
             'cliente_id' => 'required_if:role,admin,secretaria' // Asegúrate de que cliente_id esté presente si es admin o secretaria
         ]);
+
         // Buscar el profesor por su ID
         $profesor = Profesor::find($request->profesorid);
         $fecha_reserva = $request->fecha_reserva;
@@ -38,6 +38,25 @@ class EventController extends Controller
         $fecha_hora_fin = $fecha_hora_inicio->copy()->addHours($request->hora_fin); // Sumamos las horas ingresadas en el campo 'hora_fin'
         $cursoid = $request->cursoid;
 
+        // // Obtener el cliente para verificar asistencia
+        $cliente_id = Auth::user()->hasRole('superAdmin') || 
+                      Auth::user()->hasRole('admin')      || 
+                      Auth::user()->hasRole('secretaria')  ? $request->cliente_id : Auth::user()->cliente->id;
+
+        // Verificar si el cliente tiene un evento anterior y si asistió
+        $ultimo_evento = Event::where('cliente_id', $cliente_id)
+            ->orderBy('start', 'desc') // Ordenar por fecha para obtener el evento más reciente
+            ->first();
+            
+        // dd($ultimo_evento);
+        if ($ultimo_evento && $ultimo_evento->asistencia === 0) {
+            // Si el cliente no asistió al último evento, redirigir con un mensaje de advertencia
+            return redirect()->back()->with([
+                'info' => 'No puedes agendar otra clase hasta que contactes con la escuela por faltar a tu último evento.',
+                'icono' => 'error',
+                'title' => 'Asistencia pendiente',
+            ]);
+        }
         // Obtener el día de la semana en español
         $dia = date('l', strtotime($fecha_reserva));
         $dia_de_reserva = $this->traducir_dia($dia);

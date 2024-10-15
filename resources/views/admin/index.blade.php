@@ -346,33 +346,52 @@
                     alert('No se puede seleccionar una fecha pasada');
                 }
 
-            })
+            });
             //----------------------------------------------------------------
             // VALIDAR SI LA HORA YA NO HA PASADO
-            const HoraReservaInput = document.getElementById('hora_reserva');
             const HoraIncioInput = document.getElementById('hora_inicio');
-            const HoraFinInput = document.getElementById('hora_fin');
 
-            // Escuchar el evento de cambio en el campo de hora de reserva
             HoraIncioInput.addEventListener('change', function() {
-                let selectedTime = this.value; //Obtener fecha seleccionada
-                // verificar si la fecha selecionada es anterior a la fecha actual
+                let selectedTime = this.value; // Obtener la hora seleccionada
+                let now = new Date(); // Obtener la hora actual
+
                 if (selectedTime) {
-                    selectedTime = selectedTime.split(':'); //Dividir la cadena en horas y minutos
-                    selectedTime = selectedTime[0] + ':00'; //conservar la hora, ignorar los minutos
-                    this.value = selectedTime; // Establecer la hora modificada en el campo de entrada
-                }
-                // verificar si la fecha selecionada es anterior a la fecha actual
-                if (selectedTime < '06:00' || selectedTime > '20:00') {
-                    // si es asi, establecer la hora seleccionada en null
-                    this.value = null;
-                    Swal.fire({
-                        text: "Por favor seleccione una fecha entre 06:00 am y las 8:00 pm",
-                        icon: "error"
-                    });
-                    // alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
+                    // Dividir la hora seleccionada en horas y minutos
+                    let selectedHour = parseInt(selectedTime.split(':')[0], 10);
+                    let selectedMinutes = parseInt(selectedTime.split(':')[1], 10);
+
+                    // Verificar si la hora seleccionada está fuera del rango permitido (06:00 - 20:00)
+                    if (selectedHour < 6 || selectedHour > 20) {
+                        this.value = null;
+                        Swal.fire({
+                            text: "Por favor seleccione una hora entre las 06:00 y las 20:00.",
+                            icon: "error"
+                        });
+                        return; // Terminar la ejecución si está fuera de rango
+                    }
+
+                    // Obtener la hora y minutos actuales
+                    let currentHour = now.getHours();
+                    let currentMinutes = now.getMinutes();
+                    let today = new Date().toISOString().slice(0, 10);
+                    // Obtener la fecha seleccionada del input de fecha
+                    let selectedDate = fechaReservaInput.value;
+                    // Verificar si la hora seleccionada ya ha pasado
+                    if (selectedDate === today) {
+                        if (selectedHour < currentHour || (selectedHour ===
+                                currentHour &&
+                                selectedMinutes <
+                                currentMinutes)) {
+                            this.value = null;
+                            Swal.fire({
+                                text: "No puede seleccionar una hora que ya ha pasado.",
+                                icon: "error"
+                            });
+                        }
+                    }
                 }
             })
+
             // Agregar un evento de cambio al input
 
             // HoraFinInput.addEventListener('change', function() {
@@ -586,7 +605,7 @@
             });
         </script>
     @endif
-    @if (session('info') )
+    @if (session('info'))
         <script>
             toastr.success('{{ session('info') }}');
         </script>
