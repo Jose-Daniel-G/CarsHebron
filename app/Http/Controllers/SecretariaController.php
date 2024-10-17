@@ -51,6 +51,7 @@ class SecretariaController extends Controller
         $usuario->assignRole('secretaria');
 
         return redirect()->route('admin.secretarias.index')
+            ->with('title', 'Exito')
             ->with('info', 'Se registro a la secretaria de forma correcta')
             ->with('icono', 'success');
     }
@@ -80,7 +81,7 @@ class SecretariaController extends Controller
             'fecha_nacimiento' => 'required|max:150',
             'password' => 'nullable|max:20|confirmed',
         ]);
-     
+
         $secretaria->nombres = $request->nombres;
         $secretaria->apellidos = $request->apellidos;
         $secretaria->cc = $request->cc;
@@ -99,6 +100,7 @@ class SecretariaController extends Controller
         }
         $usuario->save();
         return redirect()->route('admin.secretarias.index')
+            ->with('title', 'Exito')
             ->with('info', 'Se actualizo la secretaria de forma correcta')
             ->with('icono', 'success');
     }
@@ -109,6 +111,8 @@ class SecretariaController extends Controller
         $user->delete();
         $secretaria->delete();
 
-        return redirect()->route('admin.secretarias.index')->with('info', 'La secretaria se eliminó con éxito')->with('icono', 'success');
+        return redirect()->route('admin.secretarias.index')
+            ->with('title', 'Exito')
+            ->with('info', 'La secretaria se eliminó con éxito')->with('icono', 'success');
     }
 }

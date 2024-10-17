@@ -587,15 +587,6 @@
         </script>
     @endif
 
-    @if (session('info') && session('icono') && session('hora_reserva'))
-        <script>
-            Swal.fire({
-                title: "{{ session('title') }}",
-                text: "{{ session('info') }}",
-                icon: "{{ session('icono') }}"
-            });
-        </script>
-    @endif
 
     @if (session('info') && session('icono') && session('title'))
         <script>
@@ -655,7 +646,7 @@
             });
         });
     </script>
-    <script>
+    {{-- <script>
         //no esta funcionando
 
 
@@ -670,5 +661,5 @@
         @if (session('warning'))
             toastr.warning('{{ session('warning') }}');
         @endif
-    </script>
+    </script> --}}
 @stop

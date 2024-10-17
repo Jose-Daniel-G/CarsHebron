@@ -146,7 +146,7 @@
         });
         @if (session('info') && session('icono'))
             Swal.fire({
-                title: "Good job!",
+                title: "{{ session('title') }}!",
                 text: "{{ session('info') }}",
                 icon: "{{ session('icono') }}"
             });

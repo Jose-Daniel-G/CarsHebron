@@ -58,6 +58,7 @@ class ClienteController extends Controller
             $cliente->cursos()->sync($request->cursos);
 
             return redirect()->route('admin.clientes.index')
+                ->with('title', 'Exito')
                 ->with('info', 'Se registró al Cliente de forma correcta')
                 ->with('icono', 'success');
         } catch (\Illuminate\Database\QueryException $e) {
@@ -125,6 +126,7 @@ class ClienteController extends Controller
         $cliente->cursos()->sync($request->cursos ?? []); // Sincroniza los cursos seleccionados en el formulario
 
         return redirect()->route('admin.clientes.index')
+            ->with('title', 'Exito')
             ->with('info', 'Cliente actualizado correctamente.')
             ->with('icono', 'success');
     }
@@ -143,6 +145,7 @@ class ClienteController extends Controller
         $Cliente->delete();
 
         return redirect()->route('admin.clientes.index')
+            ->with('title', 'Exito')
             ->with('info', 'El Cliente se eliminó con éxito')
             ->with('icono', 'success');
     }

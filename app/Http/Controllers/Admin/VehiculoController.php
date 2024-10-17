@@ -44,7 +44,10 @@ class VehiculoController extends Controller
             $vehiculo->save();
     
             // Redirigir con un mensaje de éxito
-            return redirect()->route('admin.vehiculos.index')->with('success', 'Vehículo creado correctamente.');
+            return redirect()->route('admin.vehiculos.index')
+            ->with('title', 'Exito')
+            ->with('icon', 'Exito')
+            ->with('info', 'Vehículo creado correctamente.');
         }
     }
     
@@ -67,12 +70,18 @@ class VehiculoController extends Controller
         $data = $request->except(['placa']); // Si no deseas que se actualice la placa
         $vehiculo->update($data);
 
-        return redirect()->route('admin.vehiculos.index')->with('info', 'Vehículo actualizado correctamente.');
+        return redirect()->route('admin.vehiculos.index')
+        ->with('title', 'Exito')
+        ->with('info', 'Vehículo actualizado correctamente.')
+        ->with('icono', 'success');
     }
     public function destroy(Vehiculo $vehiculo)
     {
         // $this->authorize('author',$vehiculo);
         $vehiculo->delete();
-        return redirect()->route('admin.vehiculos.index')->with('success', 'El post ha sido eliminado exitosamente');
+        return redirect()->route('admin.vehiculos.index')
+        ->with('title', 'Exito')
+        ->with('success', 'El post ha sido eliminado exitosamente')
+        ->with('icono', 'success');
     }
 }

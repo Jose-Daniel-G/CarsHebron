@@ -47,7 +47,8 @@ class ConfigController extends Controller
         // Guardar la nueva configuración
         $config->save();
 
-        return redirect()->route('admin.config.index')->with('info', 'Configuración creada exitosamente');
+        return redirect()->route('admin.config.index')->with('title', 'Exito')
+                                                      ->with('info', 'Configuración creada')->with('icono', 'success');
     }
 
     public function edit(Config $config)
@@ -86,7 +87,8 @@ class ConfigController extends Controller
         // Guardar los cambios
         $config->save();
 
-        return redirect()->route('admin.config.index')->with('info', 'Configuración actualizada exitosamente');
+        return redirect()->route('admin.config.index')->with('title', 'Exito')
+        ->with('icono', 'success')->with('info', 'Configuración actualizada exitosamente');
     }
 
     public function destroy(Config $config)
@@ -99,6 +101,7 @@ class ConfigController extends Controller
         // Eliminar la configuración
         $config->delete();
 
-        return redirect()->route('admin.config.index')->with('info', 'Configuración eliminada correctamente');
+        return redirect()->route('admin.config.index')->with('title', 'Exito')
+        ->with('icono', 'success')->with('info', 'Configuración eliminada correctamente');
     }
 }
