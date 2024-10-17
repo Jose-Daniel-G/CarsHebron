@@ -7,6 +7,7 @@ use App\Models\Cliente;
 use App\Models\Event as CalendarEvent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AsistenciaController extends Controller
@@ -47,6 +48,7 @@ class AsistenciaController extends Controller
     
             // Asignamos 0 si no está marcado el checkbox de 'asistió'
             $validatedData['asistio'] = isset($validatedData['asistio']) ? $validatedData['asistio'] : 0;
+            
     
             // Obtener el evento para calcular la duración
             $event = CalendarEvent::find($eventoId);
@@ -57,7 +59,13 @@ class AsistenciaController extends Controller
     
                 // Calcular la duración en horas
                 $duracionHoras = $end->diffInHours($start);
-                $validatedData['duracion'] = $duracionHoras; // Asegúrate de tener una columna 'duracion' en la tabla 'asistencias'
+                if ($validatedData['asistio'] == 0) {
+                    // Si no asistió, calcular la penalidad
+                    $validatedData['penalidad'] = $duracionHoras * 20000;
+                } else {
+                    // Si asistió, no hay penalidad
+                    $validatedData['penalidad'] = 0;
+                }
             } else {
                 // Manejar el caso si no se encuentra el evento
                 continue; // O lanzar un error, según lo que necesites
@@ -91,12 +99,11 @@ class AsistenciaController extends Controller
     public function show()
     {
         // Filtra los clientes que tengan inasistencias con penalidad
-        $clientes = Cliente::select('clientes.id', 'clientes.nombres AS nombre', 'clientes.apellidos AS apellido', 'asistencias.id AS asistencia_id', 'events.title AS nombre_evento', 'events.start', 'asistencias.asistio', 'asistencias.penalidad')
+        $clientes = Cliente::select('clientes.id', 'clientes.nombres AS nombre', 'clientes.apellidos AS apellido', 'asistencias.id AS asistencia_id', 'events.title AS nombre_evento', DB::raw('DATE(events.end) AS date'), DB::raw('TIME(events.start) AS start'),DB::raw('TIME(events.end) AS end'), DB::raw('TIMESTAMPDIFF(HOUR, events.start, events.end) AS cant_horas'), 'asistencias.asistio', 'asistencias.penalidad')
             ->join('asistencias', 'clientes.id', '=', 'asistencias.cliente_id')
             ->join('events', 'asistencias.evento_id', '=', 'events.id')
-            // ->where('asistencias.asistio', 0)
+            ->where('asistencias.asistio', 0)
             ->where('asistencias.penalidad', '>=', 0)
-            ->limit(100)
             ->get();
         // dd($clientes);
         return view('admin.asistencias.inasistencias', compact('clientes'));

@@ -13,6 +13,9 @@
                 <thead>
                     <tr>
                         <th>Nombre del Cliente</th>
+                        <th>Fecha</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Fin</th>
                         <th>Horas Penalizadas</th>
                         <th>Penalidad Total</th>
                         <th>Acciones</th>
@@ -22,11 +25,15 @@
                     @foreach ($clientes as $cliente)
                         <tr>
                             <td>{{ $cliente->nombre.' '.$cliente->apellido }}</td>
-                            <td>{{ $cliente->asistencias->where('asistio', false)->sum('evento.duracion') }} horas</td>
-                            <td>${{ $cliente->asistencias->where('asistio', false)->sum('penalidad') }}</td>
+                            <td>{{ $cliente->date }}</td>
+                            <td>{{ $cliente->start }}</td>
+                            <td>{{ $cliente->end }}</td>
+                            <td>{{ $cliente->cant_horas }} horas</td>
+                            <td>${{ $cliente->penalidad }}</td>
                             <td>
                                 <form action="{{ route('asistencia.habilitar', $cliente->id) }}" method="POST">
                                     @csrf
+                                    
                                     <button type="submit" class="form-control btn btn-success">Habilitar Cliente</button>
                                 </form>
                             </td>
