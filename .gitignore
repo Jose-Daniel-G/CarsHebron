@@ -17,4 +17,5 @@ yarn-error.log
 /.idea
 /.vscode
 # Ignorar imagen específica
-normalizacion_de_base_de_datos.png
+/.normalizacion_de_base_de_datos.png
+
