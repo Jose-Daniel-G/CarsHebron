@@ -8,7 +8,7 @@
 @stop
 
 @section('content')
-        <div class="row">
+    <div class="row">
         <div class="col-md-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
@@ -38,29 +38,35 @@
                             @foreach ($events as $evento)
                                 <tr>
                                     <td scope="row">{{ $contador++ }}</td>
-                                    <td scope="row">{{ $evento->profesor->nombres." ".$evento->profesor->apellidos }}</td>
+                                    <td scope="row">{{ $evento->profesor->nombres . ' ' . $evento->profesor->apellidos }}
+                                    </td>
                                     <td scope="row">
-                                        @if($evento->cliente)
-                                            {{ $evento->cliente->nombres . " " . $evento->cliente->apellidos }}
+                                        @if ($evento->cliente)
+                                            {{ $evento->cliente->nombres . ' ' . $evento->cliente->apellidos }}
                                         @else
                                             No Cliente
                                         @endif
                                     </td>
-                                    
+
                                     <td scope="row" class="text-center">{{ $evento->profesor->especialidad }}</td>
-                                    <td scope="row" class="text-center">{{ \Carbon\Carbon::parse($evento->start)->format('Y-m-d') }}</td>
-                                    <td scope="row" class="text-center">{{ \Carbon\Carbon::parse($evento->start)->format('H:i') }}</td>
-                                    <td scope="row" class="text-center">{{ \Carbon\Carbon::parse($evento->end)->format('H:i') }}</td>
+                                    <td scope="row" class="text-center">
+                                        {{ \Carbon\Carbon::parse($evento->start)->format('Y-m-d') }}</td>
+                                    <td scope="row" class="text-center">
+                                        {{ \Carbon\Carbon::parse($evento->start)->format('H:i') }}</td>
+                                    <td scope="row" class="text-center">
+                                        {{ \Carbon\Carbon::parse($evento->end)->format('H:i') }}</td>
                                     <td scope="row" class="text-center">{{ $evento->created_at }}</td>
                                     {{-- <td scope="row" class="text-center">{{ $evento->id }}</td> --}}
                                     <td scope="row">
                                         {{-- <a href=""  class="btn btn-info btn-sm">Ver</a> --}}
                                         <div class="btn-group" role="group" aria-label="basic example">
-                                            <form action="{{ route('admin.events.destroy', $evento->id)}}" method="POST"
-                                                onsubmit="return confirm('¿Estás seguro de que deseas eliminar este curso?');">
+                                            <form id="delete-form-{{ $evento->id }}"
+                                                action="{{ route('admin.events.destroy', $evento->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                                <button type="button" class="btn btn-danger"
+                                                    onclick="confirmDelete({{ $evento->id }})"><i
+                                                        class="fas fa-trash"></i></button>
                                             </form>
                                         </div>
                                     </td>
@@ -76,7 +82,7 @@
 @stop
 
 @section('js')
-  <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.bootstrap4.js"></script>
     <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
 
@@ -88,7 +94,23 @@
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.colVis.min.js"></script>
     <script>
-        
+        function confirmDelete(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¿Estás seguro de que deseas eliminar este curso?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, se envía el formulario.
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
         new DataTable('#reservas', {
             responsive: true,
             autoWidth: false, //no le vi la funcionalidad
@@ -129,5 +151,5 @@
                 icon: "{{ session('icono') }}"
             });
         @endif
-        </script>
+    </script>
 @stop

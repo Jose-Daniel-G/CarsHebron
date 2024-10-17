@@ -56,11 +56,12 @@
                                             <a href="{{ route('admin.config.edit', $config->id) }}"
                                                 class="btn btn-success btn-sm"> <i class="fas fa-edit"></i>
                                             </a>
-                                            <form action="{{ route('admin.config.destroy', $config->id) }}" method="POST"
-                                                onsubmit="return confirm('¿Estás seguro de que deseas eliminar este configuraciones?');">
+                                            <form id="delete-form-{{ $config->id }}"
+                                                action="{{ route('admin.config.destroy', $config->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"><i
+                                                <button type="button" class="btn btn-danger"
+                                                    onclick="confirmDelete({{ $config->id }})"><i
                                                         class="fas fa-trash"></i></button>
                                             </form>
 
@@ -89,6 +90,23 @@
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.colVis.min.js"></script>
     <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¿Deseas eliminar esta configuracion?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, se envía el formulario.
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
         new DataTable('#configuraciones', {
             responsive: true,
             autoWidth: false, //no le vi la funcionalidad

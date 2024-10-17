@@ -8,7 +8,7 @@
 @stop
 
 @section('content')
-        <div class="row">
+    <div class="row">
         <div class="col-md-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
@@ -46,15 +46,15 @@
                                         <div class="btn-group" role="group" aria-label="basic example">
                                             <a href="{{ route('admin.cursos.show', $curso->id) }}"
                                                 class="btn btn-info btn-sm"><i class="fas fa-eye"></i>
-                                                </a>
+                                            </a>
                                             <a href="{{ route('admin.cursos.edit', $curso->id) }}"
                                                 class="btn btn-success btn-sm"><i class="fas fa-edit"></i>
-                                                </a>
-                                            <form action="{{ route('admin.cursos.destroy', $curso->id) }}" method="POST"
-                                                onsubmit="return confirm('¿Estás seguro de que deseas eliminar este curso?');">
+                                            </a>
+                                            <form id="delete-form-{{ $curso->id }}" action="{{ route('admin.cursos.destroy', $curso->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $curso->id }})"><i
+                                                        class="fas fa-trash"></i></button>
                                             </form>
 
                                         </div>
@@ -70,7 +70,7 @@
 @stop
 
 @section('js')
-  <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.bootstrap4.js"></script>
     <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
 
@@ -82,30 +82,24 @@
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.colVis.min.js"></script>
 
-        {{-- <script>
-            //deseo implentarlo mas no se porque no esta funcionando
-        $(document).ready(function() {
-            $('.deleteButton').on('click', function() {
-                const cursoId = $(this).data('id');
-                const form = $('#deleteForm-' + cursoId);
-
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: 'No podrás revertir esto.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
-
-        });
-    </script> --}}
     <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¿Estás seguro de que deseas eliminar este curso?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, se envía el formulario.
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
         new DataTable('#cursos', {
             responsive: true,
             autoWidth: false, //no le vi la funcionalidad
@@ -146,5 +140,5 @@
                 icon: "{{ session('icono') }}"
             });
         @endif
-        </script>
+    </script>
 @stop

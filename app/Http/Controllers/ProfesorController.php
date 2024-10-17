@@ -72,7 +72,10 @@ class ProfesorController extends Controller
         return view('admin.profesores.show', compact('profesor'));
     }
 
-    public function edit(Profesor $profesor){return view('admin.profesores.edit', compact('profesor'));}
+    public function edit(Profesor $profesor)
+    {
+        return view('admin.profesores.edit', compact('profesor'));
+    }
 
     public function update(Request $request, Profesor $profesor)
     {
@@ -112,9 +115,19 @@ class ProfesorController extends Controller
 
 
     public function destroy(Profesor $profesor)
-    {// dd($profesor);
-        if ($profesor->user) {$profesor->user->delete();} // Si el profesor tiene un usuario asociado, eliminarlo
-        
+    {   // dd($profesor);
+        // Verificar si el profesor tiene eventos asociados
+        if ($profesor->events()->exists()) {
+            return redirect()->route('admin.profesores.index')
+                ->with('info', 'No se puede eliminar el profesor porque tiene eventos asociados.')
+                ->with('icono', 'error')
+                ->with('icono', 'Error al eliminar profesor');
+        }
+
+        if ($profesor->user) {
+            $profesor->user->delete();
+        } // Si el profesor tiene un usuario asociado, eliminarlo
+
         // Eliminar el profesor
         $profesor->delete();
 
@@ -144,17 +157,17 @@ class ProfesorController extends Controller
         return $pdf->stream();
     }
     public function obtenerProfesores($cursoId)
-    {  
+    {
         $profesores = DB::table('horarios')
-                        ->join('profesors', 'horarios.profesor_id', '=', 'profesors.id')
-                        ->where('horarios.curso_id', $cursoId)
-                        ->select('profesors.*')
-                        ->distinct()
-                        ->get();
+            ->join('profesors', 'horarios.profesor_id', '=', 'profesors.id')
+            ->where('horarios.curso_id', $cursoId)
+            ->select('profesors.*')
+            ->distinct()
+            ->get();
         // dd($profesores);
         return response()->json($profesores); // Asegúrate de devolver JSON
     }
-    
+
 
     // public function obtenerProfesoresPorCurso($cursoId)
     // {

@@ -56,15 +56,16 @@
                                                 class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
                                             <a href="{{ route('admin.profesores.edit', $profesor->id) }}"
                                                 class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
-                                            <form action="{{ route('admin.profesores.destroy', $profesor->id) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('¿Estás seguro de que deseas eliminar este evento?');">
+                                            <form id="delete-form-{{ $profesor->id }}"
+                                                action="{{ route('admin.profesores.destroy', $profesor->id) }}"
+                                                method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"><i
-                                                        class="fas fa-trash"></i></button>
+                                                <button type="button" class="btn btn-danger"
+                                                    onclick="confirmDelete({{ $profesor->id }})">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
                                             </form>
-
                                         </div>
                                     </td>
                                 </tr>
@@ -90,6 +91,23 @@
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.colVis.min.js"></script>
     <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, se envía el formulario.
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
         new DataTable('#profesores', {
             "language": {
                 "decimal": "",
@@ -140,14 +158,22 @@
                     },
                     {
                         // text: '<i class="bi bi-file-pdf-fill"></i>',//NO SE ESTA VISUALIZANDO ICONO DE  BOOTSTRAP 4
-                        extend: 'pdf'},{extend: 'csv'},{extend: 'excel'},{text: 'Imprimir',extend: 'print'}
-               ]
+                        extend: 'pdf'
+                    }, {
+                        extend: 'csv'
+                    }, {
+                        extend: 'excel'
+                    }, {
+                        text: 'Imprimir',
+                        extend: 'print'
+                    }
+                ]
             }, ],
 
         });
         @if (session('info') && session('icono'))
             Swal.fire({
-                title: "Good job!",
+                title: "{{ session('info') }}",
                 text: "{{ session('info') }}",
                 icon: "{{ session('icono') }}"
             });

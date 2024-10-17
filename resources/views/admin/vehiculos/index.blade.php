@@ -51,10 +51,10 @@
                                     data-tipo="{{ $vehiculo->tipo }}">Editar</a>
                             </td>
                             <td width="10px">
-                                <form action="{{ route('admin.vehiculos.destroy', $vehiculo) }}" method="post">
+                                <form id="delete-form-{{ $vehiculo->id }}" action="{{ route('admin.vehiculos.destroy', $vehiculo->id) }}" method="post">
                                     @csrf
                                     @method('delete')
-                                    <button class="btn btn-danger btn-sm">Eliminar</button>
+                                    <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $vehiculo->id }})">Eliminar</button>
                                 </form>
                             </td>
                         </tr>

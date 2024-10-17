@@ -28,8 +28,9 @@ class HomeController extends Controller
         $total_eventos = CalendarEvent::count();
         $total_configuraciones = Config::count();
 
-        $profesores = Profesor::all(); $events = CalendarEvent::all();// dd(Auth::user()->getRoleNames());
-        
+        $profesores = Profesor::all();
+        $events = CalendarEvent::all(); // dd(Auth::user()->getRoleNames());
+
         if (Auth::user()->hasRole('superAdmin') ||  Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria') || Auth::user()->hasRole('profesor')) {
             $cursos = Curso::all();
             $clientes = Cliente::all();
@@ -40,25 +41,27 @@ class HomeController extends Controller
             $cliente = Cliente::where('user_id', Auth::id())->first();
             // dd($cliente);    
             $cursos = $cliente->cursos; // Cursos del cliente
-            $profesores = Cliente::where('clientes.id', 1)
-            ->join('events', 'clientes.id', '=', 'events.cliente_id')
-            ->join('profesors', 'profesors.id', '=', 'events.profesor_id')
-            ->distinct()
-            ->get(['profesors.nombres', 'profesors.apellidos']);
+            $profesores = Profesor::distinct()
+                ->join('events', 'profesors.id', '=', 'events.profesor_id')
+                ->join('clientes', 'clientes.id', '=', 'events.cliente_id')
+                ->join('users', 'clientes.user_id', '=', 'users.id')
+                ->where('clientes.user_id', Auth::id())
+                ->select('profesors.*')
+                ->get();
             return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'events', 'total_configuraciones'));
         }
     }
 
-    public function show($id)//show_reservas
+    public function show($id) //show_reservas
     { // echo $id;
         if (Auth::user()->hasRole('superAdmin') ||  Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
-            $events = CalendarEvent::with('cliente')->get();// $events = CalendarEvent::all();
+            $events = CalendarEvent::with('cliente')->get(); // $events = CalendarEvent::all();
         } else {
             $events = CalendarEvent::where('cliente_id',  Auth::user()->cliente->id)->get();
         }
         return view('admin.reservas.show', compact('events'));
     }
-    
+
     public function show_reserva_profesores($id) //calendar
     {
         try {
@@ -70,16 +73,14 @@ class HomeController extends Controller
                     ->get();
                 return response()->json($events);
             } else {
-                $cliente = Cliente::where('user_id', Auth::id())->first(); // O la lógica adecuada para obtener el cliente
 
-                // Construir la consulta para obtener los eventos asociados al usuario autenticado
-                $events = CalendarEvent::with(['profesor', 'cliente'])
-                    ->join('users', 'users.id', '=', 'events.profesor_id')
-                    ->where('events.profesor_id', $id)
-                    ->where('users.id', $cliente->id)
-                    ->select('events.*')
-                    ->limit(100)
-                    ->get();
+                $events = CalendarEvent::join('users as profesores', 'profesores.id', '=', 'events.profesor_id')
+                ->join('clientes', 'clientes.id', '=', 'events.cliente_id')
+                ->join('users as clientes_users', 'clientes.user_id', '=', 'clientes_users.id')
+                ->where('clientes.user_id', Auth::id())
+                ->where('events.profesor_id', $id)
+                ->select('events.*')
+                ->get();
 
                 return response()->json($events);
             }

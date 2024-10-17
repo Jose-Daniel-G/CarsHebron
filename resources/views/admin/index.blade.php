@@ -210,7 +210,8 @@
                                     <option value="" selected disabled>Seleccione una opción</option>
                                     @foreach ($profesores as $profesore)
                                         <option value="{{ $profesore->id }}">
-                                            {{ $profesore->nombres . ' ' . $profesore->apellidos . ' - ' . $profesore->especialidad }}
+                                            {{ $profesore->nombres . ' ' . $profesore->apellidos }}
+                                            {{-- {{ $profesore->nombres . ' ' . $profesore->apellidos . ' - ' . $profesore->especialidad }} --}}
                                         </option>
                                     @endforeach
                                 </select>
