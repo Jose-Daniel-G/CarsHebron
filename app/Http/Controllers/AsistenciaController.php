@@ -19,8 +19,8 @@ class AsistenciaController extends Controller
 
         // Filtrar solo los eventos programados para el día actual
         $hoy = Carbon::now()->format('Y-m-d');
-        // $events = CalendarEvent::whereDate('start', '>=', now())->get(); // Filtra solo los eventos futuros o del día actual
-        $events = CalendarEvent::whereDate('start', $hoy)->get();
+        $events = CalendarEvent::whereDate('start', '>=', now())->get(); // Filtra solo los eventos futuros o del día actual
+        // $events = CalendarEvent::whereDate('start', $hoy)->get();
 
         // Obtener las asistencias registradas para el día actual
         $asistencias = Asistencia::with('event', 'cliente')

@@ -38,7 +38,13 @@ class HomeController extends Controller
             return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'clientes', 'events', 'total_configuraciones', 'role'));
         } else {
             $cliente = Cliente::where('user_id', Auth::id())->first();
-            $cursos = $cliente->cursos;
+            // dd($cliente);    
+            $cursos = $cliente->cursos; // Cursos del cliente
+            $profesores = Cliente::where('clientes.id', 1)
+            ->join('events', 'clientes.id', '=', 'events.cliente_id')
+            ->join('profesors', 'profesors.id', '=', 'events.profesor_id')
+            ->distinct()
+            ->get(['profesors.nombres', 'profesors.apellidos']);
             return view('admin.index', compact('total_usuarios', 'total_secretarias', 'total_clientes', 'total_cursos', 'total_profesores', 'total_horarios', 'total_eventos', 'cursos', 'profesores', 'events', 'total_configuraciones'));
         }
     }

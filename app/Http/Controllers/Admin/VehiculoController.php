@@ -20,9 +20,7 @@ class VehiculoController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Dump and die para depurar los datos del request
-        // dd($request->all());
+    {   // dd($request->all());
     
         // Validar los datos del request
         $request->validate([

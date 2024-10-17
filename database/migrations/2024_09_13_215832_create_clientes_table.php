@@ -19,8 +19,6 @@ return new class extends Migration
             $table->integer('celular');
             $table->string('correo' , 40)->unique();
             $table->string('direccion' , 150);
-            // $table->string('grupo_sanguineo' , 150);
-            // $table->string('alergias' , 255);
             $table->integer('contacto_emergencia');
             $table->string('observaciones' , 255)->nullable();
 

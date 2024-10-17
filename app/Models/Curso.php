@@ -11,10 +11,25 @@ class Curso extends Model
     // protected $fillable = ['nombre','ubicacion', 'capacidad', 'telefono','especialidad','estado'];
     protected $fillable = ['nombre', 'descripcion', 'horas_requeridas', 'estado'];
 
-    public function profesores(){
-        return $this->hasMany(Profesor::class);
+    // public function profesores(){ first I used this one
+    //     return $this->hasMany(Profesor::class);
+    // }
+    // En el modelo Profesor
+    // public function profesores()
+    // {
+    //     return $this->belongsToMany(Profesor::class, 'curso_profesor', 'curso_id', 'profesor_id');
+    // }
+    
+    // public function profesores()
+    // {
+    //     return $this->belongsToMany(Profesor::class, 'curso_profesor');
+    // }
+    public function profesores()
+    {
+        return $this->belongsToMany(Profesor::class, 'curso_profesor', 'curso_id', 'profesor_id');
     }
-    public function horarios(){
+    public function horarios()
+    {
         return $this->hasMany(Horario::class);
     }
     public function events()
@@ -22,11 +37,15 @@ class Curso extends Model
         return $this->hasMany(Event::class);
     }
 
+    // public function clientes()
+    // {
+    //     // return $this->belongsToMany(Cliente::class, 'cliente_curso');
+    //     return $this->belongsToMany(Cliente::class, 'cliente_curso')
+    //         ->withPivot('horas_realizadas', 'fecha_realizacion')
+    //         ->withTimestamps();
+    // }
     public function clientes()
     {
-        // return $this->belongsToMany(Cliente::class, 'cliente_curso');
-        return $this->belongsToMany(Cliente::class, 'cliente_curso')
-        ->withPivot('horas_realizadas', 'fecha_realizacion')
-        ->withTimestamps();
+        return $this->belongsToMany(Cliente::class, 'cliente_curso', 'curso_id', 'cliente_id');
     }
 }
