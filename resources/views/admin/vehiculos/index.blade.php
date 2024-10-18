@@ -30,8 +30,8 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
                         <th>Modelo</th>
+                        <th>Placa</th>
                         <th colspan="2"></th>
                     </tr>
                 </thead>
@@ -39,13 +39,12 @@
                     @foreach ($vehiculos as $vehiculo)
                         <tr>
                             <td>{{ $vehiculo->id }}</td>
-                            <td>{{ $vehiculo->nombre }}</td>
                             <td>{{ $vehiculo->modelo }}</td>
+                            <td>{{ $vehiculo->placa }}</td>
                             <td width="10px">
                                 <!-- Botón de edición con los datos del vehículo -->
                                 <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editVehiculoModal"
                                     data-id="{{ $vehiculo->id }}" 
-                                    data-name="{{ $vehiculo->nombre }}" 
                                     data-modelo="{{ $vehiculo->modelo }}"
                                     data-placa="{{ $vehiculo->placa }}"
                                     data-tipo="{{ $vehiculo->tipo }}">Editar</a>

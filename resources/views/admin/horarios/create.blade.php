@@ -150,7 +150,12 @@
                 if (selectedTime < '06:00' || selectedTime > '20:00') {
                     // si es asi, establecer la hora seleccionada en null
                     this.value = null;
-                    alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
+                    alert('');
+                    Swal.fire({
+                        title: "No fue posible",
+                        text: "Por favor seleccione una fecha entre 08:00 y las 20:00",
+                        icon: "info"
+                    });
                 }
             })
 
@@ -164,7 +169,11 @@
                 if (selectedTime < '06:00' || selectedTime > '20:00') {
                     // si es asi, establecer la hora seleccionada en null
                     this.value = null;
-                    alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
+                    Swal.fire({
+                        title: "No fue posible",
+                        text: "Por favor seleccione una fecha entre 08:00 y las 20:00",
+                        icon: "info"
+                    });
                 }
             });
         });

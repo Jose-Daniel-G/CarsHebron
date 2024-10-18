@@ -13,6 +13,7 @@
                 <thead>
                     <tr>
                         <th>Nombre del Cliente</th>
+                        <th>Curso</th>
                         <th>Fecha</th>
                         <th>Hora Inicio</th>
                         <th>Hora Fin</th>
@@ -25,6 +26,7 @@
                     @foreach ($clientes as $cliente)
                         <tr>
                             <td>{{ $cliente->nombre.' '.$cliente->apellido }}</td>
+                            <td>{{ $cliente->nombre_evento }}</td>
                             <td>{{ $cliente->date }}</td>
                             <td>{{ $cliente->start }}</td>
                             <td>{{ $cliente->end }}</td>

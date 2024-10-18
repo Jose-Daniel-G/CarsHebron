@@ -29,14 +29,14 @@ class ClienteSeeder extends Seeder
             'apellidos' => 'alracona',
             'cc' => '12312753',
             'nro_seguro' => '12395113',
-            'fecha_nacimiento' => '01-01-1986',
+            'fecha_nacimiento' => '01/01/1986',
             'genero' => 'M',
             'celular' => '12395113',
             'correo' => 'cliente@email.com',
             'direccion' => 'Cll 9 oeste',
             'contacto_emergencia' => '65495113',
             'observaciones' => 'le irrita estar cerca del povo',
-            'user_id' => '7',
+            'user_id' => '8',
         ]);
         // Relacionar con los cursos (asumiendo que los cursos ya existen)
         $cursos = Curso::whereIn('id', [1, 2])->get(); // Obtener los cursos con ID 1 y 2
@@ -53,14 +53,14 @@ class ClienteSeeder extends Seeder
             'apellidos' => 'Grijalba',
             'cc' => '23548965',
             'nro_seguro' => '9654321',
-            'fecha_nacimiento' => '01-01-1983',
+            'fecha_nacimiento' => '01/01/1983',
             'genero' => 'M',
             'celular' => '987654321',
             'correo' => 'francisco.grijalba@email.com',
             'direccion' => 'Cll 7 oeste',
             'contacto_emergencia' => '65495113',
             'observaciones' => 'migrana',
-            'user_id' => '8',
+            'user_id' => '9',
         ]);
         // Relacionar con los cursos (asumiendo que los cursos ya existen)
         $cursos = Curso::whereIn('id', [1, 3])->get(); // Obtener los cursos con ID 1 y 2
@@ -78,15 +78,17 @@ class ClienteSeeder extends Seeder
             'apellidos' => 'ESCOBAR',
             'cc' => '2354765',
             'nro_seguro' => '9654331',
-            'fecha_nacimiento' => '01-01-1987',
+            'fecha_nacimiento' => '01/01/1987',
             'genero' => 'M',
             'celular' => '987654321',
             'correo' => 'argemiro.escobar@email.com',
             'direccion' => 'Cll 7 oeste',
             'contacto_emergencia' => '65495113',
             'observaciones' => 'migrana',
-            'user_id' => '9',
+            'user_id' => '10',
         ]);
+        $cursos = Curso::whereIn('id', [3])->get(); // Obtener los cursos con ID 1 y 2
+        $cliente->cursos()->attach($cursos); // Crear las relaciones
         //    //-------------[ USUARIOS ]----------------]
         //         User::create([
         //             'name' => 'Juan David Grijalba Osorio',

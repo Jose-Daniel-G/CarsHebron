@@ -34,7 +34,7 @@ class ProfesorController extends Controller
             'apellidos' => 'required',
             'telefono' => 'required',
             'especialidad' => 'required',
-            'email' => 'required|email|max:20|unique:users,email', // Asegúrate de que el email sea único en la tabla users
+            'email' => 'required|email|max:150|unique:users,email', // Asegúrate de que el email sea único en la tabla users
             'password' => 'min:8|confirmed',
         ]);
 

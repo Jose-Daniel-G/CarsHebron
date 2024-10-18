@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\Curso;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -50,6 +51,7 @@ class ClienteController extends Controller
 
             // Asignar el `user_id` en los datos validados
             $validatedData['user_id'] = $usuario->id;
+            $validatedData['fecha_nacimiento'] = Carbon::createFromFormat('Y-m-d', $request->fecha_nacimiento)->format('d/m/Y');
 
             // Crear un nuevo Cliente
             $cliente = Cliente::create($validatedData);
@@ -109,6 +111,7 @@ class ClienteController extends Controller
             'direccion' => 'required',
             'contacto_emergencia' => 'required',
         ]);
+        $validatedData['fecha_nacimiento'] = Carbon::createFromFormat('Y-m-d', $request->fecha_nacimiento)->format('d/m/Y');
 
         // Si el checkbox está marcado, restablecemos la contraseña
         if ($request->has('reset_password')) {

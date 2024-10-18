@@ -174,7 +174,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <h3 class="card-title">Calendario de atencion de profesores </h3>
-                        </div>
+                        </div><p> {{Auth::user()->id}}</p>
                         <div class="col-md-4 d-flex justify-content-end">
                             <label for="curso_id">Cursos </label><b>*</b>
                         </div>
@@ -203,7 +203,7 @@
 
                         <div class="row">
                             <div class="col-md-8 d-flex justify-content-end">
-                                <label for="curso_id">Profesores </label><b>*</b>
+                                <label for="curso_id">Profesores</label><b>*</b>
                             </div>
                             <div class="col-md-4">
                                 <select name="profesor_id" id="profesor_select" class="form-control">
@@ -225,7 +225,7 @@
                                     data-target="#claseModal">
                                     Agendar Clase
                                 </button>
-
+                                    
                                 <a href="{{ route('admin.reservas.show', Auth::user()->id) }}" class="btn btn-success">
                                     <i class="bi bi-calendar-check"></i>Ver las reservas
                                 </a>
@@ -264,7 +264,8 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Nro</th>
-                                    <th>Usuario</th>
+                                    <th>Profesor</th>
+                                    <th>Cliente</th>
                                     <th>Fecha de la reserva</th>
                                     <th>Hora de reserva</th>
                                 </tr>
@@ -273,12 +274,16 @@
                                 <?php $contador = 1; ?>
                                 @foreach ($events as $evento)
                                     @if (Auth::user()->profesor->id == $evento->profesor_id)
-                                        {{-- NOTA: SI  FALLA --}}
                                         <tr>
                                             <td scope="row">{{ $contador++ }}</td>
-                                            <td scope="row">{{ $evento->user->name }}</td>
+                                            <td scope="row">
+                                                {{ $evento->profesor->nombres . ' ' . $evento->profesor->apellidos }}
+                                            </td>
+                                            <td scope="row">
+                                                {{ $evento->cliente->nombres . ' ' . $evento->cliente->apellidos }}
+                                            </td>
                                             <td scope="row" class="text-center">
-                                                {{ \Carbon\Carbon::parse($evento->start)->format('Y-m-d') }}</td>
+                                                {{ \Carbon\Carbon::parse($evento->start)->format('Y/m/d') }}</td>
                                             <td scope="row" class="text-center">
                                                 {{ \Carbon\Carbon::parse($evento->end)->format('H:i') }}</td>
                                         </tr>
@@ -302,9 +307,10 @@
         // Pasar si el usuario tiene el rol de "admin" como una variable de JavaScript
         let isAdmin = @json(Auth::check() && Auth::user()->hasRole('superAdmin'));
         // alert(isAdmin); // Muestra true o false dependiendo del rol
-        console.log("isAdmin value: ", isAdmin); // Es
+        console.log("isAdmin value: ", isAdmin);
 
         document.addEventListener('DOMContentLoaded', function() {
+            //CANTIDAD DE HORAS
             let HoraFinInput = document.getElementById('hora_fin');
             if (!isAdmin) {
                 if (HoraFinInput) {
@@ -324,14 +330,8 @@
                     console.error("El elemento HoraFinInput no se encontró.");
                 }
             }
-        });
-    </script>
 
-
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+            //FECHA
             //-------------------------------------------------------------
             // VALIDAR SI LA FECHA YA NO HA PASADO
             const fechaReservaInput = document.getElementById('fecha_reserva');
@@ -348,25 +348,32 @@
                 }
 
             });
+
             //----------------------------------------------------------------
             // VALIDAR SI LA HORA YA NO HA PASADO
             const HoraIncioInput = document.getElementById('hora_inicio');
 
             HoraIncioInput.addEventListener('change', function() {
                 let selectedTime = this.value; // Obtener la hora seleccionada
+                this.value = selectedTime; // Conservar solo la hora, ignorar los minutos
+                if (selectedTime) {
+                    selectedTime = selectedTime.split(':'); //Dividir la cadena en horas y minutos
+                    selectedTime = selectedTime[0] + ':00'; //conservar la hora, ignorar los minutos
+                    this.value = selectedTime; // Establecer la hora modificada en el campo de entrada
+                }
                 let now = new Date(); // Obtener la hora actual
 
                 if (selectedTime) {
                     // Dividir la hora seleccionada en horas y minutos
                     let selectedHour = parseInt(selectedTime.split(':')[0], 10);
-                    let selectedMinutes = parseInt(selectedTime.split(':')[1], 10);
 
                     // Verificar si la hora seleccionada está fuera del rango permitido (06:00 - 20:00)
                     if (selectedHour < 6 || selectedHour > 20) {
                         this.value = null;
                         Swal.fire({
+                            title: "No es posble",
                             text: "Por favor seleccione una hora entre las 06:00 y las 20:00.",
-                            icon: "error"
+                            icon: "warning"
                         });
                         return; // Terminar la ejecución si está fuera de rango
                     }
@@ -391,79 +398,21 @@
                         }
                     }
                 }
-            })
-
-            // Agregar un evento de cambio al input
-
-            // HoraFinInput.addEventListener('change', function() {
-            //     let selectedTime = this.value;
-            //     // Conservar solo la hora, ignorar los minutos
-            //     this.value = selectedTime;
-
-            //         if (selectedTime > '3') {
-            //             // si es asi, establecer la hora seleccionada en null
-            //             this.value = null;
-            //             Swal.fire({
-            //                 text: "solo puede agendar hasta maximo 3 horas",
-            //                 icon: "error"
-            //             });
-            //             // alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
-            //         }
-            // });
-            // HoraFinInput.addEventListener('change', function() {
-            //     let selectedTime = this.value;
-            //     // Conservar solo la hora, ignorar los minutos
-            //     selectedTime = selectedTime.split(':')[0] + ':00'; // "14:00"
-            //     this.value = selectedTime;
-            //     // verificar si la fecha selecionada es anterior a la fecha actual
-            //     if (selectedTime < '06:00' || selectedTime > '20:00') {
-            //         // si es asi, establecer la hora seleccionada en null
-            //         this.value = null;
-            //         Swal.fire({
-            //             text: "Por favor seleccione una fecha entre 06:00 am y las 8:00 pm",
-            //             icon: "error"
-            //         }); 
-            //         // alert('Por favor seleccione una fecha entre 08:00 y las 20:00');
-            //     }
-            // });
-        });
-
-        // carga contenido de tabla en  curso_info
-        $('#curso_select').on('change', function() {
-            var curso_id = $('#curso_select').val();
-            var url = "{{ route('admin.horarios.show_datos_cursos', ':id') }}";
-            url = url.replace(':id', curso_id);
-
-            if (curso_id) {
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    success: function(data) {
-                        $('#curso_info').html(data);
-                    },
-                    error: function() {
-                        alert('Error al obtener datos del curso');
-                    }
-                });
-            } else {
-                $('#curso_info').html('');
-            }
-        });
-        // carga contenido de tabla en profesor_info
-        document.addEventListener('DOMContentLoaded', function() {
+            });
+            //CALENDAR
             var calendarEl = document.getElementById('calendar');
-
             // Crea una instancia del calendario una sola vez
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
+                initialView: 'dayGridMonth',
                 locale: 'es',
                 headerToolbar: {
-                    left: 'prev,next today',
+                    // left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,listWeek'
                 },
                 events: [], // Inicialmente vacío para evitar carga de eventos al inicio
-                eventClick: function(info) {
+                eventClick: function(info) { //MODAL EVENT
                     var evento = info.event;
                     var startTime = evento.start;
                     var endTime = evento.end;
@@ -525,6 +474,7 @@
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
+                            console.log(data);
                             // Asegúrate de que 'data' esté en el formato correcto
                             calendar.addEventSource(data); // Añade los eventos al calendario
                         },
@@ -537,6 +487,32 @@
                     calendar.removeAllEventSources();
                 }
             });
+        });
+
+        // carga contenido de tabla en  curso_info
+        $('#curso_select').on('change', function() {
+            var curso_id = $('#curso_select').val();
+            var url = "{{ route('admin.horarios.show_datos_cursos', ':id') }}";
+            url = url.replace(':id', curso_id);
+
+            if (curso_id) {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#curso_info').html(data);
+                    },
+                    error: function() {
+                        alert('Error al obtener datos del curso');
+                    }
+                });
+            } else {
+                $('#curso_info').html('');
+            }
+        });
+        // carga contenido de tabla en profesor_info
+        document.addEventListener('DOMContentLoaded', function() {
+
         });
     </script>
 
@@ -576,18 +552,6 @@
 
         });
     </script>
-
-    @if (session('info') && session('icono') && session('hora_reserva'))
-        <script>
-            Swal.fire({
-                title: "{{ session('title') }}",
-                text: "{{ session('info') }}",
-                icon: "{{ session('icono') }}"
-            });
-        </script>
-    @endif
-
-
     @if (session('info') && session('icono') && session('title'))
         <script>
             Swal.fire({
@@ -619,8 +583,6 @@
                     method: 'GET',
 
                     success: function(data) {
-                        // console.log('Profesores: ',
-                        // data); // Debería mostrar la lista de profesores
 
                         // Verifica si hay profesores y si es un array
                         if (data && Array.isArray(data)) {
@@ -645,6 +607,23 @@
                 });
             });
         });
+    </script>
+    <script>
+        /// SOLO PERMITE EL ME ACTUAL
+        // Obtener la fecha actual
+        var today = new Date();
+
+        // Obtener el primer día del mes actual
+        var firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+        var firstDayString = firstDay.toISOString().split('T')[0];
+
+        // Obtener el último día del mes actual
+        var lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        var lastDayString = lastDay.toISOString().split('T')[0];
+
+        // Asignar los valores min y max al input de fecha
+        document.getElementById('fecha_reserva').setAttribute('min', firstDayString);
+        document.getElementById('fecha_reserva').setAttribute('max', lastDayString);
     </script>
     {{-- <script>
         //no esta funcionando

@@ -74,7 +74,8 @@ class HomeController extends Controller
                 return response()->json($events);
             } else {
 
-                $events = CalendarEvent::join('users as profesores', 'profesores.id', '=', 'events.profesor_id')
+                $events = CalendarEvent::with(['profesor', 'cliente'])
+                ->join('users as profesores', 'profesores.id', '=', 'events.profesor_id')
                 ->join('clientes', 'clientes.id', '=', 'events.cliente_id')
                 ->join('users as clientes_users', 'clientes.user_id', '=', 'clientes_users.id')
                 ->where('clientes.user_id', Auth::id())

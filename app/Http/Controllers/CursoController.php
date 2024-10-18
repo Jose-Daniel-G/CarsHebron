@@ -22,24 +22,29 @@ class CursoController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
+        // Validación de los datos
         $request->validate([
             'nombre' => 'required',
             'descripcion' => 'required',
-            'horas_requeridas' => 'required',
-            'ubicacion' => 'required',
-            // 'capacidad' => 'required',
-            // 'especialidad' => 'required',
-            'estado' => 'required',
+            'horas_requeridas' => 'required|integer|min:1',
+            'estado' => 'required|in:A,I', // Asegúrate de que el estado sea válido
+            'ubicacion' => 'nullable',
         ]);
     
         // Crear un nuevo curso
-        Curso::create($request->all());
-
+        Curso::create([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'horas_requeridas' => $request->horas_requeridas,
+            'estado' => $request->estado,
+        ]);
+    
+        // Redireccionar con mensaje de éxito
         return redirect()->route('admin.cursos.index')
-            ->with('info', 'Se registro el curso de forma correcta')
+            ->with('info', 'Curso registrado correctamente.')
             ->with('icono', 'success');
     }
+    
 
     public function show(Curso $curso)
     {
@@ -52,7 +57,7 @@ class CursoController extends Controller
     }
 
     public function update(Request $request, Curso $curso)
-    {// dd($request->all());
+    { //dd($request->all());
      
         // Validación de los datos
         $request->validate([
@@ -85,6 +90,7 @@ class CursoController extends Controller
         $curso->delete();
     
         return redirect()->route('admin.cursos.index')
+            ->with('title', 'Exito')
             ->with('info', 'El curso se eliminó con éxito')
             ->with('icono', 'success');
     }

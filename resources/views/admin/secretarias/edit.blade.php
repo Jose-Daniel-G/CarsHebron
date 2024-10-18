@@ -68,9 +68,9 @@
                             <div class="row ">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="fecha_nacimiento">Fecha de Nacimientos </label><b>*</b>
+                                        <label for="fecha_nacimiento">Fecha de Nacimiento </label><b>*</b>
                                         <input type="date" class="form-control" name="fecha_nacimiento"
-                                            value="{{ old('fecha_nacimiento', $secretaria->fecha_nacimiento) }}" required>
+                                        value="{{ old('fecha_nacimiento', \Carbon\Carbon::createFromFormat('d/m/Y', $secretaria->fecha_nacimiento)->format('Y-m-d')) }}" required>
                                         @error('fecha_nacimiento')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>
                                         @enderror

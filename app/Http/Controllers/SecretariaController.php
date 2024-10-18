@@ -6,6 +6,7 @@ use App\Models\Secretaria;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class SecretariaController extends Controller
 {
@@ -25,7 +26,7 @@ class SecretariaController extends Controller
         $request->validate([
             'nombres' => 'required',
             'apellidos' => 'required',
-            'cc' => 'required',
+            'cc' => 'required|unique:secretarias',
             'celular' => 'required',
             'direccion' => 'required',
             'email' => 'required|email|max:250|unique:users',
@@ -46,7 +47,8 @@ class SecretariaController extends Controller
         $secretaria->cc = $request->cc;
         $secretaria->celular = $request->celular;
         $secretaria->direccion = $request->direccion;
-        $secretaria->fecha_nacimiento = $request->fecha_nacimiento;
+        $secretaria->fecha_nacimiento = Carbon::createFromFormat('Y-m-d', $request->fecha_nacimiento)->format('d/m/Y');
+
         $secretaria->save();
         $usuario->assignRole('secretaria');
 
@@ -63,9 +65,6 @@ class SecretariaController extends Controller
 
     public function edit(Secretaria $secretaria)
     {
-        // dd($secretaria);
-        $secretaria->fecha_nacimiento = \Carbon\Carbon::createFromFormat('d/m/Y', $secretaria->fecha_nacimiento)->format('Y-m-d');
-
         return view('admin.secretarias.edit', compact('secretaria'));
     }
 
@@ -87,7 +86,8 @@ class SecretariaController extends Controller
         $secretaria->cc = $request->cc;
         $secretaria->celular = $request->celular;
         $secretaria->direccion = $request->direccion;
-        $secretaria->fecha_nacimiento = $request->fecha_nacimiento;
+        dd($secretaria->fecha_nacimiento);
+        $secretaria->fecha_nacimiento = Carbon::createFromFormat('Y-m-d', $request->fecha_nacimiento)->format('d/m/Y');
         $secretaria->save();
 
         // $usuario = new User::find($secretaria->user->id);

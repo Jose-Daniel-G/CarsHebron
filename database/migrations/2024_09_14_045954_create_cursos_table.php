@@ -20,7 +20,7 @@ return new class extends Migration
 
 
 
-            $table->string('ubicacion');
+            $table->string('ubicacion')->nullable();
             // $table->string('capacidad');
             // $table->string('telefono')->nullable();
             // $table->string('especialidad');

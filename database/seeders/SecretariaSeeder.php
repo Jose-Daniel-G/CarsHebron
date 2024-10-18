@@ -28,7 +28,7 @@ class SecretariaSeeder extends Seeder
             'apellidos' => 'Catrana',
             'cc' => 'secretaria@email.com',
             'celular' => '3147078256',
-            'fecha_nacimiento' => '10/10/2010',
+            'fecha_nacimiento' => '22/10/2010',
             'direccion' => 'calle 5 o este',
             'user_id' => '3',
         ]);
