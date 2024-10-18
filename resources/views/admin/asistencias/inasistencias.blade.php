@@ -19,6 +19,8 @@
                         <th>Hora Fin</th>
                         <th>Horas Penalizadas</th>
                         <th>Penalidad Total</th>
+                        <th>liquidado</th>
+                        <th>fecha de pago</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -32,6 +34,9 @@
                             <td>{{ $cliente->end }}</td>
                             <td>{{ $cliente->cant_horas }} horas</td>
                             <td>${{ $cliente->penalidad }}</td>
+                            <td><i class="{{ $cliente->liquidado ? 'text-success bi bi-check-circle-fill' : 'text-danger bi bi-x-circle-fill' }}"></i></td>
+
+                            <td>{{ $cliente->fecha_pago_multa }}</td>
                             <td>
                                 <form action="{{ route('asistencia.habilitar', $cliente->id) }}" method="POST">
                                     @csrf

@@ -101,27 +101,44 @@ class AsistenciaController extends Controller
 
     // Función para la secretaria de ver inasistencias y habilitar cliente
     // public function verInasistencias()
-    public function show()
+    public function show() //INASISTENCIAS
     {
         // Filtra los clientes que tengan inasistencias con penalidad
-        $clientes = Cliente::select('clientes.id', 'clientes.nombres AS nombre', 'clientes.apellidos AS apellido', 'asistencias.id AS asistencia_id', 'events.title AS nombre_evento', DB::raw('DATE(events.start) AS date'), DB::raw('TIME(events.start) AS start'), DB::raw('TIME(events.end) AS end'), 'asistencias.asistio', 'asistencias.penalidad')
-            ->join('asistencias', 'clientes.id', '=', 'asistencias.cliente_id')
-            ->join('events', 'asistencias.evento_id', '=', 'events.id')
-            ->where('asistencias.asistio', 0)
-            ->where('asistencias.penalidad', '>=', 0)
-            ->get();
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('superAdmin')) {
+            $clientes = Cliente::select('clientes.id', 'clientes.nombres AS nombre', 'clientes.apellidos AS apellido', 'asistencias.id AS asistencia_id', 'events.title AS nombre_evento', DB::raw('DATE(events.start) AS date'), DB::raw('TIME(events.start) AS start'), DB::raw('TIME(events.end) AS end'), 'asistencias.asistio', 'asistencias.penalidad', 'asistencias.liquidado', 'asistencias.fecha_pago_multa')
+                ->join('asistencias', 'clientes.id', '=', 'asistencias.cliente_id')
+                ->join('events', 'asistencias.evento_id', '=', 'events.id')
+                ->get();
 
-        // Calcular las horas penalizadas en PHP
-        foreach ($clientes as $cliente) {
-            $start = new \DateTime($cliente->start);
-            $end = new \DateTime($cliente->end);
-            $diff = $start->diff($end);
-            $hours = $diff->h + ($diff->i / 60); // Calcular horas con minutos convertidos a horas
-            $cliente->cant_horas = round($hours, 2); // Asignar la cantidad de horas calculadas
+            // Calcular las horas penalizadas en PHP
+            foreach ($clientes as $cliente) {
+                $start = new \DateTime($cliente->start);
+                $end = new \DateTime($cliente->end);
+                $diff = $start->diff($end);
+                $hours = $diff->h + ($diff->i / 60); // Calcular horas con minutos convertidos a horas
+                $cliente->cant_horas = round($hours, 2); // Asignar la cantidad de horas calculadas
+            }
+            return view('admin.asistencias.inasistencias', compact('clientes'));
+        } else {
+            $clientes = Cliente::select('clientes.id', 'clientes.nombres AS nombre', 'clientes.apellidos AS apellido', 'asistencias.id AS asistencia_id', 'events.title AS nombre_evento', DB::raw('DATE(events.start) AS date'), DB::raw('TIME(events.start) AS start'), DB::raw('TIME(events.end) AS end'), 'asistencias.asistio', 'asistencias.penalidad', 'asistencias.liquidado', 'asistencias.fecha_pago_multa')
+                ->join('asistencias', 'clientes.id', '=', 'asistencias.cliente_id')
+                ->join('events', 'asistencias.evento_id', '=', 'events.id')
+                ->where('asistencias.asistio', 0)
+                ->where('asistencias.penalidad', '>=', 0)
+                ->get();
+
+            // Calcular las horas penalizadas en PHP
+            foreach ($clientes as $cliente) {
+                $start = new \DateTime($cliente->start);
+                $end = new \DateTime($cliente->end);
+                $diff = $start->diff($end);
+                $hours = $diff->h + ($diff->i / 60); // Calcular horas con minutos convertidos a horas
+                $cliente->cant_horas = round($hours, 2); // Asignar la cantidad de horas calculadas
+            }
+            return view('admin.asistencias.inasistencias', compact('clientes'));
         }
         // ->get()->toArray();
-        // dd($clientes);
-        return view('admin.asistencias.inasistencias', compact('clientes'));
+        // dd($clientes);  
     }
 
 
@@ -129,17 +146,36 @@ class AsistenciaController extends Controller
     public function habilitarCliente($cliente_id)
     {
         $cliente = Cliente::findOrFail($cliente_id);
-
-        // Elimina las penalidades de este cliente
+    
+        // Recorre las asistencias del cliente
         foreach ($cliente->asistencias as $asistencia) {
-            if (!$asistencia->asistio) {
-                $asistencia->penalidad = 0;
-                $asistencia->save();
+            // Si ya está habilitado, deshabilitar y cambiar el valor de 'asistio' a true (o viceversa)
+            if ($asistencia->liquidado) {
+                // Invertir el valor de 'asistio'
+                $asistencia->asistio = !$asistencia->asistio;
+    
+                // Restablecer la fecha de pago de multa si se deshabilita
+                if (!$asistencia->asistio) {
+                    $asistencia->fecha_pago_multa = null;
+                    $asistencia->liquidado = false;
+                } else {
+                    $asistencia->fecha_pago_multa = now()->format('Y-m-d H:i:s');
+                    $asistencia->liquidado = true;
+                }
+            } else {
+                // Si el cliente no ha sido habilitado antes, habilitarlo
+                if (!$asistencia->asistio) {
+                    $asistencia->liquidado = true;
+                    $asistencia->fecha_pago_multa = now()->format('Y-m-d H:i:s');
+                }
             }
+    
+            $asistencia->save(); // Guardar los cambios en cada asistencia
         }
-
-        return redirect()->back()->with('success', 'Cliente habilitado correctamente');
+    
+        return redirect()->back()->with('success', 'El estado del cliente ha sido actualizado correctamente');
     }
+    
     public function update(Request $request)
     {
         foreach ($request->eventos as $evento_id => $data) {

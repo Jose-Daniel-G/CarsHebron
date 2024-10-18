@@ -29,8 +29,11 @@
                                 <th>Fecha de reserva</th>
                                 <th>Hora de inicio</th>
                                 <th>Hora de fin</th>
-                                <th>Fecha y hora de registro</th>
-                                <th>Acciones</th>
+                                {{-- <th>Fecha y hora de registro</th> --}}
+                                @can('admin.event_delete')
+                                    <th>Acciones</th>
+                                @endcan
+
                             </tr>
                         </thead>
                         <tbody>
@@ -55,21 +58,24 @@
                                         {{ \Carbon\Carbon::parse($evento->start)->format('H:i') }}</td>
                                     <td scope="row" class="text-center">
                                         {{ \Carbon\Carbon::parse($evento->end)->format('H:i') }}</td>
-                                    <td scope="row" class="text-center">{{ $evento->created_at }}</td>
+                                    {{-- <td scope="row" class="text-center">{{ $evento->created_at }}</td> --}}
                                     {{-- <td scope="row" class="text-center">{{ $evento->id }}</td> --}}
-                                    <td scope="row">
-                                        {{-- <a href=""  class="btn btn-info btn-sm">Ver</a> --}}
-                                        <div class="btn-group" role="group" aria-label="basic example">
-                                            <form id="delete-form-{{ $evento->id }}"
-                                                action="{{ route('admin.events.destroy', $evento->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-danger"
-                                                    onclick="confirmDelete({{ $evento->id }})"><i
-                                                        class="fas fa-trash"></i></button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    @can('admin.event_delete')
+                                        <td scope="row">
+                                            {{-- <a href=""  class="btn btn-info btn-sm">Ver</a> --}}
+                                            <div class="btn-group" role="group" aria-label="basic example">
+                                                <form id="delete-form-{{ $evento->id }}"
+                                                    action="{{ route('admin.events.destroy', $evento->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-danger"
+                                                        onclick="confirmDelete({{ $evento->id }})"><i
+                                                            class="fas fa-trash"></i></button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    @endcan
+
                                 </tr>
                             @endforeach
                         </tbody>

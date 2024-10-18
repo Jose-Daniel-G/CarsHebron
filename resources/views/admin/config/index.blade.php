@@ -28,7 +28,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>Nro</th>
-                                <th>Hospital/Clinica</th>
+                                <th>Titulo</th>
                                 <th>Direccion</th>
                                 <th>Telefono</th>
                                 <th>Correo</th>

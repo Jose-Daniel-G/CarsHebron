@@ -30,7 +30,7 @@ class EventController extends Controller
             'hora_fin' => 'required|numeric|min:1',
             'cliente_id' => 'required_if:role,admin,secretaria' // Asegúrate de que cliente_id esté presente si es admin o secretaria
         ]);
-    
+
         // Buscar el profesor por su ID
         $profesor = Profesor::find($request->profesorid);
         $fecha_reserva = $request->fecha_reserva;
@@ -38,35 +38,19 @@ class EventController extends Controller
         $fecha_hora_inicio = Carbon::parse("{$fecha_reserva} {$hora_inicio}"); // Crear un objeto Carbon para la fecha y hora de inicio
         $fecha_hora_fin = $fecha_hora_inicio->copy()->addHours($request->hora_fin); // Sumamos las horas ingresadas en el campo 'hora_fin'
         $cursoid = $request->cursoid;
-    
+
         // Obtener el cliente para verificar asistencia
-        $cliente_id = Auth::user()->hasRole('superAdmin') || 
-                      Auth::user()->hasRole('admin') || 
-                      Auth::user()->hasRole('secretaria') ? $request->cliente_id : Auth::user()->cliente->id;
-    
+        $cliente_id = Auth::user()->hasRole('superAdmin') ||
+            Auth::user()->hasRole('admin') ||
+            Auth::user()->hasRole('secretaria') ? $request->cliente_id : Auth::user()->cliente->id;
+
         // Verificar si el cliente tiene un evento anterior y si asistió
         $asistencia = Asistencia::join('events', 'asistencias.evento_id', '=', 'events.id')
             ->select('events.start', 'asistencias.*')
             ->where('asistencias.cliente_id', $cliente_id) // Filtrar por cliente
             ->orderBy('events.start', 'desc') // Ordenar por fecha para obtener el evento más reciente
             ->first(); // Obtener solo el último evento
-    
-        // Si no hay registros de asistencia, verificar si existe un evento
-        if (!$asistencia) {
-            $ultimoEvento = Event::where('cliente_id', $cliente_id) // Asegúrate de tener el cliente_id en la tabla events
-                ->orderBy('start', 'desc')
-                ->first();
-    
-            if ($ultimoEvento) {
-                // Si existe el evento pero no hay asistencia, considerarlo como inasistencia
-                return redirect()->back()->with([
-                    'info' => 'No puedes agendar otra clase hasta que contactes con la escuela por faltar a tu último evento.',
-                    'icono' => 'error',
-                    'title' => 'Inasistencia registrada',
-                ]);
-            }
-        }
-    
+
         // Si hay asistencia y no asistió
         if ($asistencia && $asistencia->asistio === 0) {
             return redirect()->back()->with([
@@ -75,22 +59,22 @@ class EventController extends Controller
                 'title' => 'Asistencia pendiente',
             ]);
         }
-    
+
         // Obtener el día de la semana en español
         $dia = date('l', strtotime($fecha_reserva));
         $dia_de_reserva = $this->traducir_dia($dia);
-    
+
         // Formatear las horas para compararlas en la consulta
         $hora_inicio_formato = $fecha_hora_inicio->format('H:i:s');
         $hora_fin_formato = $fecha_hora_fin->format('H:i:s');
-        
+
         // Consultar los horarios disponibles del profesor
         $horarios = Horario::where('profesor_id', $profesor->id)
             ->where('dia', $dia_de_reserva)
             ->where('hora_inicio', '<=', $hora_inicio_formato)
             ->where('hora_fin', '>=', $hora_fin_formato)
             ->exists();
-    
+
         if (!$horarios) {
             return redirect()->back()->with([
                 'info' => 'El profesor no está disponible en ese horario.',
@@ -98,13 +82,13 @@ class EventController extends Controller
                 'hora_inicio' => 'El profesor no está disponible en ese horario.',
             ]);
         }
-    
+
         // Validar si existen eventos duplicados
         $eventos_duplicados = Event::where('profesor_id', $profesor->id)
             ->where('start', $fecha_hora_inicio)
             ->where('end', $fecha_hora_fin)
             ->exists();
-    
+
         if ($eventos_duplicados) {
             return redirect()->back()->with([
                 'info' => 'Ya existe una reserva con el mismo profesor en esa fecha y hora.',
@@ -112,7 +96,7 @@ class EventController extends Controller
                 'title' => 'Ya existe una reserva con el mismo profesor en esa fecha y hora.',
             ]);
         }
-    
+
         // Crear una nueva instancia de Event
         $evento = new Event();
         $evento->title = $request->hora_inicio . " " . $profesor->especialidad; // Asegúrate de que estás usando la variable correcta
@@ -121,22 +105,29 @@ class EventController extends Controller
         $evento->color = '#e82216';
         $evento->profesor_id = $request->profesorid;
         $evento->curso_id = $cursoid;
-    
+
         if (Auth::user()->hasRole('superAdmin') || Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
             $evento->cliente_id = $request->cliente_id; // Cliente id
         } else {
             $evento->cliente_id = Auth::user()->cliente->id; // Cliente id
         }
-    
+
         $evento->save();
-    
+        // Crear una asistencia por defecto como inasistencia
+        Asistencia::create([
+            'cliente_id' => $evento->cliente_id,
+            'evento_id' => $evento->id,
+            'asistio' => false,  // Inasistencia por defecto
+            'penalidad' => 20000,  // Penalidad por inasistencia
+            'liquidado' => false,
+            'fecha_pago_multa' => null,
+        ]);
         // Redirigir con un mensaje de éxito
         return redirect()->route('admin.index')
             ->with('info', 'Recuerda que no puedes faltar a tu clase, si faltas a las clases sin justificación se cobran 20 mil pesos por hora no vista.')
             ->with('icono', 'success')
             ->with('title', 'Se ha agendado de forma correcta.');
     }
-    
 
     private function traducir_dia($dia)
     {

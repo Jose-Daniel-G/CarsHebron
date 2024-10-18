@@ -19,7 +19,9 @@ return new class extends Migration
 
             $table->boolean('asistio')->default(true);  // Indicar asistencia
             $table->integer('penalidad')->default(0);  // Penalidad por inasistencia
-
+            $table->boolean('liquidado')->default(false);  // Indicar si la multa ha sido pagada
+            $table->timestamp('fecha_pago_multa');  // Fecha en la que se pagó la multa
+            
             $table->timestamps();  // Timestamps
 
             // Definir las claves foráneas

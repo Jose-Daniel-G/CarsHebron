@@ -174,7 +174,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <h3 class="card-title">Calendario de atencion de profesores </h3>
-                        </div><p> {{Auth::user()->id}}</p>
+                        </div>
                         <div class="col-md-4 d-flex justify-content-end">
                             <label for="curso_id">Cursos </label><b>*</b>
                         </div>
