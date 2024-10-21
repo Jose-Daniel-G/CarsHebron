@@ -54,14 +54,12 @@
                 <div class="small-box bg-warning">
                     <div class="inner">
                         <h3>{{ $total_clientes }}</h3>
-
                         <p>Clientes</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-users mr-2"></i>
                     </div>
-                    <a href="{{ route('admin.clientes.index') }}" class="small-box-footer">Mas info <i
-                            class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{ route('admin.clientes.index') }}" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         @endcan
@@ -71,7 +69,6 @@
                 <div class="small-box bg-danger">
                     <div class="inner">
                         <h3>{{ $total_cursos }}</h3>
-
                         <p>Cursos</p>
                     </div>
                     <div class="icon">

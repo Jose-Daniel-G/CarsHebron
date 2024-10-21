@@ -175,6 +175,8 @@ php artisan make:factory TagFactory
 php artisan make:factory ImageFactory
 php artisan make:seeder UserSeeder
 php artisan make:seeder PostSeeder 
+php artisan make:factory VehiculoFactory --model=Vehiculo
+php artisan make:factory PicoyPlacaFactory --model=PicoyPlaca
 
 
 

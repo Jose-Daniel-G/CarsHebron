@@ -6,7 +6,7 @@ use App\Models\Asistencia;
 use App\Models\Cliente;
 use App\Models\Config;
 use App\Models\Profesor;
-use App\Models\Event;
+use App\Models\Event as CalendarEvent;
 use App\Models\Horario;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -53,6 +53,7 @@ class EventController extends Controller
 
         // Si hay asistencia y no asistió
         if ($asistencia && $asistencia->asistio === 0) {
+        // if ($asistencia && (!$asistencia->asistio || Carbon::parse($asistencia->start)->isFuture())) {
             return redirect()->back()->with([
                 'info' => 'No puedes agendar otra clase hasta que contactes con la escuela por faltar a tu último evento.',
                 'icono' => 'error',
@@ -84,7 +85,7 @@ class EventController extends Controller
         }
 
         // Validar si existen eventos duplicados
-        $eventos_duplicados = Event::where('profesor_id', $profesor->id)
+        $eventos_duplicados = CalendarEvent::where('profesor_id', $profesor->id)
             ->where('start', $fecha_hora_inicio)
             ->where('end', $fecha_hora_fin)
             ->exists();
@@ -97,8 +98,8 @@ class EventController extends Controller
             ]);
         }
 
-        // Crear una nueva instancia de Event
-        $evento = new Event();
+        // Crear una nueva instancia de CalendarEvent
+        $evento = new CalendarEvent();
         $evento->title = $request->hora_inicio . " " . $profesor->especialidad; // Asegúrate de que estás usando la variable correcta
         $evento->start = $fecha_hora_inicio;
         $evento->end = $fecha_hora_fin;
@@ -142,13 +143,13 @@ class EventController extends Controller
         ];
         return $dias[$dia] ?? $dias;
     }
-    // public function show(Event $event){return response()->json($event);}
+    // public function show(CalendarEvent $event){return response()->json($event);}
 
     public function show(Request $request)
     {
         try {
-            // $events = Event::all(); // Cambia esto según la lógica que necesites
-            $events = Event::with('profesor', 'cliente')->get(); // Carga la relación 'profesor'
+            // $events = CalendarEvent::all(); // Cambia esto según la lógica que necesites
+            $events = CalendarEvent::with('profesor', 'cliente')->get(); // Carga la relación 'profesor'
 
             return response()->json($events); // Devuelve todos los eventos
         } catch (\Exception $e) {
@@ -158,14 +159,14 @@ class EventController extends Controller
     }
 
 
-    public function update(Request $request, Event $event)
+    public function update(Request $request, CalendarEvent $event)
     {
         $validatedData = $request->validate(['profesor_id' => 'required', 'hora_inicio' => 'required', 'fecha_reserva' => 'required|date']);
         $event->update($validatedData);
         return response()->json(['message' => 'Evento actualizado correctamente']);
     }
 
-    public function destroy(Event $evento)
+    public function destroy(CalendarEvent $evento)
     {
         // dd($event);
         $evento->delete(); // Cambiar destroy() por delete()
@@ -194,7 +195,7 @@ class EventController extends Controller
     public function pdf()
     {
         $configuracion = Config::latest()->first();
-        $eventos = Event::all();
+        $eventos = CalendarEvent::all();
 
         $pdf = Pdf::loadView('admin.reservas.pdf', compact('configuracion', 'eventos'));
 
@@ -219,7 +220,7 @@ class EventController extends Controller
     //     $fecha_inicio = $request->input('fecha_inicio');
     //     $fecha_fin = $request->input('fecha_fin');
 
-    //     $eventos = Event::whereBetween('start',[$fecha_inicio, $fecha_fin])->get();
+    //     $eventos = CalendarEvent::whereBetween('start',[$fecha_inicio, $fecha_fin])->get();
 
     //     $pdf = \PDF::loadView('admin.reservas.pdf_fechas', compact('configuracion','eventos','fecha_inicio','fecha_fin'));
 

@@ -12,9 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('picoyplaca', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // Asegúrate de que esto sea un unsigned big integer
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin');
             $table->string('dia');
-            $table->string('placa');
+            $table->time('horario'); // O puedes usar string si es más apropiado
+            $table->string('placas_reservadas');
             $table->timestamps();
         });
     }

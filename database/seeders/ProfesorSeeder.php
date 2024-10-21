@@ -69,5 +69,6 @@ class ProfesorSeeder extends Seeder
             'especialidad' => 'Carga o camiones',
             'user_id' => '7',
         ]);
+        //--------------------------------------------]
     }
 }

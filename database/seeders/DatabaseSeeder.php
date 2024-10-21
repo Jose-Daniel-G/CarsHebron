@@ -3,7 +3,10 @@
 namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\PicoyPlaca;
+use App\Models\Profesor;
 use App\Models\User;
+use App\Models\Vehiculo;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,7 +24,15 @@ class DatabaseSeeder extends Seeder
             HorarioSeeder::class,
             ClienteSeeder::class,
         ]);
-        User::factory(9)->create();
+        // $profesores = Profesor::factory()->count(10)->create();
+        // Crear registros de PicoyPlaca antes de crear Vehiculos
+        PicoyPlaca::factory()->count(5)->create(); // Crea 5 registros de PicoyPlaca
+        User::factory(9)->create(); // Crea 9 usuarios
+        Vehiculo::factory()->count(10)->create(); // Crea 50 vehículos
 
+        // // Crear vehículos y vincularlos a profesores aleatorios
+        // Vehiculo::factory()->count(10)->create([
+        //     'usuario_id' => $profesores->random()->id, // Asigna un profesor aleatorio
+        // ]);
     }
 }

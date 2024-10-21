@@ -7,95 +7,107 @@
 @stop
 
 @section('content')
-
-    @if (session('info'))
-        <div class="alert alert-success"><strong>{{ session('info') }}</strong></div>
-    @endif
     <!-- Mostrar errores si existen -->
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                    <strong>{{ $error }}</strong>
                 @endforeach
             </ul>
         </div>
     @endif
-    <div class="card">
-        <div class="card-header">
-            <a class="btn btn-secondary" data-toggle="modal" data-target="#createVehiculoModal">Agregar Vehículo</a>
-        </div>
-        <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Modelo</th>
-                        <th>Placa</th>
-                        <th colspan="2"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($vehiculos as $vehiculo)
-                        <tr>
-                            <td>{{ $vehiculo->id }}</td>
-                            <td>{{ $vehiculo->modelo }}</td>
-                            <td>{{ $vehiculo->placa }}</td>
-                            <td width="10px">
-                                <!-- Botón de edición con los datos del vehículo -->
-                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editVehiculoModal"
-                                    data-id="{{ $vehiculo->id }}" 
-                                    data-modelo="{{ $vehiculo->modelo }}"
-                                    data-placa="{{ $vehiculo->placa }}"
-                                    data-tipo="{{ $vehiculo->tipo }}">Editar</a>
-                            </td>
-                            <td width="10px">
-                                <form id="delete-form-{{ $vehiculo->id }}" action="{{ route('admin.vehiculos.destroy', $vehiculo->id) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $vehiculo->id }})">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    {{-- <div class="row">
+        <h1>Listado de secretarias</h1>
+    </div> --}}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-outline card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Vehiculos registrados</h3>
+                    <div class="card-tools">
+                        <div class="card-header">
+                            <a class="btn btn-secondary" data-toggle="modal" data-target="#createVehiculoModal"><i class="bi bi-plus-circle-fill"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    @if ($info = Session::get('info'))
+                        <div class="alert alert-success"><strong>{{ $info }}</strong></div>
+                    @endif
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Placa</th>
+                                <th>Modelo</th>
+                                <th>Disponible</th>
+                                <th>Tipo</th>
+                                <th>PicoyPlaca ID</th>
+                                <th>Usuario ID</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($vehiculos as $vehiculo)
+                                <tr>
+                                    <td>{{ $vehiculo->placa }}</td>
+                                    <td>{{ $vehiculo->modelo }}</td>
+                                    <td>{{ $vehiculo->disponible ? 'Sí' : 'No' }}</td>
+                                    <td>{{ $vehiculo->tipo }}</td>
+                                    <td>{{ $vehiculo->picoyplaca_id }}</td>
+                                    <td>{{ $vehiculo->usuario_id }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.vehiculos.show', $vehiculo->id) }}"
+                                            class="btn btn-info btn-sm"><i class="fas fa-eye"></i>
+                                    </a>
+                                        <a href="{{ route('admin.vehiculos.edit', $vehiculo->id) }}"
+                                            class="btn btn-warning" data-toggle="modal" data-target="#editVehiculoModal"><i class="fas fa-edit"></i></a>
+                                        <form action="{{ route('admin.vehiculos.destroy', $vehiculo->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger"><i
+                                                class="fas fa-trash"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-
     <!-- Modales para crear y editar vehículos -->
     @include('admin.vehiculos.create')
-{{--     @include('admin.vehiculos.edit') --}}
+    @include('admin.vehiculos.edit')
 
 @endsection
 
-    @section('js')
+@section('js')
     <script>
-        $(document).ready(function() {
-            // Llenar el modal de edición con los datos del vehículo seleccionado
-            $('#editVehiculoModal').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget); // Botón que disparó el modal
-                var id = button.data('id'); // Extraer el ID del vehículo
-                var name = button.data('name'); // Extraer el nombre del vehículo
-                var modelo = button.data('modelo'); // Extraer el modelo del vehículo
-                var placa = button.data('placa'); // Extraer la placa del vehículo
-                var tipo = button.data('tipo'); // Extraer el tipo de vehículo
+        // Escucha el evento cuando se abre el modal
+        $('#editVehiculoModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // Botón que activó el modal
+            var id = button.data('id');
+            var placa = button.data('placa');
+            var modelo = button.data('modelo');
+            var disponible = button.data('disponible');
+            var tipo = button.data('tipo');
+            var picoyplaca_id = button.data('picoyplaca_id');
+            var usuario_id = button.data('usuario_id');
 
-                // Actualizar la acción del formulario con el ID del vehículo
-                var form = $('#editVehiculoForm');
-                var action = form.attr('action').replace(':id', id);
-                form.attr('action', action);
-
-                // Rellenar los campos del modal con los datos del vehículo
-                $('#editVehiculoNombre').val(name);
-                $('#editVehiculoModelo').val(modelo);
-                $('#editVehiculoTipo').val(tipo);
-
-                // Mostrar la placa en el campo de texto y actualizar el campo oculto
-                $('#editVehiculoPlaca').val(placa); // Mostrar la placa al usuario
-                $('#placa').val(placa); // Asegurarse de que el valor de la placa se envía
-            });
+            var modal = $(this);
+            modal.find('#editVehiculoForm').attr('action', '{{ url('admin/vehiculos') }}/' +
+            id); // Establece la acción del formulario
+            modal.find('#placa').val(placa);
+            modal.find('#modelo').val(modelo);
+            modal.find('#disponible').val(disponible ? '1' : '0');
+            modal.find('#tipo').val(tipo);
+            modal.find('#picoyplaca_id').val(picoyplaca_id);
+            modal.find('#usuario_id').val(usuario_id);
         });
     </script>
-
 @endsection

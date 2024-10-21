@@ -1,5 +1,4 @@
-<div class="modal fade" id="editVehiculoModal" tabindex="-1" aria-labelledby="editVehiculoModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="editVehiculoModal" tabindex="-1" aria-labelledby="editVehiculoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,67 +8,47 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="editVehiculoForm" action="{{ route('admin.vehiculos.update', ':id') }}" autocomplete="off" method="POST">
+                <form action="{{ route('admin.vehiculos.update', $vehiculo->id) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    {{-- @include('admin.vehiculos.partials.form') --}}
-                    <div class="card">
-                        <div class="card-header">{{ $vehiculo->exists ? __('Editar Vehículo') : __('Crear Vehículo') }}</div>
-                        <div class="card-body">
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-                    
-                            <form action="{{ $vehiculo->exists ? route('vehiculos.update', $vehiculo->id) : route('vehiculos.store') }}" method="POST">
-                                @csrf
-                                @if($vehiculo->exists)
-                                    @method('PUT')
-                                @endif
-                    
-                                {{-- <div class="form-group">
-                                    <label for="marca">{{ __('Marca') }}</label>
-                                    <input type="text" class="form-control" id="marca" name="marca" value="{{ old('marca', $vehiculo->marca) }}" required>
-                                </div> --}}
-                                {{-- <div class="form-group">
-                                    <label for="anio">{{ __('Año') }}</label>
-                                    <input type="number" class="form-control" id="anio" name="anio" value="{{ old('anio', $vehiculo->anio) }}" required>
-                                </div> --}}
-                                {{-- <div class="form-group">
-                                    <label for="color">{{ __('Color') }}</label>
-                                    <input type="text" class="form-control" id="color" name="color" value="{{ old('color', $vehiculo->color) }}" required>
-                                </div> --}}
-                                <div class="form-group">
-                                    <label for="placa">{{ __('Placa') }}</label>
-                                    <input type="text" class="form-control" id="placa" name="placa" value="{{ old('placa', $vehiculo->placa) }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modelo">{{ __('Modelo') }}</label>
-                                    <input type="text" class="form-control" id="modelo" name="modelo" value="{{ old('modelo', $vehiculo->modelo) }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tipo">{{ __('Tipo de Vehículo') }}</label>
-                                    <select class="form-control" id="tipo" name="tipo" required>
-                                        <option value="automovil" {{ old('tipo', $vehiculo->tipo) == 'automovil' ? 'selected' : '' }}>Automóvil</option>
-                                        <option value="motocicleta" {{ old('tipo', $vehiculo->tipo) == 'motocicleta' ? 'selected' : '' }}>Motocicleta</option>
-                                        <option value="camioneta" {{ old('tipo', $vehiculo->tipo) == 'camioneta' ? 'selected' : '' }}>Camioneta</option>
-                                    </select>
-                                </div>
-                    
-                                <div class="form-group mt-3">
-                                    <button type="submit" class="btn btn-primary">{{ $vehiculo->exists ? __('Actualizar Vehículo') : __('Crear Vehículo') }}</button>
-                                    <a href="{{ route('vehiculos.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="mb-3">
+                        <label for="placa" class="form-label">Placa</label>
+                        <input type="text" class="form-control" id="placa" name="placa"
+                            value="{{ $vehiculo->placa }}" required>
                     </div>
-                    
-                    <button type="submit" class="btn btn-primary me-2">Actualizar vehículo</button>
+                    <div class="mb-3">
+                        <label for="modelo" class="form-label">Modelo</label>
+                        <input type="text" class="form-control" id="modelo" name="modelo"
+                            value="{{ $vehiculo->modelo }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="disponible" class="form-label">Disponible</label>
+                        <select class="form-select form-control" id="disponible" name="disponible">
+                            <option value="1" {{ $vehiculo->disponible ? 'selected' : '' }}>Sí</option>
+                            <option value="0" {{ !$vehiculo->disponible ? 'selected' : '' }}>No</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipo" class="form-label">Tipo</label>
+                        <select class="form-select form-control" id="tipo" name="tipo">
+                            <option value="sedan" {{ $vehiculo->tipo === 'sedan' ? 'selected' : '' }}>Sedan</option>
+                            <option value="suv" {{ $vehiculo->tipo === 'suv' ? 'selected' : '' }}>SUV</option>
+                            <option value="pickup" {{ $vehiculo->tipo === 'pickup' ? 'selected' : '' }}>Pickup</option>
+                            <option value="hatchback" {{ $vehiculo->tipo === 'hatchback' ? 'selected' : '' }}>Hatchback
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="picoyplaca_id" class="form-label">PicoyPlaca ID</label>
+                        <input type="number" class="form-control" id="picoyplaca_id" name="picoyplaca_id"
+                            value="{{ $vehiculo->picoyplaca_id }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="usuario_id" class="form-label">Usuario ID</label>
+                        <input type="number" class="form-control" id="usuario_id" name="usuario_id"
+                            value="{{ $vehiculo->usuario_id }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Actualizar vehículo</button>
                 </form>
             </div>
         </div>

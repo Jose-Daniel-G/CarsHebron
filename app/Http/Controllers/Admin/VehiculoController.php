@@ -20,39 +20,31 @@ class VehiculoController extends Controller
     }
 
     public function store(Request $request)
-    {   // dd($request->all());
-    
+    {
         // Validar los datos del request
         $request->validate([
-            'placa' => 'required|string|max:10',
+            'placa' => 'required|string|max:10|unique:vehiculos,placa', // Validación para que la placa sea única
             'modelo' => 'required|string|max:255',
-            'tipo' => 'required|string|max:50', // Asegúrate que 'tipo' sea válido
+            'tipo' => 'required|string|max:50', // Asegúrate de que 'tipo' sea válido
+            'disponible' => 'required|boolean', // Asumiendo que quieres manejar disponibilidad
+            'picoyplaca_id' => 'required|exists:picoyplaca,id', // Asumiendo que tienes esta validación
+            'usuario_id' => 'required|exists:users,id', // Asegúrate de que el usuario exista
         ]);
-    
-        // Intentar encontrar el vehículo por la placa
-        $vehiculo = Vehiculo::where('placa', $request->placa)->first();
-    
-        if ($vehiculo) {
-            // Si el vehículo ya existe, redirigir con un mensaje de error
-            return redirect()->back()->withErrors(['placa' => 'El vehículo con esa placa ya existe.']);
-        } else {
-            // Si no existe, crear uno nuevo con los datos proporcionados
-            $vehiculo = new Vehiculo();
-            $vehiculo->placa = $request->placa;
-            $vehiculo->modelo = $request->modelo;
-            $vehiculo->tipo = $request->tipo; // Asegúrate de que 'tipo' sea un string válido
-            $vehiculo->save();
-    
-            // Redirigir con un mensaje de éxito
-            return redirect()->route('admin.vehiculos.index')
-            ->with('title', 'Exito')
-            ->with('icon', 'Exito')
-            ->with('info', 'Vehículo creado correctamente.');
-        }
-    }
-    
 
-    public function show(Vehiculo $vehiculo) {}
+        // Crear un nuevo vehículo con los datos proporcionados
+        Vehiculo::create($request->all());
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('admin.vehiculos.index')
+            ->with('title', 'Éxito')
+            ->with('icon', 'success')
+            ->with('info', 'Vehículo creado correctamente.');
+    }
+
+    public function show(Vehiculo $vehiculo)
+    {
+        return view('admin.vehiculos.show', compact('vehiculo')); // Asegúrate de tener esta vista
+    }
 
     public function edit(Vehiculo $vehiculo)
     {
@@ -61,27 +53,30 @@ class VehiculoController extends Controller
 
     public function update(Request $request, Vehiculo $vehiculo)
     {
-        // dd($request->all());
-        // 'marca' => 'required|string|max:255','anio' => 'required|integer','color' => 'required|string|max:50',
+        // Validar los datos del request
         $request->validate([
             'modelo' => 'required|string|max:255',
             'tipo' => 'required|string|max:50',
+            'disponible' => 'required|boolean', // Validación para 'disponible'
+            // Puedes agregar más reglas según sea necesario
         ]);
-        $data = $request->except(['placa']); // Si no deseas que se actualice la placa
-        $vehiculo->update($data);
+
+        // Actualizar el vehículo
+        $vehiculo->update($request->all());
 
         return redirect()->route('admin.vehiculos.index')
-        ->with('title', 'Exito')
-        ->with('info', 'Vehículo actualizado correctamente.')
-        ->with('icono', 'success');
+            ->with('title', 'Éxito')
+            ->with('info', 'Vehículo actualizado correctamente.')
+            ->with('icon', 'success');
     }
+
     public function destroy(Vehiculo $vehiculo)
     {
-        // $this->authorize('author',$vehiculo);
         $vehiculo->delete();
+
         return redirect()->route('admin.vehiculos.index')
-        ->with('title', 'Exito')
-        ->with('success', 'El post ha sido eliminado exitosamente')
-        ->with('icono', 'success');
+            ->with('title', 'Éxito')
+            ->with('info', 'El vehículo ha sido eliminado exitosamente.')
+            ->with('icon', 'success');
     }
 }

@@ -8,19 +8,18 @@ use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Route;
 
 
+ // Auth::routes(['register'=>false]);
 // Route::get('/', function () {return view('welcome');});
 Route::get('/', function () {return view('auth.login');});
-
+Route::get('/register', function () {return redirect('/');});
 
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
 ->group(function () {Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.home');});
 // ->group(function () {Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');});
 
 //RUTAS HORARIOS ADMIN
-Route::resource('/admin/horarios', HorarioController::class)->names('admin.horarios')->middleware('auth', 'can:admin.horarios');
+Route::resource('/admin/horarios', HorarioController::class)->names('admin.horarios')->middleware('auth', 'can:admin.horarios')->middleware('auth','can:show_datos_cursos');
 
-
-// ->middleware('auth','can:show_datos_cursos');
 Route::get('/admin/horarios/show_reserva_profesores/{id}', [HomeController::class, 'show_reserva_profesores'])
      ->name('admin.horarios.show_reserva_profesores');
 Route::get('/admin/show/{id}', [HomeController::class, 'show'])->name('admin.reservas.show')->middleware('auth','can:admin.show_reservas');

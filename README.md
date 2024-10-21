@@ -124,6 +124,7 @@ composer require endroid/qr-code
 # -------------------------
 
 -   composer dump-autoload
+- composer install --ignore-platform-reqs
 -   git rm --cached DB_HEBRON.jpg
 
 -   npm install jquery
@@ -144,9 +145,30 @@ npm install jquery-ui
 <i class="fas fa-eye"></i>
 <i class="fas fa-edit"></i>
 <i class="fas fa-trash"></i>
+
+IF I WANT TO IMPLEMENT NOTIFICATIONS ON PROJECT
+
+php artisan notification:table
+php artisan make:event PostEvent
+
+
+
 HABILITAR EXTENCION EN PHP.INI Xampp u otro: extension=gd
 npm install laravel-mix --save-dev
 npm install @fullcalendar/core @fullcalendar/daygrid @fullcalendar/timegrid
 npm install toastr
 
 php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=views
+###### NOT IMPLEMENTED ##########################
+#### Notifications
+php artisan notification:table
+php artisan make:notification PostNotification<!-- php artisan make:notification InvoicePaid  --> 
+php artisan make:event PostEvent
+php artisan make:listener PostListener
+php artisan adminlte:install --only=main_views
+## optional it makes faster to send notifications
+php artisan queue:table
+php artisan queue:work
+
+php artisan migrate --step
+php artisan migrate:rollback --step

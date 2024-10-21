@@ -25,7 +25,26 @@
                         <input type="text" class="form-control" id="modelo" name="modelo" value=""
                             required>
                     </div>
+                    <div class="mb-3">
 
+                        <label for="disponible" class="form-label">Disponible</label>
+                        <select class="form-select form-control" id="disponible" name="disponible">
+                            <option value="" selected disabled>Seleccione</option>
+                            <option value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipo" class="form-label">Tipo</label>
+                        <select class="form-select form-control" id="tipo" name="tipo">
+                            <option value="" selected disabled>Seleccione</option>
+                            <option value="sedan">Sedan</option>
+                            <option value="suv">SUV</option>
+                            <option value="pickup">Pickup</option>
+                            <option value="hatchback">Hatchback
+                            </option>
+                        </select>
+                    </div>
                     <!-- Campo: Tipo de Vehículo -->
                     <div class="mb-3">
                         <label for="tipo" class="form-label">{{ __('Tipo de Vehículo') }}</label>
@@ -33,7 +52,7 @@
                             @php
                                 $tipos = ['automovil', 'motocicleta', 'camioneta'];
                             @endphp
-                                <option value="" selected disabled>Seleccione una opción</option>
+                            <option value="" selected disabled>Seleccione una opción</option>
 
                             @foreach ($tipos as $value)
                                 <option value="{{ $value }}">
