@@ -447,22 +447,24 @@ return [
                 ],
 
             ],
-        ],        [
+        ],
+        [
             'text' => 'Vehiculos',
             'icon' => 'bi bi-car-front',
-            'route'  => 'admin.vehiculos.index',
             'can'  => 'admin.vehiculos.index',
-            // 'submenu' => [
-            //     [   'text' => 'Creacion de vehiculos',
-            //         'icon'        => 'far fa-circle nav-icon',
-            //         'route' => 'admin.vehiculos.create',
-            //     ],
-            //     [   'text' => 'Listado de vehiculos',
-            //         'icon'        => 'far fa-circle nav-icon',
-            //         'route' => 'admin.cursos.index',
-            //     ],
+            'submenu' => [
+                [
+                    'text' => 'vehiculos',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route'  => 'admin.vehiculos.index',
+                ],
+                [
+                    'text' => 'Picoyplaca',
+                    'icon'        => 'far fa-circle nav-icon',
+                    'route' => 'admin.picoyplaca.index',
+                ],
 
-            // ],
+            ],
         ],
         // [
         //     'text'        => 'Agenda',
@@ -597,7 +599,7 @@ return [
                 ],
             ],
         ],
-        'toastr' => [//it isnt working
+        'toastr' => [ //it isnt working
             'active' => true,
             'files' => [
                 [

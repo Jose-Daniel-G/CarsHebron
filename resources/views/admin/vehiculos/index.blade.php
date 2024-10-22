@@ -27,7 +27,8 @@
                     <h3 class="card-title">Vehiculos registrados</h3>
                     <div class="card-tools">
                         <div class="card-header">
-                            <a class="btn btn-secondary" data-toggle="modal" data-target="#createVehiculoModal"><i class="bi bi-plus-circle-fill"></i></a>
+                            <a class="btn btn-secondary" data-toggle="modal" data-target="#createVehiculoModal"><i
+                                    class="bi bi-plus-circle-fill"></i></a>
                         </div>
                     </div>
                 </div>
@@ -57,19 +58,22 @@
                                     <td>{{ $vehiculo->disponible ? 'Sí' : 'No' }}</td>
                                     <td>{{ $vehiculo->tipo }}</td>
                                     <td>{{ $vehiculo->picoyplaca_id }}</td>
-                                    <td>{{ $vehiculo->usuario_id }}</td>
+                                    <td>{{ $vehiculo->profesor->nombres.' '.$vehiculo->profesor->apellidos }}</td>
                                     <td>
                                         <a href="{{ route('admin.vehiculos.show', $vehiculo->id) }}"
                                             class="btn btn-info btn-sm"><i class="fas fa-eye"></i>
-                                    </a>
-                                        <a href="{{ route('admin.vehiculos.edit', $vehiculo->id) }}"
-                                            class="btn btn-warning" data-toggle="modal" data-target="#editVehiculoModal"><i class="fas fa-edit"></i></a>
+                                        </a>
+                                        <a href="#" class="btn btn-warning" data-id="{{ $vehiculo->id }}"
+                                            data-toggle="modal" data-target="#editVehiculoModal">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+
                                         <form action="{{ route('admin.vehiculos.destroy', $vehiculo->id) }}" method="POST"
                                             style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger"><i
-                                                class="fas fa-trash"></i></button>
+                                                    class="fas fa-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>
@@ -87,27 +91,67 @@
 @endsection
 
 @section('js')
-    <script>
-        // Escucha el evento cuando se abre el modal
-        $('#editVehiculoModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // Botón que activó el modal
-            var id = button.data('id');
-            var placa = button.data('placa');
-            var modelo = button.data('modelo');
-            var disponible = button.data('disponible');
-            var tipo = button.data('tipo');
-            var picoyplaca_id = button.data('picoyplaca_id');
-            var usuario_id = button.data('usuario_id');
+<script>
+$('#editVehiculoModal').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget); // Botón que activó el modal
+    var modal = $(this); // Define modal como el modal actual
+    var url = "{{ route('admin.vehiculos.edit', ':id') }}"; // Corrige la ruta aquí
+    url = url.replace(':id', button.data('id')); // Reemplaza ':id' con el ID del vehículo
 
-            var modal = $(this);
-            modal.find('#editVehiculoForm').attr('action', '{{ url('admin/vehiculos') }}/' +
-            id); // Establece la acción del formulario
-            modal.find('#placa').val(placa);
-            modal.find('#modelo').val(modelo);
-            modal.find('#disponible').val(disponible ? '1' : '0');
-            modal.find('#tipo').val(tipo);
-            modal.find('#picoyplaca_id').val(picoyplaca_id);
-            modal.find('#usuario_id').val(usuario_id);
-        });
+    // Hacer una solicitud AJAX para obtener los datos del vehículo
+    $.ajax({
+        url: url, // URL de la API o endpoint
+        method: 'GET',
+        success: function(data) {
+            modal.find('#edit_vehiculo_id').val(data.vehiculo.id); // Asegúrate que 'data.vehiculo' tenga el ID
+            modal.find('#placa').val(data.vehiculo.placa);
+            modal.find('#modelo').val(data.vehiculo.modelo);
+            modal.find('#disponible').val(data.vehiculo.disponible ? '1' : '0');
+            modal.find('#tipo').val(data.vehiculo.tipo);
+            modal.find('#picoyplaca_id').val(data.vehiculo.picoyplaca_id);
+            modal.find('#profesor_nombres').val(data.vehiculo.profesor.nombres + ' ' + data.vehiculo.profesor.apellidos);
+            
+            var select1 = modal.find('#tipo_select'); // Asegúrate de que este es el ID de tu select
+            select1.empty(); // Limpiar las opciones existentes
+
+            // Asegúrate de que los valores coincidan con lo que esperas en data.vehiculo.tipo
+            select1.append(new Option('Sedan', 'sedan'));
+            select1.append(new Option('SUV', 'suv'));
+            select1.append(new Option('Pickup', 'pickup'));
+            select1.append(new Option('Hatchback', 'hatchback'));
+
+            // Comprobar el valor que se va a establecer
+            console.log('Valor a establecer en el select:', data.vehiculo.tipo); // Verificar valor
+            select1.val(data.vehiculo.tipo); // Establecer el valor seleccionado
+            // select1.change(); // Forzar el evento de cambio
+
+                
+            select = modal.find('#profesor_select'); // Asegúrate de que este es el ID de tu select
+            select.empty(); // Limpiar las opciones existentes
+            $.each(data.profesores, function(index, profesor) {
+                select.append(new Option(profesor.nombres + ' ' + profesor.apellidos, profesor.id));
+            });
+            select.val(data.vehiculo.profesor_id); // Establecer el valor seleccionado
+        },
+        error: function(xhr) {
+            console.error('Error al cargar los datos del vehículo:', xhr);
+        }
+    });
+});
+
+</script>
+<script>
+    function formatearPlaca(input) {
+        let valor = input.value.replace(/-/g, ''); // Eliminar guiones existentes
+        if (valor.length >= 3) {
+            valor = valor.slice(0, 3) + '-' + valor.slice(3); // Agregar guion después de 3 caracteres
+        }
+        if (valor.length > 7) {
+            valor = valor.slice(0, 7); // Limitar a 7 caracteres
+        }
+        input.value = valor.toUpperCase(); // Opcional: convertir a mayúsculas
+    }
     </script>
+
+
 @endsection

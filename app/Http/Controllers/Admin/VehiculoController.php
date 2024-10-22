@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Profesor;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,10 @@ class VehiculoController extends Controller
 {
     public function index()
     {
-        $vehiculos = Vehiculo::all();
+        // $vehiculos = Vehiculo::all();
+        $vehiculos = Vehiculo::with('profesor:id,nombres,apellidos')
+            ->select('vehiculos.*')
+            ->get();
         return view("admin.vehiculos.index", compact('vehiculos'));
     }
 
@@ -43,32 +47,46 @@ class VehiculoController extends Controller
 
     public function show(Vehiculo $vehiculo)
     {
+        $vehiculo = Vehiculo::with('profesor:id,nombres,apellidos')
+            ->select('vehiculos.*')
+            ->get();
         return view('admin.vehiculos.show', compact('vehiculo')); // Asegúrate de tener esta vista
     }
 
     public function edit(Vehiculo $vehiculo)
     {
-        return view('admin.vehiculos.edit', compact('vehiculo'));
+        $profesores = Profesor::all(); // Obtener todos los profesores
+        $vehiculo->load('profesor'); // Cargar solo el profesor relacionado
+
+        return response()->json([
+            'vehiculo' => $vehiculo,
+            'profesores' => $profesores,
+        ]);
     }
+
 
     public function update(Request $request, Vehiculo $vehiculo)
     {
         // Validar los datos del request
         $request->validate([
+            'placa' => 'required|string|max:7',
             'modelo' => 'required|string|max:255',
             'tipo' => 'required|string|max:50',
             'disponible' => 'required|boolean', // Validación para 'disponible'
-            // Puedes agregar más reglas según sea necesario
+            'picoyplaca_id' => 'nullable|exists:picoyplaca,id', // Si manejas un campo de pico y placa
+            'profesor_id' => 'nullable|exists:profesores,id' // Validación para el profesor asociado
         ]);
-
-        // Actualizar el vehículo
-        $vehiculo->update($request->all());
-
+    
+        // Actualizar solo los campos que deben ser actualizados
+        $vehiculo->update();
+    
+        // Redireccionar con un mensaje de éxito
         return redirect()->route('admin.vehiculos.index')
             ->with('title', 'Éxito')
             ->with('info', 'Vehículo actualizado correctamente.')
             ->with('icon', 'success');
     }
+    
 
     public function destroy(Vehiculo $vehiculo)
     {

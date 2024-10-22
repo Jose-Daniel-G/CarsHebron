@@ -18,6 +18,12 @@ class Vehiculo extends Model
         'disponible',
         'pico_y_placa',
     ];
+    
+    public function profesor()
+    {
+        return $this->belongsTo(Profesor::class, 'profesor_id');
+    }
+
     // protected $fillable = [
     //     // 'marca','anio','color', 'pico_y_placa',
     //     'placa','nombre','modelo', 'tipo','disponible',];

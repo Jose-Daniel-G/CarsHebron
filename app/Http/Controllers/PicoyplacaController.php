@@ -2,64 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Picoyplaca;
+use App\Models\PicoyPlaca;
 use Illuminate\Http\Request;
 
-class PicoyplacaController extends Controller
+class PicoyPlacaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $picoyplaca = PicoyPlaca::all()->groupBy('dia');
+        return view('admin.picoyplaca.index', compact('picoyplaca'));
     }
+    
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('admin.picoyplaca.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'dia' => 'required|string|max:20',
+            'horario' => 'required|string|max:50',
+            'placa' => 'required|string|max:10',
+        ]);
+
+        PicoyPlaca::create($request->all());
+
+        return redirect()->route('admin.picoyplaca.index')
+            ->with('success', 'Horario creado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Picoyplaca $picoyplaca)
+    public function edit(PicoyPlaca $picoyplaca)
     {
-        //
+        return view('admin.picoyplaca.edit', compact('picoyplaca'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Picoyplaca $picoyplaca)
+    public function update(Request $request, PicoyPlaca $picoyplaca)
     {
-        //
+        $request->validate([
+            'dia' => 'required|string|max:20',
+            'horario' => 'required|string|max:50',
+            'placa' => 'required|string|max:10',
+        ]);
+
+        $picoyplaca->update($request->all());
+
+        return redirect()->route('admin.picoyplaca.index')
+            ->with('success', 'Horario actualizado correctamente.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Picoyplaca $picoyplaca)
+    public function destroy(PicoyPlaca $picoyplaca)
     {
-        //
-    }
+        $picoyplaca->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Picoyplaca $picoyplaca)
-    {
-        //
+        return redirect()->route('admin.picoyplaca.index')
+            ->with('success', 'Horario eliminado correctamente.');
     }
 }

@@ -16,6 +16,7 @@ use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HistorialController;
 use App\Http\Controllers\PagoController;
+use App\Http\Controllers\PicoyplacaController;
 use App\Http\Controllers\UsuarioController;
 
 
@@ -55,6 +56,7 @@ Route::get('/admin/profesores/evente/{cursoId}', [ProfesorController::class, 'ob
 
 // Route::middleware('can:admin.vehiculos')->group(function () {
     Route::resource('vehiculos', VehiculoController::class)->names('admin.vehiculos');
+    Route::resource('picoyplaca', PicoyplacaController::class)->names('admin.picoyplaca');
 // });
 
 
@@ -74,6 +76,9 @@ Route::get('/reservas/reportes', [EventController::class, 'reportes'])->name('ad
 Route::get('/reservas/pdf/{id}', [EventController::class, 'pdf'])->name('admin.reservas.pdf')->middleware('auth', 'can:admin.reservas.pdf');
 /*NO INCLUDO */
 Route::get('/reservas/pdf_fechas', [EventController::class, 'pdf_fechas'])->name('admin.reservas.pdf_fechas')->middleware('auth', 'can:admin.event.pdf_fechas');
+
+
+
 // Route::group(['middleware'=>['auth']], function(){
 //     Route::get('events', [EventController::class, 'index'])->name('admin.events.index');
 //     Route::get('events/mostrar', [EventController::class, 'show'])->name('admin.events.show');
