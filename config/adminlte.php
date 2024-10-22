@@ -305,11 +305,11 @@ return [
             'icon' => 'bi bi-gear',
             'can'  => 'admin.config.index',
             'submenu' => [
-                [
-                    'text' => 'Crear configuracion',
-                    'icon'        => 'far fa-circle nav-icon',
-                    'route' => 'admin.config.create',
-                ],
+                // [
+                //     'text' => 'Crear configuracion',
+                //     'icon'        => 'far fa-circle nav-icon',
+                //     'route' => 'admin.config.create',
+                // ],
                 [
                     'text' => 'Listado de configuracion',
                     'icon'        => 'far fa-circle nav-icon',
