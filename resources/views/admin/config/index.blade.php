@@ -14,9 +14,12 @@
                 <div class="card-header">
                     <h3 class="card-title">Configuraciones registradas</h3>
                     <div class="card-tools">
-                        <a href="{{ route('admin.config.store') }}" class="btn btn-primary">Registrar
+                        @if ($configs->isEmpty())
+                        <a href="{{ route('admin.config.create') }}" class="btn btn-primary">Registrar
                             {{-- <i class="fa-solid fa-plus"></i> --}}
-                        </a>
+                        </a>                            
+                        @endif
+
                     </div>
                 </div>
 

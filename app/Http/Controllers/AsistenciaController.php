@@ -31,18 +31,25 @@ class AsistenciaController extends Controller
             })
             ->get();
 
-        $events = CalendarEvent::whereDate('start', '>=', now())
-            ->join('profesors', 'events.profesor_id', '=', 'profesors.id')
-            ->join('users', 'profesors.user_id', '=', 'users.id')
-            ->where('users.id', Auth::user()->id)
-            ->select('events.*')
-            ->get();
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('superAdmin')) {
+            $events = CalendarEvent::whereDate('start', '>=', now())
+                ->join('profesors', 'events.profesor_id', '=', 'profesors.id')
+                ->join('users', 'profesors.user_id', '=', 'users.id')
+                ->select('events.*')
+                ->get();
+        } else {
+            $events = CalendarEvent::whereDate('start', '>=', now())
+                ->join('profesors', 'events.profesor_id', '=', 'profesors.id')
+                ->join('users', 'profesors.user_id', '=', 'users.id')
+                ->where('users.id', Auth::user()->id)
+                ->select('events.*')
+                ->get();
+        }
         // dd($asistencias);
         return view('admin.asistencias.index', compact('clientes', 'events', 'asistencias'));
     }
 
-    // public function registrarAsistencia(Request $request)
-    public function store(Request $request)
+    public function store(Request $request)/* registrarAsistencia(Request $request) */
     {
         // dd($request->all());
         foreach ($request->eventos as $eventoId => $evento) {
@@ -58,7 +65,6 @@ class AsistenciaController extends Controller
             // Asignamos 0 si no está marcado el checkbox de 'asistió'
             $validatedData['asistio'] = isset($validatedData['asistio']) ? $validatedData['asistio'] : 0;
 
-
             // Obtener el evento para calcular la duración
             $event = CalendarEvent::find($eventoId);
             if ($event) {
@@ -69,11 +75,9 @@ class AsistenciaController extends Controller
                 // Calcular la duración en horas
                 $duracionHoras = $end->diffInHours($start);
                 if ($validatedData['asistio'] == 0) {
-                    // Si no asistió, calcular la penalidad
-                    $validatedData['penalidad'] = $duracionHoras * 20000;
+                    $validatedData['penalidad'] = $duracionHoras * 20000; // Si no asistió, calcular la penalidad
                 } else {
-                    // Si asistió, no hay penalidad
-                    $validatedData['penalidad'] = 0;
+                    $validatedData['penalidad'] = 0; // Si asistió, no hay penalidad
                 }
             } else {
                 // Manejar el caso si no se encuentra el evento
@@ -85,14 +89,19 @@ class AsistenciaController extends Controller
                 ->where('evento_id', $eventoId)
                 ->first();
 
-            if ($asistenciaExistente) {
+            // if ($asistenciaExistente) {
                 // Si existe, actualizamos el registro
                 $asistenciaExistente->update($validatedData);
-            } else {
-                // Si no existe, creamos un nuevo registro
-                Asistencia::create($validatedData);
-            }
+                // dd('hello:',$validatedData);
+
+            // } else {
+            //     // Si no existe, creamos un nuevo registro
+            //     Asistencia::create($validatedData);
+            //     dd('hello:',$validatedData);
+
+            // }
         }
+        // dd('hello:',$validatedData);
 
         return redirect()->route('admin.asistencias.index')
             ->with('info', 'Asistencia registrada correctamente.')
@@ -105,11 +114,11 @@ class AsistenciaController extends Controller
     {
         // Filtra los clientes que tengan inasistencias con penalidad
         if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('superAdmin')) {
-            $clientes = Cliente::select('clientes.id', 'clientes.nombres AS nombre', 'clientes.apellidos AS apellido', 'asistencias.id AS asistencia_id', 'events.title AS nombre_evento', DB::raw('DATE(events.start) AS date'), DB::raw('TIME(events.start) AS start'), DB::raw('TIME(events.end) AS end'), 'asistencias.asistio', 'asistencias.penalidad', 'asistencias.liquidado', 'asistencias.fecha_pago_multa')
+            $clientes = Cliente::select('clientes.id', 'clientes.nombres AS nombre', 'clientes.apellidos AS apellido', 'asistencias.id AS asistencia_id', 'events.title AS nombre_evento', DB::raw('DATE(events.start) AS date'), DB::raw('TIME(events.start) AS start'), DB::raw('TIME(events.end) AS end'), 'asistio', 'penalidad', 'liquidado', 'fecha_pago_multa')
                 ->join('asistencias', 'clientes.id', '=', 'asistencias.cliente_id')
                 ->join('events', 'asistencias.evento_id', '=', 'events.id')
                 ->get();
-
+// dd($clientes);
             // Calcular las horas penalizadas en PHP
             foreach ($clientes as $cliente) {
                 $start = new \DateTime($cliente->start);
@@ -146,14 +155,14 @@ class AsistenciaController extends Controller
     public function habilitarCliente($cliente_id)
     {
         $cliente = Cliente::findOrFail($cliente_id);
-    
+
         // Recorre las asistencias del cliente
         foreach ($cliente->asistencias as $asistencia) {
             // Si ya está habilitado, deshabilitar y cambiar el valor de 'asistio' a true (o viceversa)
             if ($asistencia->liquidado) {
                 // Invertir el valor de 'asistio'
                 $asistencia->asistio = !$asistencia->asistio;
-    
+
                 // Restablecer la fecha de pago de multa si se deshabilita
                 if (!$asistencia->asistio) {
                     $asistencia->fecha_pago_multa = null;
@@ -169,13 +178,13 @@ class AsistenciaController extends Controller
                     $asistencia->fecha_pago_multa = now()->format('Y-m-d H:i:s');
                 }
             }
-    
+
             $asistencia->save(); // Guardar los cambios en cada asistencia
         }
-    
+
         return redirect()->back()->with('success', 'El estado del cliente ha sido actualizado correctamente');
     }
-    
+
     public function update(Request $request)
     {
         foreach ($request->eventos as $evento_id => $data) {
