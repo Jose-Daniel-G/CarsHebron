@@ -15,9 +15,9 @@
                     <h3 class="card-title">Configuraciones registradas</h3>
                     <div class="card-tools">
                         @if ($configs->isEmpty())
-                        <a href="{{ route('admin.config.create') }}" class="btn btn-primary">Registrar
-                            {{-- <i class="fa-solid fa-plus"></i> --}}
-                        </a>                            
+                            <a href="{{ route('admin.config.create') }}" class="btn btn-primary">Registrar
+                                {{-- <i class="fa-solid fa-plus"></i> --}}
+                            </a>
                         @endif
 
                     </div>
@@ -140,15 +140,27 @@
                     "orderable": "Ordenar por esta columna",
                     "orderableReverse": "Invertir el orden de esta columna"
                 }
-            }
-
+            },
+            buttons: [{
+                extend: 'collection',
+                text: 'Reportes',
+                orientation: 'landscape',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print',
+                    'colvis'
+                ], // Botones que aparecen en la imagen
+            }, ],
+            initComplete: function() {
+                // Apply custom styles after initialization
+                $('.dt-button').css({
+                    'background-color': '#4a4a4a',
+                    'color': 'white',
+                    'border': 'none',
+                    'border-radius': '4px',
+                    'padding': '8px 12px',
+                    'margin': '0 5px',
+                    'font-size': '14px'
+                });
+            },
         });
-        @if (session('info') && session('icono'))
-            Swal.fire({
-                title: "{{ session('title') }}!",
-                text: "{{ session('info') }}",
-                icon: "{{ session('icono') }}"
-            });
-        @endif
     </script>
 @stop

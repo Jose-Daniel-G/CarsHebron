@@ -549,7 +549,7 @@
 
         });
     </script>
-    @if (session('info') && session('icono') && session('title'))
+    {{-- @if (session('info') && session('icono') && session('title'))
         <script>
             Swal.fire({
                 title: "{{ session('title') }}",
@@ -562,7 +562,7 @@
         <script>
             toastr.success('{{ session('info') }}');
         </script>
-    @endif
+    @endif --}}
     <script>
         $(document).ready(function() {
             // Establece el evento para llamar a la función cargarProfesores al cambiar el curso

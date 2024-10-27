@@ -71,7 +71,7 @@
                                     <div class="form-group">
                                         <label for="logo">Logo</label><b>*</b>
                                         <!-- Campo para subir un nuevo logo -->
-                                        <input type="file" id="file" class="form-control" name="logo">
+                                        <input type="file" id="file" class="form-control" name="logo"  accept=".jpg, .jpeg, .png" >
                                         <!-- Mostrar el error si hay problemas con la carga de la imagen -->
                                         @error('logo')
                                             <small class="bg-danger text-white p-1">{{ $message }}</small>

@@ -23,7 +23,7 @@ class VehiculoFactory extends Factory
             'disponible' => $this->faker->boolean(),
             'tipo' => $this->faker->randomElement(['sedan', 'suv', 'pickup', 'hatchback']),
             'picoyplaca_id' => PicoyPlaca::factory()->create()->id, // Asume que tienes un factory para PicoyPlaca
-            'usuario_id' => $this->faker->randomElement(['7', '6', '5', '4']), // Asume que tienes un factory para User
+            'profesor_id' => $this->faker->randomElement(['7', '6', '5', '4']), // Asume que tienes un factory para User
         ];
     }
 }

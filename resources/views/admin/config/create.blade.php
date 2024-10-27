@@ -61,7 +61,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="file" name="logo" id="file" class="form-control-file"
+                                            <input type="file" name="logo" id="file" class="form-control-file"  accept=".jpg, .jpeg, .png" 
                                                 accept="image/*" style="display: none;">
                                         </div>
                                         @error('file')

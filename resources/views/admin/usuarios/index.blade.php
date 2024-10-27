@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+{{-- @section('title', 'Dashboard') --}}
 @section('css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap4.css">
@@ -123,12 +123,12 @@
 
         });
 
-        @if (session('info') && session('icono'))
-            Swal.fire({
-                title: "{{ session('title') }}!",
-                text: "{{ session('info') }}",
-                icon: "{{ session('icono') }}"
-            });
-        @endif
+        // @if (session('info') && session('icono'))
+        //     Swal.fire({
+        //         title: "{{ session('title') }}!",
+        //         text: "{{ session('info') }}",
+        //         icon: "{{ session('icono') }}"
+        //     });
+        // @endif
     </script>
 @stop

@@ -61,11 +61,13 @@
                                             <a href="{{ route('admin.secretarias.edit', $secretaria->id) }}"
                                                 class="btn btn-success btn-sm"><i class="fas fa-edit"></i>
                                             </a>
-                                            <form id="delete-form-{{ $secretaria->id }}" action="{{ route('admin.secretarias.destroy', $secretaria->id) }}"
+                                            <form id="delete-form-{{ $secretaria->id }}"
+                                                action="{{ route('admin.secretarias.destroy', $secretaria->id) }}"
                                                 method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $secretaria->id }})"><i
+                                                <button type="button" class="btn btn-danger"
+                                                    onclick="confirmDelete({{ $secretaria->id }})"><i
                                                         class="fas fa-trash"></i></button>
                                             </form>
 
@@ -82,42 +84,30 @@
 @stop
 
 @section('js')
-    {{-- <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.bootstrap4.js"></script> --}}
-    {{-- <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script> --}}
+
+    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.bootstrap4.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
 
     <!-- Buttons JS -->
-    {{-- <script src="https://cdn.datatables.net/buttons/2.3.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.0/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.flash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.colVis.min.js"></script> --}}
+    <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.colVis.min.js"></script>
     <script>
-        function confirmDelete(id) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¿Deseas eliminar este secretaria?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Si el usuario confirma, se envía el formulario.
-                    document.getElementById('delete-form-' + id).submit();
-                }
-            });
-        }
         new DataTable('#secretarias', {
             responsive: true,
             autoWidth: false, //no le vi la funcionalidad
             dom: 'Bfrtip', // Añade el contenedor de botones
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print', 'colvis' // Botones que aparecen en la imagen
-            ],
+            buttons: [{
+                extend: 'collection',
+                text: 'Reportes',
+                orientation: 'landscape',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print',
+                'colvis'], // Botones que aparecen en la imagen
+            }, ],
             "language": {
                 "decimal": "",
                 "emptyTable": "No hay datos disponibles en la tabla",
@@ -141,15 +131,37 @@
                     "orderable": "Ordenar por esta columna",
                     "orderableReverse": "Invertir el orden de esta columna"
                 }
-            }
-
+            },
+            initComplete: function() {
+                // Apply custom styles after initialization
+                $('.dt-button').css({
+                    'background-color': '#4a4a4a',
+                    'color': 'white',
+                    'border': 'none',
+                    'border-radius': '4px',
+                    'padding': '8px 12px',
+                    'margin': '0 5px',
+                    'font-size': '14px'
+                });
+            },
         });
-        @if (session('info') && session('icono'))
+
+        function confirmDelete(id) {
             Swal.fire({
-                title: "{{ session('title') }}!",
-                text: "{{ session('info') }}",
-                icon: "{{ session('icono') }}"
+                title: '¿Estás seguro?',
+                text: "¿Deseas eliminar este secretaria?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, se envía el formulario.
+                    document.getElementById('delete-form-' + id).submit();
+                }
             });
-        @endif
+        }
     </script>
 @stop

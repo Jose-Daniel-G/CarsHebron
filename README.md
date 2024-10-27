@@ -172,3 +172,8 @@ php artisan queue:work
 
 php artisan migrate --step
 php artisan migrate:rollback --step
+
+## DESEAS TENER PAISES / CIUDADES
+composer require nnjeim/world
+php artisan world:install
+php artisan db:seed --class=WorldSeeder

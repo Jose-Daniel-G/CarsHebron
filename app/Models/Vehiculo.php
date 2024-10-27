@@ -16,6 +16,7 @@ class Vehiculo extends Model
         'placa',
         'modelo',
         'disponible',
+        'tipo',
         'pico_y_placa',
     ];
     

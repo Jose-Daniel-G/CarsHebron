@@ -298,6 +298,11 @@ return [
             'text' => 'Dashboard',
             'route' => 'admin.home',
             'icon' => 'fas fa-home fa-fw ',
+        ],        
+        [
+            'text'        => 'FONTAWESOME (design)',
+            'url'         => '#',
+            'icon' => 'fa-solid fa-person',
         ],
         [
             'text'        => 'Configuraciones',
@@ -317,6 +322,7 @@ return [
                 ],
             ],
         ],
+        
         [
             'text'        => 'Usuarios',
             'route'         => 'admin.users.index',
@@ -514,6 +520,16 @@ return [
     */
 
     'plugins' => [
+        'FontAwesome' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
+                ],
+            ],
+        ],
         'Datatables' => [
             'active' => true,
             'files' => [

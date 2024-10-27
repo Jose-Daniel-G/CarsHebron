@@ -11,7 +11,7 @@
     <div class="row">
         <h1>Panel principal</h1>
     </div>
-        <div class="row">
+    <div class="row">
         <div class="col-md-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
@@ -60,11 +60,15 @@
                                             <a href="{{ route('admin.clientes.edit', $cliente->id) }}"
                                                 class="btn btn-success btn-sm">
                                                 <i class="fas fa-edit"></i>
-                                                </a>
-                                            <form id="delete-form-{{ $cliente->id }}" action="{{ route('admin.clientes.destroy', $cliente->id) }}" method="POST">
+                                            </a>
+                                            <form id="delete-form-{{ $cliente->id }}"
+                                                action="{{ route('admin.clientes.destroy', $cliente->id) }}"
+                                                method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $cliente->id }})"><i class="fas fa-trash"></i></button>
+                                                <button type="button" class="btn btn-danger"
+                                                    onclick="confirmDelete({{ $cliente->id }})"><i
+                                                        class="fas fa-trash"></i></button>
                                             </form>
 
                                         </div>
@@ -80,7 +84,7 @@
 @stop
 
 @section('js')
-  <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.bootstrap4.js"></script>
     <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
 
@@ -92,23 +96,6 @@
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.colVis.min.js"></script>
     <script>
-        function confirmDelete(id) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¿Estás seguro de que deseas eliminar este cliente?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Si el usuario confirma, se envía el formulario.
-                    document.getElementById('delete-form-' + id).submit();
-                }
-            });
-        }
         new DataTable('#clientes', {
             responsive: true,
             autoWidth: false, //no le vi la funcionalidad
@@ -142,12 +129,23 @@
             }
 
         });
-        @if (session('info') && session('icono'))
+
+        function confirmDelete(id) {
             Swal.fire({
-                title: "{{ session('title') }}!",
-                text: "{{ session('info') }}",
-                icon: "{{ session('icono') }}"
+                title: '¿Estás seguro?',
+                text: "¿Estás seguro de que deseas eliminar este cliente?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, se envía el formulario.
+                    document.getElementById('delete-form-' + id).submit();
+                }
             });
-        @endif
-        </script>
+        }
+    </script>
 @stop

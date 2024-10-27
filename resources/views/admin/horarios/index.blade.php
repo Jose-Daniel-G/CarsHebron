@@ -140,26 +140,26 @@
         @endif
 
         // carga contenido de tabla en  curso_info
-        $('#curso_select').on('change', function() {
-            var curso_id = $('#curso_select').val();
-            var url = "{{ route('admin.horarios.show_datos_cursos', ':id') }}";
-            url = url.replace(':id', curso_id);
+            $('#curso_select').on('change', function() {
+                var curso_id = $('#curso_select').val();
+                var url = "{{ route('admin.horarios.show_datos_cursos', ':id') }}";
+                url = url.replace(':id', curso_id);
 
-            if (curso_id) {
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    success: function(data) {
-                        $('#curso_info').html(data);
-                    },
-                    error: function() {
-                        alert('Error al obtener datos del curso');
-                    }
-                });
-            } else {
-                $('#curso_info').html('');
-            }
-        });
+                if (curso_id) {
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function(data) {
+                            $('#curso_info').html(data);
+                        },
+                        error: function() {
+                            alert('Error al obtener datos del curso');
+                        }
+                    });
+                } else {
+                    $('#curso_info').html('');
+                }
+            });
     </script>
 
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>

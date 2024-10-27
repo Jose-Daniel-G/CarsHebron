@@ -12,31 +12,43 @@ class VehiculoController extends Controller
     public function index()
     {
         // $vehiculos = Vehiculo::all();
-        $vehiculos = Vehiculo::with('profesor:id,nombres,apellidos')
-            ->select('vehiculos.*')
+        // $vehiculos = Vehiculo::with('profesor:id,nombres,apellidos')
+        //     ->select('vehiculos.*')
+        //     ->get();
+        $vehiculos = Vehiculo::leftJoin('users', 'vehiculos.profesor_id', '=', 'users.id')
+            ->join('profesors', 'users.id', '=', 'profesors.user_id')
+            ->select('vehiculos.*', 'profesors.nombres', 'profesors.apellidos')
+            ->limit(100)
             ->get();
+
         return view("admin.vehiculos.index", compact('vehiculos'));
     }
 
     public function create()
     {
-        return view('admin.vehiculos.create');
+        $profesores = Profesor::all(); // Obtener todos los profesores
+        // $vehiculo->load('profesor'); // Cargar solo el profesor relacionado
+
+        return response()->json(['profesores' => $profesores]);
+        // return view('admin.vehiculos.create');
     }
 
     public function store(Request $request)
-    {
+    {   // dd($vehiculos);
+        // $vehiculos = $request->all();
+        // return response()->json($vehiculos);
         // Validar los datos del request
-        $request->validate([
+        $vehiculos = $request->validate([
             'placa' => 'required|string|max:10|unique:vehiculos,placa', // Validación para que la placa sea única
             'modelo' => 'required|string|max:255',
-            'tipo' => 'required|string|max:50', // Asegúrate de que 'tipo' sea válido
+            'tipo' => 'required|string|max:100', // Asegúrate de que 'tipo' sea válido
             'disponible' => 'required|boolean', // Asumiendo que quieres manejar disponibilidad
-            'picoyplaca_id' => 'required|exists:picoyplaca,id', // Asumiendo que tienes esta validación
-            'usuario_id' => 'required|exists:users,id', // Asegúrate de que el usuario exista
+            // 'picoyplaca_id' => 'required|exists:picoyplaca,id', // Asumiendo que tienes esta validación
+            'profesor_id' => 'required|exists:users,id', // Asegúrate de que el usuario exista
         ]);
 
         // Crear un nuevo vehículo con los datos proporcionados
-        Vehiculo::create($request->all());
+        Vehiculo::create($vehiculos);
 
         // Redirigir con un mensaje de éxito
         return redirect()->route('admin.vehiculos.index')
@@ -47,9 +59,15 @@ class VehiculoController extends Controller
 
     public function show(Vehiculo $vehiculo)
     {
-        $vehiculo = Vehiculo::with('profesor:id,nombres,apellidos')
-            ->select('vehiculos.*')
-            ->get();
+        // $vehiculo = Vehiculo::with('profesor:id,nombres,apellidos')
+        //     ->select('vehiculos.*')
+        //     ->get();
+        $vehiculo = Vehiculo::leftJoin('users', 'vehiculos.profesor_id', '=', 'users.id')
+            ->join('profesors', 'users.id', '=', 'profesors.user_id')
+            ->select('vehiculos.*', 'profesors.nombres', 'profesors.apellidos')
+            ->where('vehiculos.id', $vehiculo->id) // Filtrar por el ID del vehículo
+            ->first(); // Obtener solo un registro
+
         return view('admin.vehiculos.show', compact('vehiculo')); // Asegúrate de tener esta vista
     }
 
@@ -76,17 +94,17 @@ class VehiculoController extends Controller
             'picoyplaca_id' => 'nullable|exists:picoyplaca,id', // Si manejas un campo de pico y placa
             'profesor_id' => 'nullable|exists:profesores,id' // Validación para el profesor asociado
         ]);
-    
+
         // Actualizar solo los campos que deben ser actualizados
         $vehiculo->update();
-    
+
         // Redireccionar con un mensaje de éxito
         return redirect()->route('admin.vehiculos.index')
             ->with('title', 'Éxito')
             ->with('info', 'Vehículo actualizado correctamente.')
             ->with('icon', 'success');
     }
-    
+
 
     public function destroy(Vehiculo $vehiculo)
     {

@@ -35,6 +35,10 @@ class Profesor extends Model
     {
         return $this->hasMany(Event::class);
     }
+    public function vehiculos()
+    {
+        return $this->hasMany(Vehiculo::class, 'profesor_id', 'id');
+    }
     // public function historial()
     // {
     //     return $this->hasMany(Historial::class);
