@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('asistencias', function (Blueprint $table) {
@@ -20,7 +18,7 @@ return new class extends Migration
             $table->boolean('asistio')->default(true);  // Indicar asistencia
             $table->integer('penalidad')->default(0);  // Penalidad por inasistencia
             $table->boolean('liquidado')->default(false);  // Indicar si la multa ha sido pagada
-            $table->timestamp('fecha_pago_multa');  // Fecha en la que se pagó la multa
+            $table->timestamp('fecha_pago_multa')->nullable();  // Fecha en la que se pagó la multa
             
             $table->timestamps();  // Timestamps
 
@@ -31,9 +29,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('asistencias');

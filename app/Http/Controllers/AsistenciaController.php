@@ -15,11 +15,9 @@ class AsistenciaController extends Controller
 {
     // public function verFormulario()
     public function index()
-    {
-        // Obtener los clientes
-        $clientes = Cliente::all();
+    {   $clientes = Cliente::all();
 
-        // Filtrar solo los eventos programados para el día actual
+        //Eventos programados para el día actual
         $hoy = Carbon::now()->format('Y-m-d');
         // $events = CalendarEvent::whereDate('start', '>=', now())->get(); // Filtra solo los eventos futuros o del día actual
         // $events = CalendarEvent::whereDate('start', $hoy)->get();
@@ -31,7 +29,7 @@ class AsistenciaController extends Controller
             })
             ->get();
 
-        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('superAdmin')) {
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('superAdmin')) { //mustra los registros sin importar la fecha
             $events = CalendarEvent::whereDate('start', '>=', now())
                 ->join('profesors', 'events.profesor_id', '=', 'profesors.id')
                 ->join('users', 'profesors.user_id', '=', 'users.id')
@@ -61,9 +59,7 @@ class AsistenciaController extends Controller
 
             // Añadimos el evento_id al array de datos validados
             $validatedData['evento_id'] = $eventoId;
-
-            // Asignamos 0 si no está marcado el checkbox de 'asistió'
-            $validatedData['asistio'] = isset($validatedData['asistio']) ? $validatedData['asistio'] : 0;
+            $validatedData['asistio'] = isset($validatedData['asistio']) ? $validatedData['asistio'] : 0; // Asignamos 0 si no está marcado el checkbox de 'asistió'
 
             // Obtener el evento para calcular la duración
             $event = CalendarEvent::find($eventoId);
@@ -74,14 +70,9 @@ class AsistenciaController extends Controller
 
                 // Calcular la duración en horas
                 $duracionHoras = $end->diffInHours($start);
-                if ($validatedData['asistio'] == 0) {
-                    $validatedData['penalidad'] = $duracionHoras * 20000; // Si no asistió, calcular la penalidad
-                } else {
-                    $validatedData['penalidad'] = 0; // Si asistió, no hay penalidad
-                }
+                $validatedData['penalidad'] = $validatedData['asistio'] == 0 ? $duracionHoras * 20000 : 0;
             } else {
-                // Manejar el caso si no se encuentra el evento
-                continue; // O lanzar un error, según lo que necesites
+                continue; // Manejar el caso si no se encuentra el evento
             }
 
             // Verificar si ya existe una asistencia para este cliente y evento
@@ -90,18 +81,18 @@ class AsistenciaController extends Controller
                 ->first();
 
             // if ($asistenciaExistente) {
-                // Si existe, actualizamos el registro
-                $asistenciaExistente->update($validatedData);
-                // dd('hello:',$validatedData);
-
+            $asistenciaExistente->update($validatedData); // Si existe, actualizamos el registro
             // } else {
-            //     // Si no existe, creamos un nuevo registro
-            //     Asistencia::create($validatedData);
-            //     dd('hello:',$validatedData);
-
+            //     Asistencia::create($validatedData);  //Si no existe, creamos un nuevo registro
             // }
+            // Actualizar horas realizadas solo si el cliente asistió
+            if ($validatedData['asistio']) {
+                DB::table('cliente_curso')
+                    ->where('cliente_id', $validatedData['cliente_id'])
+                    ->where('curso_id', $event->curso_id) // Asegúrate de que el evento tenga curso_id
+                    ->increment('horas_realizadas', $duracionHoras);
+            }
         }
-        // dd('hello:',$validatedData);
 
         return redirect()->route('admin.asistencias.index')
             ->with('info', 'Asistencia registrada correctamente.')
@@ -109,8 +100,7 @@ class AsistenciaController extends Controller
     }
 
     // Función para la secretaria de ver inasistencias y habilitar cliente
-    // public function verInasistencias()
-    public function show() //INASISTENCIAS
+    public function show() //verInasistencias() //INASISTENCIAS
     {
         // Filtra los clientes que tengan inasistencias con penalidad
         if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('superAdmin')) {
@@ -118,7 +108,7 @@ class AsistenciaController extends Controller
                 ->join('asistencias', 'clientes.id', '=', 'asistencias.cliente_id')
                 ->join('events', 'asistencias.evento_id', '=', 'events.id')
                 ->get();
-// dd($clientes);
+            // dd($clientes);
             // Calcular las horas penalizadas en PHP
             foreach ($clientes as $cliente) {
                 $start = new \DateTime($cliente->start);
@@ -146,8 +136,6 @@ class AsistenciaController extends Controller
             }
             return view('admin.asistencias.inasistencias', compact('clientes'));
         }
-        // ->get()->toArray();
-        // dd($clientes);  
     }
 
 

@@ -20,8 +20,6 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-    // $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-    // Define user_id y su clave foránea
  
     public function down(): void
     {

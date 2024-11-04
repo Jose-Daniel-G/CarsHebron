@@ -33,10 +33,17 @@ class Cliente extends Model
     // }
     public function cursos()
     {
-        return $this->belongsToMany(Curso::class, 'cliente_curso', 'cliente_id', 'curso_id');
+        return $this->belongsToMany(Curso::class, 'cliente_curso')
+        ->withPivot('horas_realizadas');
+        // return $this->belongsToMany(Curso::class, 'cliente_curso', 'cliente_id', 'curso_id');
     }
     public function asistencias()
     {
         return $this->hasMany(Asistencia::class, 'cliente_id'); // Asegúrate de que 'cliente_id' sea la clave foránea en la tabla asistencias
+    }
+    
+    public function cursosCompletados()
+    {
+        return $this->hasMany(HistorialCurso::class);
     }
 }

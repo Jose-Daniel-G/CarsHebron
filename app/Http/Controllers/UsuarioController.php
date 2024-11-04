@@ -14,10 +14,7 @@ class UsuarioController extends Controller
         return view('admin.usuarios.index', compact('usuarios'));
     }
 
-    public function create()
-    {
-        return view('admin.usuarios.create');
-    }
+    public function create(){return view('admin.usuarios.create');}
 
     public function store(Request $request)
     {
@@ -29,7 +26,6 @@ class UsuarioController extends Controller
             'password' => 'required|min:8|max:250|confirmed',   
         ]);
 
-                
         $usuario = new User();
         $usuario->name = $request->name;
         $usuario->email = $request->email;
@@ -40,19 +36,12 @@ class UsuarioController extends Controller
             ->with('icono','success');
     }
 
-    public function show(User $usuario)
-    { //$usuario = User::finOrFail();
-        return view('admin.usuarios.show', compact('usuario'));
-    }
+    public function show(User $usuario){ return view('admin.usuarios.show', compact('usuario'));}
 
-    public function edit(User $usuario)
-    {
-        return view('admin.usuarios.edit', compact('usuario'));
-    }
+    public function edit(User $usuario){ return view('admin.usuarios.edit', compact('usuario'));}
 
     public function update(Request $request, User $usuario)
     {
-        // dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -66,14 +55,13 @@ class UsuarioController extends Controller
         }
         $usuario->save();
     
-        return redirect()->route('admin.usuarios.index')->with('info', 'Usuario actualizado exitosamente')
-                                                        ->with('icono','success');
+        return redirect()->route('admin.usuarios.index')->with(['info'=> 'Usuario actualizado exitosamente','icono'=>'success']);
     }
     
 
     public function destroy(User $usuario)
     {
         $usuario->delete();
-        return redirect()->route('admin.usuarios.index')->with('info','La usuario se eliminó con éxito')->with('icono','success');
+        return redirect()->route('admin.usuarios.index')->with(['info'=>'La usuario se eliminó con éxito','icono'=>'success']);
     }
 }

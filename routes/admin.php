@@ -55,8 +55,10 @@ Route::resource('/historial', HistorialController::class)->names('admin.historia
 Route::get('/admin/profesores/evente/{cursoId}', [ProfesorController::class, 'obtenerProfesores'])->name('obtenerProfesores');
 
 // Route::middleware('can:admin.vehiculos')->group(function () {
-    Route::resource('vehiculos', VehiculoController::class)->names('admin.vehiculos');
-    Route::resource('picoyplaca', PicoyplacaController::class)->names('admin.picoyplaca');
+Route::resource('vehiculos', VehiculoController::class)->names('admin.vehiculos');
+
+Route::resource('picoyplaca', PicoyplacaController::class)->names('admin.picoyplaca');
+Route::put('/picoyplaca/update', [PicoyPlacaController::class, 'updateAll'])->name('picoyplaca.updateAll');
 // });
 
 

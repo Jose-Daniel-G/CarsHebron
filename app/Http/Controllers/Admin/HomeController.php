@@ -27,6 +27,7 @@ class HomeController extends Controller
         $total_horarios = Horario::count();
         $total_eventos = CalendarEvent::count();
         $total_configuraciones = Config::count();
+        // $total_completados = Config::count();
 
         $profesores = Profesor::all();
         $events = CalendarEvent::all(); // dd(Auth::user()->getRoleNames());

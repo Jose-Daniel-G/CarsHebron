@@ -86,12 +86,11 @@ class SecretariaController extends Controller
         $secretaria->cc = $request->cc;
         $secretaria->celular = $request->celular;
         $secretaria->direccion = $request->direccion;
-        dd($secretaria->fecha_nacimiento);
+        // dd($secretaria->fecha_nacimiento);
         $secretaria->fecha_nacimiento = Carbon::createFromFormat('Y-m-d', $request->fecha_nacimiento)->format('d/m/Y');
         $secretaria->save();
 
         // $usuario = new User::find($secretaria->user->id);
-        // Actualiza los datos del usuario asociado a la secretaria
         $usuario = $secretaria->user;  // Obtén el usuario existente
         $usuario->name = $request->nombres;
         $usuario->email = $request->email;

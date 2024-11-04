@@ -18,9 +18,7 @@ return new class extends Migration
             $table->boolean('disponible')->default(true);
             $table->string('tipo');
             $table->timestamps();
-            $table->unsignedBigInteger('picoyplaca_id')->nullable();
             $table->unsignedBigInteger('profesor_id')->nullable();
-            $table->foreign('picoyplaca_id')->references('id')->on('picoyplaca')->onDelete('set null');
             $table->foreign('profesor_id')->references('id')->on('users')->onDelete('set null');
         });
     }

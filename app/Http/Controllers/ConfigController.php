@@ -21,8 +21,6 @@ class ConfigController extends Controller
     }
     public function store(Request $request)
     {
-        // dd($request->all());
-        // Validación de los datos
         $request->validate([
             'site_name'    => 'required|string',
             'email_contact'    => 'required|email',
@@ -33,32 +31,26 @@ class ConfigController extends Controller
 
         // Crear una nueva instancia del modelo Config
         $config = new Config();
-        $config->site_name = $request->input('site_name');
-        $config->email_contact = $request->input('email_contact');
-        $config->address = $request->input('address');
-        $config->phone = $request->input('phone');
+        $config->site_name = $request->site_name;
+        $config->email_contact = $request->email_contact;
+        $config->address = $request->address;
+        $config->phone = $request->phone;
 
         // Manejo de archivo logo si se ha subido
         if ($request->hasFile('logo')) {
             $logoPath = $request->file('logo')->store('logos', 'public');
             $config->logo = $logoPath;
         }
-
-        // Guardar la nueva configuración
         $config->save();
 
         return redirect()->route('admin.config.index')->with('title', 'Exito')
                                                       ->with('info', 'Configuración creada')->with('icono', 'success');
     }
 
-    public function edit(Config $config)
-    {
-        return view('admin.config.edit', compact('config'));
-    }
+    public function edit(Config $config){return view('admin.config.edit', compact('config'));}
 
     public function update(Request $request, Config $config)
     {
-        // Validación de los datos
         $request->validate([
             'site_name'    => 'required|string',
             'email_contact'    => 'required|email',
@@ -68,23 +60,18 @@ class ConfigController extends Controller
         ]);
 
         // Asignación de los datos al modelo
-        $config->site_name = $request->input('site_name');
-        $config->email_contact = $request->input('email_contact');
-        $config->address = $request->input('address');
-        $config->phone = $request->input('phone');
+        $config->site_name = $request->site_name;
+        $config->email_contact = $request->email_contact;
+        $config->address = $request->address;
+        $config->phone = $request->phone;
 
-        // Manejo de archivo logo si se ha subido
-        if ($request->hasFile('logo')) {
-            // Eliminar el logo anterior si existe
+        if ($request->hasFile('logo')) {// Eliminar el logo anterior si existe
             if ($config->logo) {
                 Storage::delete('public/' . $config->logo);
             }
-            // Guardar el nuevo logo
             $logoPath = $request->file('logo')->store('logos', 'public');
             $config->logo = $logoPath;
         }
-
-        // Guardar los cambios
         $config->save();
 
         return redirect()->route('admin.config.index')->with('title', 'Exito')

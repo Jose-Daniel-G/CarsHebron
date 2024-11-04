@@ -207,11 +207,7 @@ class HorarioController extends Controller
 
 
     public function destroy(Horario $horario)
-    {
-
-        // Eliminar el horario
-        $horario->delete();
-
+    {   $horario->delete();
         return redirect()->route('admin.horarios.index')
             ->with('info', 'El horario se eliminó con éxito')
             ->with('title', 'Exito')

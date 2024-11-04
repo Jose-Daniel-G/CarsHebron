@@ -46,6 +46,12 @@ class Curso extends Model
     // }
     public function clientes()
     {
-        return $this->belongsToMany(Cliente::class, 'cliente_curso', 'curso_id', 'cliente_id');
+        return $this->belongsToMany(Cliente::class, 'cliente_curso')
+        ->withPivot('horas_realizadas');
+        // return $this->belongsToMany(Cliente::class, 'cliente_curso', 'curso_id', 'cliente_id');
+    }
+    public function historialCursos()
+    {
+        return $this->hasMany(HistorialCurso::class);
     }
 }

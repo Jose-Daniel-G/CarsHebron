@@ -10,9 +10,9 @@
 @stop
 
 @section('content')
-<div class="container">
-    <h1>Horarios de Pico y Placa</h1>
-    <button class="btn btn-primary" data-toggle="modal" data-target="#createPicoyPlacaModal">Agregar Horario</button>
+<div class="container mt-4">
+    <h1 class="mb-4">Horarios de Pico y Placa</h1>
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#editAllModal">Editar general de la semana</button>
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -22,7 +22,8 @@
         <thead>
             <tr>
                 <th>Día</th>
-                <th>Horario</th>
+                <th>Desde</th>
+                <th>Hasta</th>
                 <th>Placas</th>
                 <th>Acciones</th>
             </tr>
@@ -33,21 +34,21 @@
                     <td>{{ $dia }}</td>
                     <td>
                         @foreach ($items as $item)
-                            <div>{{ $item->horario }}</div>
+                            <div>{{ $item->horario_inicio }}</div>
                         @endforeach
                     </td>
                     <td>
                         @foreach ($items as $item)
-                            <div>{{ $item->placa }}</div>
+                            <div>{{ $item->horario_fin }}</div>
+                        @endforeach
+                    </td>
+                    <td>
+                        @foreach ($items as $item)
+                            <div>{{ $item->placas_reservadas }}</div>
                         @endforeach
                     </td>
                     <td>
                         <button class="btn btn-warning" data-toggle="modal" data-target="#editPicoyPlacaModal{{ $items[0]->id }}">Editar</button>
-                        <form action="{{ route('admin.picoyplaca.destroy', $items[0]->id) }}" method="POST" style="display:inline;" id="delete-form-{{ $items[0]->id }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $items[0]->id }})">Eliminar</button>
-                        </form>
                     </td>
                 </tr>
 
@@ -56,7 +57,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editPicoyPlacaModalLabel">Editar Horario</h5>
+                                <h5 class="modal-title">Editar Horario de {{ $dia }}</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -66,16 +67,16 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group">
-                                        <label for="dia">Día</label>
-                                        <input type="text" class="form-control" name="dia" value="{{ $dia }}" required readonly>
+                                        <label for="horario_inicio">Desde</label>
+                                        <input type="time" class="form-control" name="horario_inicio" value="{{ $items[0]->horario_inicio }}" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="horario">Horario</label>
-                                        <input type="text" class="form-control" name="horario" value="{{ $items[0]->horario }}" required>
+                                        <label for="horario_fin">Hasta</label>
+                                        <input type="time" class="form-control" name="horario_fin" value="{{ $items[0]->horario_fin }}" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="placa">Placa</label>
-                                        <input type="text" class="form-control" name="placa" value="{{ $items[0]->placa }}" required>
+                                        <label for="placas_reservadas">Placas Reservadas</label>
+                                        <input type="text" class="form-control" name="placas_reservadas" value="{{ $items[0]->placas_reservadas }}" required>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -89,55 +90,64 @@
             @endforeach
         </tbody>
     </table>
-</div>
 
-<!-- Modal Crear -->
-<div class="modal fade" id="createPicoyPlacaModal" tabindex="-1" role="dialog" aria-labelledby="createPicoyPlacaModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createPicoyPlacaModalLabel">Agregar Horario de Pico y Placa</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('admin.picoyplaca.store') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="dia">Día</label>
-                        <input type="text" class="form-control" name="dia" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="horario">Horario</label>
-                        <input type="text" class="form-control" name="horario" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="placa">Placa</label>
-                        <input type="text" class="form-control" name="placa" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Agregar</button>
-                    </div>
+    <!-- Modal para Editar Todos los Horarios -->
+    <div class="modal fade" id="editAllModal" tabindex="-1" role="dialog" aria-labelledby="editAllModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Todos los Horarios de Pico y Placa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('picoyplaca.updateAll') }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Día</th>
+                                    <th>Desde</th>
+                                    <th>Hasta</th>
+                                    <th>Placas Reservadas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($picoyplaca as $dia => $horarios)
+                                    @foreach ($horarios as $horario)
+                                        <tr>
+                                            <td>{{ $horario->dia }}</td>
+                                            <td>
+                                                <input type="time" class="form-control" name="horario_inicio[{{ $horario->id }}]" value="{{ $horario->horario_inicio }}" required>
+                                            </td>
+                                            <td>
+                                                <input type="time" class="form-control" name="horario_fin[{{ $horario->id }}]" value="{{ $horario->horario_fin }}" required>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" name="placas_reservadas[{{ $horario->id }}]" value="{{ $horario->placas_reservadas }}" required>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                            </tbody>
+                        </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Actualizar Todos</button>
+                </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+
 @stop
 
 @section('js')
-    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.bootstrap4.js"></script>
-    <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.0/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.flash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.colVis.min.js"></script>
-    
     <script>
         function confirmDelete(id) {
             Swal.fire({

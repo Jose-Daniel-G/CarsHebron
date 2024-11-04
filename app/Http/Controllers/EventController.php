@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Asistencia;
 use App\Models\Cliente;
 use App\Models\Config;
+use App\Models\Curso;
 use App\Models\Profesor;
 use App\Models\Event as CalendarEvent;
 use App\Models\Horario;
@@ -16,40 +17,38 @@ use Illuminate\Validation\ValidationException;
 
 class EventController extends Controller
 {
-    public function index() {}
-    public function create() {}
+    public function index() {} public function create() {}
 
     public function store(Request $request)
     {
-        // Validar los datos de entrada
         $request->validate([
             'profesorid' => 'required|exists:profesors,id',
             'cursoid' => 'required',
             'fecha_reserva' => 'required',
             'hora_inicio' => 'required',
             'hora_fin' => 'required|numeric|min:1',
-            'cliente_id' => 'required_if:role,admin,secretaria' // Asegúrate de que cliente_id esté presente si es admin o secretaria
+            'cliente_id' => 'required_if:role,admin,secretaria' // Asegúrate de que cliente_id si es admin o secretaria
         ]);
-
+        // $data = $request->all();
+        // return response()->json($data);
         // Buscar el profesor por su ID
         $profesor = Profesor::find($request->profesorid);
         $fecha_reserva = $request->fecha_reserva;
-        $hora_inicio = $request->hora_inicio . ':00'; // Asegurarse de que la hora esté en formato correcto
+        $hora_inicio = $request->hora_inicio . ':00';                          // Asegurarse de que la hora esté en formato correcto
         $fecha_hora_inicio = Carbon::parse("{$fecha_reserva} {$hora_inicio}"); // Crear un objeto Carbon para la fecha y hora de inicio
         $fecha_hora_fin = $fecha_hora_inicio->copy()->addHours($request->hora_fin); // Sumamos las horas ingresadas en el campo 'hora_fin'
         $cursoid = $request->cursoid;
 
         // Obtener el cliente para verificar asistencia
-        $cliente_id = Auth::user()->hasRole('superAdmin') ||
-            Auth::user()->hasRole('admin') ||
-            Auth::user()->hasRole('secretaria') ? $request->cliente_id : Auth::user()->cliente->id;
+        $cliente_id = Auth::user()->hasRole('superAdmin') || Auth::user()->hasRole('admin') || 
+                      Auth::user()->hasRole('secretaria') ? $request->cliente_id : Auth::user()->cliente->id;
 
         // Verificar si el cliente tiene un evento anterior y si asistió
         $asistencia = Asistencia::join('events', 'asistencias.evento_id', '=', 'events.id')
-            ->select('events.start', 'asistencias.*')
-            ->where('asistencias.cliente_id', $cliente_id) // Filtrar por cliente
-            ->orderBy('events.start', 'desc') // Ordenar por fecha para obtener el evento más reciente
-            ->first(); // Obtener solo el último evento
+                    ->select('events.start', 'asistencias.*')
+                    ->where('asistencias.cliente_id', $cliente_id) // Filtrar por cliente
+                    ->orderBy('events.start', 'desc') // Ordenar por fecha para obtener el evento más reciente
+                    ->first(); // Obtener solo el último evento
 
         // Si hay asistencia y no asistió
         if ($asistencia && $asistencia->asistio === 0) {
@@ -67,7 +66,7 @@ class EventController extends Controller
 
         // Formatear las horas para compararlas en la consulta
         $hora_inicio_formato = $fecha_hora_inicio->format('H:i:s');
-        $hora_fin_formato = $fecha_hora_fin->format('H:i:s');
+        $hora_fin_formato    = $fecha_hora_fin->format('H:i:s');
 
         // Consultar los horarios disponibles del profesor
         $horarios = Horario::where('profesor_id', $profesor->id)
@@ -87,8 +86,7 @@ class EventController extends Controller
         // Validar si existen eventos duplicados
         $eventos_duplicados = CalendarEvent::where('profesor_id', $profesor->id)
             ->where('start', $fecha_hora_inicio)
-            ->where('end', $fecha_hora_fin)
-            ->exists();
+            ->where('end', $fecha_hora_fin)->exists();
 
         if ($eventos_duplicados) {
             return redirect()->back()->with([
@@ -98,9 +96,10 @@ class EventController extends Controller
             ]);
         }
 
+        $curso = Curso::find($cursoid);
         // Crear una nueva instancia de CalendarEvent
         $evento = new CalendarEvent();
-        $evento->title = $request->hora_inicio . " " . $profesor->especialidad; // Asegúrate de que estás usando la variable correcta
+        $evento->title = $curso->nombre; // Asegúrate de que estás usando la variable correcta
         $evento->start = $fecha_hora_inicio;
         $evento->end = $fecha_hora_fin;
         $evento->color = '#e82216';
@@ -119,7 +118,7 @@ class EventController extends Controller
             'cliente_id' => $evento->cliente_id,
             'evento_id' => $evento->id,
             'asistio' => false,  // Inasistencia por defecto
-            'penalidad' => 20000,  // Penalidad por inasistencia
+            'penalidad' => 20000*$request->hora_fin,  // Penalidad por inasistencia
             'liquidado' => false,
             'fecha_pago_multa' => null,
         ]);
@@ -143,7 +142,6 @@ class EventController extends Controller
         ];
         return $dias[$dia] ?? $dias;
     }
-    // public function show(CalendarEvent $event){return response()->json($event);}
 
     public function show(Request $request)
     {
@@ -168,48 +166,33 @@ class EventController extends Controller
 
     public function destroy(CalendarEvent $evento)
     {
-        // dd($event);
-        $evento->delete(); // Cambiar destroy() por delete()
-        return redirect()->back()->with([
-            'mensaje' => 'Se eliminó la reserva de manera correcta',
-            'icono' => 'success',
-        ]);
-        // return response()->json(['message' => 'Evento eliminado exitosamente']);
+        $evento->delete(); 
+        return redirect()->back()->with(['mensaje' => 'Se eliminó la reserva de manera correcta','icono' => 'success',]);
     }
+    ///================ [ NO SE ESTAN USANDO ]================
 
     // public function reportes(){
     //     return view('admin.reservas.reportes');
     // }
 
-    public function agendarClase(Request $request)
-    {
-        $cliente = Cliente::find($request->cliente_id);
+    // public function pdf()
+    // {
+    //     $configuracion = Config::latest()->first();
+    //     $eventos = CalendarEvent::all();
 
-        // Revisar si tiene penalidades pendientes
-        if ($cliente->asistencias()->where('asistio', false)->where('penalidad', '>', 0)->exists()) {
-            return redirect()->back()->with('error', 'No puedes agendar nuevas clases hasta pagar la penalidad.');
-        }
-    }
+    //     $pdf = Pdf::loadView('admin.reservas.pdf', compact('configuracion', 'eventos'));
 
-
-    public function pdf()
-    {
-        $configuracion = Config::latest()->first();
-        $eventos = CalendarEvent::all();
-
-        $pdf = Pdf::loadView('admin.reservas.pdf', compact('configuracion', 'eventos'));
-
-        // Incluir la numeración de páginas y el pie de página
-        $pdf->output();
-        $dompdf = $pdf->getDomPDF();
-        $canvas = $dompdf->getCanvas();
-        $canvas->page_text(20, 800, "Impreso por: " . Auth::user()->email, null, 10, array(0, 0, 0));
-        $canvas->page_text(270, 800, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
-        $canvas->page_text(450, 800, "Fecha: " . \Carbon\Carbon::now()->format('d/m/Y') . " - " . \Carbon\Carbon::now()->format('H:i:s'), null, 10, array(0, 0, 0));
+    //     // Incluir la numeración de páginas y el pie de página
+    //     $pdf->output();
+    //     $dompdf = $pdf->getDomPDF();
+    //     $canvas = $dompdf->getCanvas();
+    //     $canvas->page_text(20, 800, "Impreso por: " . Auth::user()->email, null, 10, array(0, 0, 0));
+    //     $canvas->page_text(270, 800, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+    //     $canvas->page_text(450, 800, "Fecha: " . \Carbon\Carbon::now()->format('d/m/Y') . " - " . \Carbon\Carbon::now()->format('H:i:s'), null, 10, array(0, 0, 0));
 
 
-        return $pdf->stream();
-    }
+    //     return $pdf->stream();
+    // }
 
     // public function pdf_fechas(Request $request){
     //     //$datos = request()->all();

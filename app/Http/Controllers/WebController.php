@@ -12,11 +12,7 @@ use Illuminate\Support\Facades\DB;
 class WebController extends Controller
 {
     public function index()
-    {
-
-        $cursos = Curso::all();
-        return view('index', compact('cursos'));
-    }
+    { $cursos = Curso::all(); return view('index', compact('cursos')); }
 
     // public function show_datos_cursos($id)
     // {

@@ -13,21 +13,18 @@ class ClienteController extends Controller
 {
     public function index()
     {
-        $clientes = Cliente::with('user')->get(); // viene con la relacion del Cliente
-
+        $clientes = Cliente::with('user')->get();
         return view('admin.clientes.index', compact('clientes'));
     }
 
     public function create()
     {
-        // Obtener todos los cursos disponibles
         $cursos = Curso::all();
         return view('admin.clientes.create', compact('cursos'));
     }
 
     public function store(Request $request)
     {
-        // dd($request->all());
         $validatedData = $request->validate([
             'nombres' => 'required',
             'apellidos' => 'required',
@@ -42,39 +39,38 @@ class ClienteController extends Controller
         ]);
 
         try {
+            $usuario = User::create([
+                'name' => $request->nombres,
+                'email' => $request->correo,
+                'password' => Hash::make($request->password ?? $request->cc),
+            ]);
 
-
-            $usuario = User::create(['name' => $request->nombres, 'email' => $request->correo, 'password' =>  Hash::make($request->password ?? $request->cc),]);
-
-            // Asignar rol de 'cliente' al usuario
             $usuario->assignRole('cliente');
-
-            // Asignar el `user_id` en los datos validados
             $validatedData['user_id'] = $usuario->id;
             $validatedData['fecha_nacimiento'] = Carbon::createFromFormat('Y-m-d', $request->fecha_nacimiento)->format('d/m/Y');
 
-            // Crear un nuevo Cliente
             $cliente = Cliente::create($validatedData);
 
-            // Asignar los cursos seleccionados al cliente
-            $cliente->cursos()->sync($request->cursos);
+            // Asignar los cursos y registrar horas iniciales en la tabla `cliente_curso`
+            if ($request->cursos) {
+                foreach ($request->cursos as $cursoId) {
+                    $cliente->cursos()->attach($cursoId, ['horas_realizadas' => 0]);
+                }
+            }
 
             return redirect()->route('admin.clientes.index')
                 ->with('title', 'Exito')
                 ->with('info', 'Se registró al Cliente de forma correcta')
                 ->with('icono', 'success');
         } catch (\Illuminate\Database\QueryException $e) {
-            if ($e->errorInfo[1] == 1062) { // Código de error para entrada duplicada
+            if ($e->errorInfo[1] == 1062) {
                 return back()->withErrors(['correo' => 'El correo ya está en uso. Por favor, utiliza otro.'])
                     ->withInput();
             }
-            // Manejo de otros errores si es necesario
             return back()->withErrors(['error' => 'Ocurrió un error inesperado.'])
                 ->withInput();
         }
     }
-
-
 
     public function show(Cliente $cliente)
     {
@@ -84,21 +80,17 @@ class ClienteController extends Controller
 
     public function edit(Cliente $cliente)
     {
-        // Cargar todos los cursos disponibles
-        $cursos = Curso::all();
+        $cursos = Curso::all(); // Cargar todos los cursos disponibles
 
         // Obtener los IDs de los cursos ya asignados al cliente
         $cursosSeleccionados = $cliente->cursos->pluck('id')->toArray();
 
         return view('admin.clientes.edit', compact('cliente', 'cursos', 'cursosSeleccionados'));
-        // $historial = Historial::all();
-        // return view('admin.clientes.edit', compact('historial', 'cliente'));
     }
 
 
     public function update(Request $request, Cliente $cliente)
-    {   
-        // Validación de los datos
+    {
         $validatedData = $request->validate([
             'nombres' => 'required',
             'apellidos' => 'required',
@@ -113,19 +105,15 @@ class ClienteController extends Controller
         ]);
         $validatedData['fecha_nacimiento'] = Carbon::createFromFormat('Y-m-d', $request->fecha_nacimiento)->format('d/m/Y');
 
-        // Si el checkbox está marcado, restablecemos la contraseña
-        if ($request->has('reset_password')) {
-            // Restablecer la contraseña a la cédula
+        if ($request->has('reset_password')) { //Si el checkbox está marcado, Restablecer la contraseña a la cédula
             $usuario = User::find($cliente->user_id); //dd($cliente->user_id);
             $usuario->password = Hash::make($request->cc); // Establecer la contraseña a la cédula
-           
             $usuario->save();
         }
 
-        // Actualizar los datos del Cliente y guardar en la base de datos en una sola línea
+        // Actualizar los datos del Cliente
         $cliente->update($validatedData);
 
-        // Actualizar los cursos asignados al cliente
         $cliente->cursos()->sync($request->cursos ?? []); // Sincroniza los cursos seleccionados en el formulario
 
         return redirect()->route('admin.clientes.index')
@@ -138,12 +126,9 @@ class ClienteController extends Controller
 
     public function destroy(Cliente $Cliente)
     {
-        // Verificar si el Cliente tiene un usuario asociado
-        if ($Cliente->user) {
-            // Si existe un usuario asociado, eliminarlo
-            $Cliente->user->delete();
+        if ($Cliente->user) {// Si existe un usuario asociado, eliminarlo
+            $Cliente->user->delete(); 
         }
-
         // Eliminar el Cliente
         $Cliente->delete();
 

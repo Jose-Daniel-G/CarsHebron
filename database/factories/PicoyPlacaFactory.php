@@ -15,10 +15,9 @@ class PicoyPlacaFactory extends Factory
     public function definition()
     {
         return [
-            'fecha_inicio' => $this->faker->date(), // Fecha de inicio de la restricción
-            'fecha_fin' => $this->faker->date(), // Fecha de fin de la restricción
             'dia' => $this->faker->randomElement(['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']), // Días aplicables
-            'horario' => $this->faker->randomElement(['07:00:00', '08:00:00']), // Horario entre 7 AM y 8 PM
+            'horario_inicio' =>'07:00:00', // Horario entre 7 AM y 8 PM
+            'horario_fin' =>'08:00:00', // Horario entre 7 AM y 8 PM
             'placas_reservadas' => $this->faker->randomElement(['7 y 8', '9 y 0', '1 y 2', '3 y 4', '5 y 6']), // Ejemplo de placas reservadas
         ];
     }

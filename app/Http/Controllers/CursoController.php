@@ -59,17 +59,12 @@ class CursoController extends Controller
     public function update(Request $request, Curso $curso)
     { //dd($request->all());
      
-        // Validación de los datos
         $request->validate([
             'nombre' => 'required',
             'descripcion' => 'required',
             'horas_requeridas' => 'required',
-            // 'ubicacion' => 'required',
-            // 'capacidad' => 'required',
-            // 'especialidad' => 'required',
         ]);
     
-        // Actualizar los datos del curso existente
         $curso->update($request->all()); // Actualizar el registro específico
     
         return redirect()->route('admin.cursos.index')
@@ -80,14 +75,11 @@ class CursoController extends Controller
 
     public function destroy(Curso $curso)
     {
-        // Verificar si el curso tiene un usuario asociado
-        if ($curso->user) {
-            // Si existe un usuario asociado, eliminarlo
+        if ($curso->user) {// Si existe un usuario asociado, eliminarlo
             $curso->user->delete();
         }
-    
-        // Eliminar el curso
-        $curso->delete();
+       
+        $curso->delete(); // Eliminar el curso
     
         return redirect()->route('admin.cursos.index')
             ->with('title', 'Exito')

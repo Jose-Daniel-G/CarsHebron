@@ -28,7 +28,6 @@ class ProfesorController extends Controller
 
     public function store(Request $request)
     {
-        // Validación de los datos
         $validatedData = $request->validate([
             'nombres' => 'required',
             'apellidos' => 'required',
@@ -38,7 +37,6 @@ class ProfesorController extends Controller
             'password' => 'min:8|confirmed',
         ]);
 
-        // Crear el nuevo usuario
         $usuario = new User();
         $usuario->name = $request->nombres;
         $usuario->email = $request->email;
@@ -48,18 +46,12 @@ class ProfesorController extends Controller
             $usuario->password = Hash::make($request->password);
         }
 
-        // Guardar el usuario en la base de datos
         $usuario->save();
+        $profesor = $request->all();
+        $profesor['user_id'] = $usuario->id; // Asigna el ID del nuevo usuario al nuevo profesor
 
-        // Crear un nuevo profesor, usando el ID del usuario recién creado
-        $data = $request->all();
-        $data['user_id'] = $usuario->id; // Asigna el ID del nuevo usuario al nuevo profesor
-
-        // Crea el nuevo profesor
-        Profesor::create($data);
-
-        // Asignar rol de 'profesor' al nuevo usuario
-        $usuario->assignRole('profesor');
+        Profesor::create($profesor);
+        $usuario->assignRole('profesor');// Asignar rol de 'profesor' al nuevo usuario
 
         return redirect()->route('admin.profesores.index')
             ->with('info', 'Se registró el profesor de forma correcta')
@@ -79,7 +71,6 @@ class ProfesorController extends Controller
 
     public function update(Request $request, Profesor $profesor)
     {
-        // Validación de los datos
         $data = $request->validate([
             'nombres' => 'required',
             'apellidos' => 'required',
@@ -91,8 +82,6 @@ class ProfesorController extends Controller
 
         // Asignar el user_id actual a los datos
         $data['user_id'] = $profesor->user_id;
-
-        // Actualizar el profesor
         $profesor->update($data); // Actualiza el profesor
 
         // Obtener el usuario asociado al profesor directamente a través de la relación
@@ -115,7 +104,7 @@ class ProfesorController extends Controller
 
 
     public function destroy(Profesor $profesor)
-    {   // dd($profesor);
+    {   
         // Verificar si el profesor tiene eventos asociados
         if ($profesor->events()->exists()) {
             return redirect()->route('admin.profesores.index')
@@ -124,12 +113,9 @@ class ProfesorController extends Controller
                 ->with('icono', 'Error al eliminar profesor');
         }
 
-        if ($profesor->user) {
-            $profesor->user->delete();
-        } // Si el profesor tiene un usuario asociado, eliminarlo
-
-        // Eliminar el profesor
-        $profesor->delete();
+        if ($profesor->user) {$profesor->user->delete();} // Si el profesor tiene un usuario asociado, eliminarlo
+        
+        $profesor->delete();// Eliminar el profesor
 
         return redirect()->route('admin.profesores.index')
             ->with('info', 'El profesor se eliminó con éxito')

@@ -12,9 +12,6 @@ class VehiculoController extends Controller
     public function index()
     {
         // $vehiculos = Vehiculo::all();
-        // $vehiculos = Vehiculo::with('profesor:id,nombres,apellidos')
-        //     ->select('vehiculos.*')
-        //     ->get();
         $vehiculos = Vehiculo::leftJoin('users', 'vehiculos.profesor_id', '=', 'users.id')
             ->join('profesors', 'users.id', '=', 'profesors.user_id')
             ->select('vehiculos.*', 'profesors.nombres', 'profesors.apellidos')
@@ -28,16 +25,13 @@ class VehiculoController extends Controller
     {
         $profesores = Profesor::all(); // Obtener todos los profesores
         // $vehiculo->load('profesor'); // Cargar solo el profesor relacionado
-
         return response()->json(['profesores' => $profesores]);
         // return view('admin.vehiculos.create');
     }
 
     public function store(Request $request)
-    {   // dd($vehiculos);
-        // $vehiculos = $request->all();
+    {   // $vehiculos = $request->all();
         // return response()->json($vehiculos);
-        // Validar los datos del request
         $vehiculos = $request->validate([
             'placa' => 'required|string|max:10|unique:vehiculos,placa', // Validación para que la placa sea única
             'modelo' => 'required|string|max:255',
@@ -47,10 +41,8 @@ class VehiculoController extends Controller
             'profesor_id' => 'required|exists:users,id', // Asegúrate de que el usuario exista
         ]);
 
-        // Crear un nuevo vehículo con los datos proporcionados
         Vehiculo::create($vehiculos);
 
-        // Redirigir con un mensaje de éxito
         return redirect()->route('admin.vehiculos.index')
             ->with('title', 'Éxito')
             ->with('icon', 'success')
@@ -59,9 +51,6 @@ class VehiculoController extends Controller
 
     public function show(Vehiculo $vehiculo)
     {
-        // $vehiculo = Vehiculo::with('profesor:id,nombres,apellidos')
-        //     ->select('vehiculos.*')
-        //     ->get();
         $vehiculo = Vehiculo::leftJoin('users', 'vehiculos.profesor_id', '=', 'users.id')
             ->join('profesors', 'users.id', '=', 'profesors.user_id')
             ->select('vehiculos.*', 'profesors.nombres', 'profesors.apellidos')
@@ -85,20 +74,13 @@ class VehiculoController extends Controller
 
     public function update(Request $request, Vehiculo $vehiculo)
     {
-        // Validar los datos del request
-        $request->validate([
-            'placa' => 'required|string|max:7',
-            'modelo' => 'required|string|max:255',
-            'tipo' => 'required|string|max:50',
-            'disponible' => 'required|boolean', // Validación para 'disponible'
-            'picoyplaca_id' => 'nullable|exists:picoyplaca,id', // Si manejas un campo de pico y placa
-            'profesor_id' => 'nullable|exists:profesores,id' // Validación para el profesor asociado
-        ]);
-
-        // Actualizar solo los campos que deben ser actualizados
+        $request->validate(['placa' => 'required|string|max:7',
+                            'modelo' => 'required|string|max:255',
+                            'tipo' => 'required|string|max:50',
+                            'disponible' => 'required|boolean', // Validación para 'disponible'
+                            'picoyplaca_id' => 'nullable|exists:picoyplaca,id', // Si manejas un campo de pico y placa
+                            'profesor_id' => 'nullable|exists:profesores,id']); // Validación para el profesor asociado
         $vehiculo->update();
-
-        // Redireccionar con un mensaje de éxito
         return redirect()->route('admin.vehiculos.index')
             ->with('title', 'Éxito')
             ->with('info', 'Vehículo actualizado correctamente.')

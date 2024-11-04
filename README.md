@@ -177,3 +177,6 @@ php artisan migrate:rollback --step
 composer require nnjeim/world
 php artisan world:install
 php artisan db:seed --class=WorldSeeder
+
+## LIBRERIA SLUG
+https://leocaseiro.com.br/jquery-plugin-string-to-slug/
