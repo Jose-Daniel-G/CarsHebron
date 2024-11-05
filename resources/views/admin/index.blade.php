@@ -549,20 +549,6 @@
 
         });
     </script>
-    {{-- @if (session('info') && session('icono') && session('title'))
-        <script>
-            Swal.fire({
-                title: "{{ session('title') }}",
-                text: "{{ session('info') }}",
-                icon: "{{ session('icono') }}"
-            });
-        </script>
-    @endif
-    @if (session('info'))
-        <script>
-            toastr.success('{{ session('info') }}');
-        </script>
-    @endif --}}
     <script>
         $(document).ready(function() {
             // Establece el evento para llamar a la función cargarProfesores al cambiar el curso
@@ -623,9 +609,6 @@
         document.getElementById('fecha_reserva').setAttribute('max', lastDayString);
     </script>
     {{-- <script>
-        //no esta funcionando
-
-
         @if (session('error'))
             toastr.error('{{ session('error') }}');
         @endif
