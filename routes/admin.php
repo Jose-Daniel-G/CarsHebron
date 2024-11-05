@@ -41,7 +41,12 @@ Route::resource('/secretarias', SecretariaController::class)->names('admin.secre
 Route::resource('/clientes', ClienteController::class)->names('admin.clientes')->middleware('auth', 'can:admin.clientes');
 
 //RUTAS CURSOS ADMIN
+Route::get('/cursos/completados', [CursoController::class, 'completados'])
+    ->name('admin.cursos.completados');
+    // ->middleware('auth', 'can:admin.cursos.completados');
 Route::resource('/cursos', CursoController::class)->names('admin.cursos')->middleware('auth', 'can:admin.cursos');
+
+
 
 // //RUTAS PARA LOS EVENTOS
 Route::resource('/eventos', EventController::class)->names('admin.events');

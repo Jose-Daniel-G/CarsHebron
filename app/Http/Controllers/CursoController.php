@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\Curso;
+use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class CursoController extends Controller
@@ -30,7 +34,7 @@ class CursoController extends Controller
             'estado' => 'required|in:A,I', // Asegúrate de que el estado sea válido
             'ubicacion' => 'nullable',
         ]);
-    
+
         // Crear un nuevo curso
         Curso::create([
             'nombre' => $request->nombre,
@@ -38,13 +42,13 @@ class CursoController extends Controller
             'horas_requeridas' => $request->horas_requeridas,
             'estado' => $request->estado,
         ]);
-    
+
         // Redireccionar con mensaje de éxito
         return redirect()->route('admin.cursos.index')
             ->with('info', 'Curso registrado correctamente.')
             ->with('icono', 'success');
     }
-    
+
 
     public function show(Curso $curso)
     {
@@ -58,33 +62,69 @@ class CursoController extends Controller
 
     public function update(Request $request, Curso $curso)
     { //dd($request->all());
-     
+
         $request->validate([
             'nombre' => 'required',
             'descripcion' => 'required',
             'horas_requeridas' => 'required',
         ]);
-    
+
         $curso->update($request->all()); // Actualizar el registro específico
-    
+
         return redirect()->route('admin.cursos.index')
             ->with('info', 'Curso actualizado correctamente.')
             ->with('icono', 'success');
     }
-    
+
+
+    public function completados()
+    {
+        if (Auth::user()->hasRole('superAdmin') ||  Auth::user()->hasRole('admin') || 
+            Auth::user()->hasRole('secretaria') || Auth::user()->hasRole('profesor')) {
+                 // // Asegurarte de reemplazar 'Curso' y 'ClienteCurso' con los nombres de tus modelos.
+                $cursosCompletados = DB::table('cursos')
+                ->join('cliente_curso', 'cursos.id', '=', 'cliente_curso.curso_id')
+                ->select('cursos.id', 'cursos.nombre', 'cursos.descripcion', 'cursos.horas_requeridas', 'cliente_curso.horas_realizadas')
+                ->whereColumn('cliente_curso.horas_realizadas', '>=', 'cursos.horas_requeridas') // Compara las horas realizadas con las horas totales
+                ->get();
+                // dd($cursosCompletados);
+                return view('admin.cursos.completados_all', compact('cursosCompletados'));
+        } else {
+
+            $userId = Auth::user()->id;
+            $clienteId = Cliente::where('user_id', $userId)->first();
+            // $query = DB::table('cursos')
+            //     ->join('cliente_curso', 'cursos.id', '=', 'cliente_curso.curso_id')
+            //     ->select('cursos.id', 'cursos.nombre', 'cursos.descripcion', 'cursos.horas_requeridas', 'cliente_curso.horas_realizadas')
+            //     ->where('cliente_curso.cliente_id', $clienteId);
+
+            // Muestra la consulta SQL generada
+            $cursosCompletados = DB::table('cursos')
+                ->join('cliente_curso', 'cursos.id', '=', 'cliente_curso.curso_id')
+                ->select('cursos.id', 'cursos.nombre', 'cursos.descripcion', 'cursos.horas_requeridas', 'cliente_curso.horas_realizadas')
+                ->where('cliente_curso.cliente_id', $clienteId->id) // Filtra por el cliente específico
+                ->whereColumn('cliente_curso.horas_realizadas', '>=', 'cursos.horas_requeridas') // Compara las horas realizadas con las requeridas
+                ->get();
+                return view('admin.cursos.completados', compact('cursosCompletados'));
+        }
+        // dd($cursosCompletados->toSql(), $cursosCompletados->getBindings());
+        // return response()->json(['clienteId' => $clienteId->id, 'cursosCompletados' => $cursosCompletados]);
+        
+    }
+
+
 
     public function destroy(Curso $curso)
     {
-        if ($curso->user) {// Si existe un usuario asociado, eliminarlo
+        if ($curso->user) { // Si existe un usuario asociado, eliminarlo
             $curso->user->delete();
         }
-       
+
         $curso->delete(); // Eliminar el curso
-    
+
         return redirect()->route('admin.cursos.index')
             ->with('title', 'Exito')
             ->with('info', 'El curso se eliminó con éxito')
             ->with('icono', 'success');
     }
-    
 }

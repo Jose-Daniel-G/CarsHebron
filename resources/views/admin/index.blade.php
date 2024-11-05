@@ -146,6 +146,23 @@
                 </div>
             </div>
         @endcan
+        {{-- Completados --}}
+        {{-- @can('admin.cursos.completados') --}}
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>{{ $total_cursos }}</h3>
+
+                        <p>Cursos completados</p>
+                    </div>
+                    <div class="icon">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                    <a href="{{ route('admin.cursos.completados') }}" class="small-box-footer">Mas info <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        {{-- @endcan --}}
     </div>
     <div class="card card-primary card-outline card-tabs">
         <div class="card-header p-0 pt-1 border-bottom-0">

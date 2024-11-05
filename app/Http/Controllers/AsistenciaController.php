@@ -55,6 +55,14 @@ class AsistenciaController extends Controller
                 ->select('events.*')
                 ->get();
         }
+                    // Calcular las horas penalizadas en PHP
+            foreach ($clientes as $cliente) {
+                $start = new \DateTime($cliente->start);
+                $end = new \DateTime($cliente->end);
+                $diff = $start->diff($end);
+                $hours = $diff->h + ($diff->i / 60); // Calcular horas con minutos convertidos a horas
+                $cliente->cant_horas = round($hours, 2); // Asignar la cantidad de horas calculadas
+            }
         // return response()->json(['clientes' => $clientes,  'events' => $events, 'asistencias' => $asistencias]);
         // return response()->json(['events' => $events, 'asistencias' => $asistencias]);
         return view('admin.asistencias.index', compact('events', 'asistencias'));
