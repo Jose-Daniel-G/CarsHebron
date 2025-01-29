@@ -29,8 +29,6 @@ class ClienteController extends Controller
             'nombres' => 'required',
             'apellidos' => 'required',
             'cc' => 'required|max:11',
-            'nro_seguro' => 'required|max:11',
-            'fecha_nacimiento' => 'required',
             'genero' => 'required',
             'celular' => 'required|max:11',
             'correo' => 'required|email|max:250|unique:clientes',
@@ -59,9 +57,8 @@ class ClienteController extends Controller
             }
 
             return redirect()->route('admin.clientes.index')
-                ->with('title', 'Exito')
-                ->with('info', 'Se registró al Cliente de forma correcta')
-                ->with('icono', 'success');
+                ->with(['title', 'Exito','info', 'Se registró al Cliente de forma correcta','icono', 'success']);
+                
         } catch (\Illuminate\Database\QueryException $e) {
             if ($e->errorInfo[1] == 1062) {
                 return back()->withErrors(['correo' => 'El correo ya está en uso. Por favor, utiliza otro.'])
@@ -95,7 +92,6 @@ class ClienteController extends Controller
             'nombres' => 'required',
             'apellidos' => 'required',
             'cc' => 'required|unique:clientes,cc,' . $cliente->id,
-            'nro_seguro' => 'required|unique:clientes,nro_seguro,' . $cliente->id,
             'fecha_nacimiento' => 'required',
             'genero' => 'required',
             'celular' => 'required',
@@ -117,9 +113,7 @@ class ClienteController extends Controller
         $cliente->cursos()->sync($request->cursos ?? []); // Sincroniza los cursos seleccionados en el formulario
 
         return redirect()->route('admin.clientes.index')
-            ->with('title', 'Exito')
-            ->with('info', 'Cliente actualizado correctamente.')
-            ->with('icono', 'success');
+            ->with(['title', 'Exito', 'info', 'Cliente actualizado correctamente.', 'icono', 'success']);
     }
 
 
@@ -133,8 +127,6 @@ class ClienteController extends Controller
         $Cliente->delete();
 
         return redirect()->route('admin.clientes.index')
-            ->with('title', 'Exito')
-            ->with('info', 'El Cliente se eliminó con éxito')
-            ->with('icono', 'success');
+            ->with(['title', 'Exito', 'info', 'El Cliente se eliminó con éxito', 'icono', 'success']);
     }
 }

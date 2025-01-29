@@ -123,23 +123,14 @@ class EventController extends Controller
             'fecha_pago_multa' => null,
         ]);
         // Redirigir con un mensaje de éxito
-        return redirect()->route('admin.index')
-            ->with('info', 'Recuerda que no puedes faltar a tu clase, si faltas a las clases sin justificación se cobran 20 mil pesos por hora no vista.')
-            ->with('icono', 'success')
-            ->with('title', 'Se ha agendado de forma correcta.');
+        return redirect()->route('admin.index')->with(['title', 'Se ha agendado de forma correcta.'
+            ,'info', 'Recuerda que no puedes faltar a tu clase, si faltas a las clases sin justificación se cobran 20 mil pesos por hora no vista.'
+            ,'icono', 'success'] );
     }
 
     private function traducir_dia($dia)
     {
-        $dias = [
-            'Monday' => 'LUNES',
-            'Tuesday' => 'MARTES',
-            'Wednesday' => 'MIERCOLES',
-            'Thursday' => 'JUEVES',
-            'Friday' => 'VIERNES',
-            'Saturday' => 'SABADO',
-            'Sunday' => 'DOMINGO',
-        ];
+        $dias = ['Monday' => 'LUNES','Tuesday' => 'MARTES','Wednesday' => 'MIERCOLES','Thursday' => 'JUEVES','Friday' => 'VIERNES','Saturday' => 'SABADO','Sunday' => 'DOMINGO',];
         return $dias[$dia] ?? $dias;
     }
 

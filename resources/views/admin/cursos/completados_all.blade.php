@@ -16,7 +16,7 @@
         <div class="col-md-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Iformacion de cursos terminados por cliente</h3>
+                    <h3 class="card-title">Informacion de cursos terminados por cliente</h3>
                 </div>
                 <div class="card-body">
                     @foreach ($cursosCompletados as $curso)

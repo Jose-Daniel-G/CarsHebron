@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\AsistenciaController;
+use App\Http\Controllers\CardController;
 use App\Http\Controllers\HistorialCursoController;
 use App\Http\Controllers\HorarioController;
 
@@ -43,3 +44,5 @@ Route::middleware('auth')->group(function () {
 Route::post('/historial/registrar/{clienteId}/{cursoId}', [HistorialCursoController::class, 'registrarCursoCompletado']);
 Route::get('/historial/completar/{clienteId}/{cursoId}', [HistorialCursoController::class, 'completarCurso']);
 Route::get('/historial/listar/{clienteId}', [HistorialCursoController::class, 'listarCursosCompletados']);
+
+Route::resource('/card', CardController::class)->names('admin.card');

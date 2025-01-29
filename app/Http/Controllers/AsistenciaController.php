@@ -63,10 +63,7 @@ class AsistenciaController extends Controller
                 $hours = $diff->h + ($diff->i / 60); // Calcular horas con minutos convertidos a horas
                 $cliente->cant_horas = round($hours, 2); // Asignar la cantidad de horas calculadas
             }
-        // return response()->json(['clientes' => $clientes,  'events' => $events, 'asistencias' => $asistencias]);
-        // return response()->json(['events' => $events, 'asistencias' => $asistencias]);
         return view('admin.asistencias.index', compact('events', 'asistencias'));
-        // return view('admin.asistencias.index', compact('clientes', 'events', 'asistencias'));
     }
 
     public function store(Request $request)

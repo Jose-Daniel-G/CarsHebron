@@ -44,9 +44,7 @@ class CursoController extends Controller
         ]);
 
         // Redireccionar con mensaje de éxito
-        return redirect()->route('admin.cursos.index')
-            ->with('info', 'Curso registrado correctamente.')
-            ->with('icono', 'success');
+        return redirect()->route('admin.cursos.index','info', 'Curso registrado correctamente.','icono', 'success');
     }
 
 
@@ -71,9 +69,11 @@ class CursoController extends Controller
 
         $curso->update($request->all()); // Actualizar el registro específico
 
-        return redirect()->route('admin.cursos.index')
-            ->with('info', 'Curso actualizado correctamente.')
-            ->with('icono', 'success');
+        return redirect()->route('admin.cursos.index')->with([
+            'info' => 'Curso actualizado correctamente.',
+            'icono' => 'success'
+        ]);
+        
     }
 
 
@@ -107,13 +107,8 @@ class CursoController extends Controller
                 ->get();
                 return view('admin.cursos.completados', compact('cursosCompletados'));
         }
-        // dd($cursosCompletados->toSql(), $cursosCompletados->getBindings());
-        // return response()->json(['clienteId' => $clienteId->id, 'cursosCompletados' => $cursosCompletados]);
-        
     }
-
-
-
+    
     public function destroy(Curso $curso)
     {
         if ($curso->user) { // Si existe un usuario asociado, eliminarlo
@@ -123,8 +118,6 @@ class CursoController extends Controller
         $curso->delete(); // Eliminar el curso
 
         return redirect()->route('admin.cursos.index')
-            ->with('title', 'Exito')
-            ->with('info', 'El curso se eliminó con éxito')
-            ->with('icono', 'success');
+            ->with(['title', 'Exito','info', 'El curso se eliminó con éxito','icono', 'success']);
     }
 }

@@ -32,8 +32,7 @@ class UsuarioController extends Controller
         $usuario->password = Hash::make($request->password);
         $usuario->save();
         return redirect()->route('admin.usuarios.index')
-            ->with('info','Se registro al usuario de forma correcta')
-            ->with('icono','success');
+            ->with(['info','Se registro al usuario de forma correcta','icono','success']);
     }
 
     public function show(User $usuario){ return view('admin.usuarios.show', compact('usuario'));}

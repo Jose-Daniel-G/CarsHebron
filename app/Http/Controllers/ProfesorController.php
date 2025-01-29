@@ -54,8 +54,7 @@ class ProfesorController extends Controller
         $usuario->assignRole('profesor');// Asignar rol de 'profesor' al nuevo usuario
 
         return redirect()->route('admin.profesores.index')
-            ->with('info', 'Se registró el profesor de forma correcta')
-            ->with('icono', 'success');
+            ->with(['info', 'Se registró el profesor de forma correcta','icono', 'success']);
     }
 
 
@@ -97,8 +96,7 @@ class ProfesorController extends Controller
         $usuario->save(); // Guardar cambios del usuario
 
         return redirect()->route('admin.profesores.index')
-            ->with('info', 'Profesor actualizado correctamente.')
-            ->with('icono', 'success');
+            ->with('info', 'Profesor actualizado correctamente.','icono', 'success');
     }
 
 
@@ -107,10 +105,8 @@ class ProfesorController extends Controller
     {   
         // Verificar si el profesor tiene eventos asociados
         if ($profesor->events()->exists()) {
-            return redirect()->route('admin.profesores.index')
-                ->with('info', 'No se puede eliminar el profesor porque tiene eventos asociados.')
-                ->with('icono', 'error')
-                ->with('icono', 'Error al eliminar profesor');
+            return redirect()->route('admin.profesores.index')->with('title', 'Error al eliminar profesor')
+                ->with(['info', 'No se puede eliminar el profesor porque tiene eventos asociados.','icono', 'error']);
         }
 
         if ($profesor->user) {$profesor->user->delete();} // Si el profesor tiene un usuario asociado, eliminarlo
@@ -118,8 +114,7 @@ class ProfesorController extends Controller
         $profesor->delete();// Eliminar el profesor
 
         return redirect()->route('admin.profesores.index')
-            ->with('info', 'El profesor se eliminó con éxito')
-            ->with('icono', 'success');
+            ->with(['info', 'El profesor se eliminó con éxito','icono', 'success']);
     }
     public function reportes()
     {

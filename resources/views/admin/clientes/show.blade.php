@@ -40,24 +40,10 @@
 
                                 </div>
                             </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="nro_seguro">Nro seguro </label>
-                                    <p>{{ $cliente->nro_seguro }}</p>
-
-                                </div>
-                            </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="fecha_nacimiento">Fecha de nacimiento </label>
-                                    <p>{{ $cliente->fecha_nacimiento }}</p>
 
-                                </div>
-                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="celular">Celular </label>
@@ -67,7 +53,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="genero">Género </label>
+                                    <label for="genero">Sexo </label>
                                     @if ($cliente->genero == 'M')
                                         'Masculino'
                                     @else

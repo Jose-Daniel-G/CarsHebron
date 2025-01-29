@@ -54,7 +54,7 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="especialidad">Especialidad </label><b>*</b>
+                                        <label for="especialidad">Categoria </label><b>*</b>
                                         <input type="text" class="form-control" name="especialidad"
                                             value="{{ old('especialidad') }}" required>
                                         @error('especialidad')

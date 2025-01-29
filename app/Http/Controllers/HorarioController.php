@@ -165,9 +165,7 @@ class HorarioController extends Controller
 
         // Redirigir a la lista de horarios con un mensaje de éxito
         return redirect()->route('admin.horarios.create')
-            ->with('info', 'Se registró el horario de forma correcta')
-            ->with('icono', 'success');
-            
+            ->with('info', 'Se registró el horario de forma correcta','icono', 'success');
     }
 
 
@@ -199,18 +197,13 @@ class HorarioController extends Controller
         // Crea el nuevo horario
         $horario->update($request->all());
 
-
         return redirect()->route('admin.horarios.index')
-            ->with('info', 'Horario actualizado correctamente.')
-            ->with('icono', 'success');
+            ->with(['info', 'Horario actualizado correctamente.','icono', 'success']);
     }
 
 
     public function destroy(Horario $horario)
     {   $horario->delete();
-        return redirect()->route('admin.horarios.index')
-            ->with('info', 'El horario se eliminó con éxito')
-            ->with('title', 'Exito')
-            ->with('icon', 'success');
+        return redirect()->route('admin.horarios.index')->with(['title', 'Exito','info', 'El horario se eliminó con éxito','icon', 'success']);
     }
 }

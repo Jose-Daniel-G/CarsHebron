@@ -14,8 +14,6 @@ class AgendarFactory extends Factory
             'nombres' => $this->faker->name(),
             'apellidos' => $this->faker->lastName(),
             'cc' => $this->faker->unique()->numerify('########'),
-            'nro_seguro' => $this->faker->unique()->numerify('########'),
-            'fecha_nacimiento' => $this->faker->date('Y-m-d', '2000-01-01'),
             'genero' => $this->faker->randomElement(['M', 'F']),
             'celular' => $this->faker->phoneNumber(),
             'correo' => $this->faker->unique()->safeEmail(),

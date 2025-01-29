@@ -10,7 +10,7 @@
     <div class="container-fluid">
 
         <div class="row">
-            <h1>Registro de nueva secretaria</h1>
+            <h1>Creacion del programador</h1>
 
         </div>
         <div class="row">

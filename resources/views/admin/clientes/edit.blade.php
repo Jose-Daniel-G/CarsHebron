@@ -58,27 +58,6 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="nro_seguro">Nro seguro </label><b>*</b>
-                                        <input type="text" class="form-control" name="nro_seguro"
-                                            value="{{ $cliente->nro_seguro }}" required>
-                                        @error('nro_seguro')
-                                            <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="fecha_nacimiento">Fecha de nacimiento </label><b>*</b>
-                                        <input type="date" class="form-control" name="fecha_nacimiento"
-                                        value="{{ \Carbon\Carbon::parse($cliente->fecha_nacimiento)->format('Y-m-d') }}" required>
-                                    
-                                        @error('fecha_nacimiento')
-                                            <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
                                         <label for="celular">Celular </label><b>*</b>
                                         <input type="number" class="form-control" name="celular"
                                             value="{{ $cliente->celular }}" required>
@@ -91,7 +70,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="genero">Género </label><b>*</b>
+                                        <label for="genero">Sexo </label><b>*</b>
                                         <select name="genero" id="" class="form-control" name="genero">
                                             <!-- Opción por defecto -->
                                             @if ($cliente->genero == 'M')

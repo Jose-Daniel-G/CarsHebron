@@ -50,7 +50,6 @@
                                     <td scope="row">{{ $cliente->apellidos }}</td>
                                     <td scope="row">{{ $cliente->cc }}</td>
                                     <td scope="row">{{ $cliente->celular }}</td>
-                                    <td scope="row">{{ $cliente->fecha_nacimiento }}</td>
                                     <td scope="row">{{ $cliente->direccion }}</td>
                                     {{-- <td scope="row">{{ $cliente->user->email }}</td> --}}
                                     <td scope="row">

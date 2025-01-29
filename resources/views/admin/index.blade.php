@@ -32,13 +32,13 @@
                 </div>
             </div>
         @endcan
-        {{-- Secretarias --}}
+        {{-- Programador --}}
         @can('admin.secretarias.index')
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-success">
                     <div class="inner">
                         <h3>{{ $total_secretarias }}</h3>
-                        <p>Secretarias</p>
+                        <p>Programador</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-laptop"></i>
@@ -332,10 +332,10 @@
                         let selectedTime = this.value;
                         this.value = selectedTime;
 
-                        if (parseInt(selectedTime) > 3) {
+                        if (parseInt(selectedTime) > 4) {
                             this.value = null;
                             Swal.fire({
-                                text: "Solo puede agendar hasta máximo 3 horas",
+                                text: "Solo puede agendar hasta máximo 4 horas",
                                 icon: "error"
                             });
                         }
