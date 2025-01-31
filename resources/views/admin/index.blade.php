@@ -59,7 +59,8 @@
                     <div class="icon">
                         <i class="fas fa-users mr-2"></i>
                     </div>
-                    <a href="{{ route('admin.clientes.index') }}" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{ route('admin.clientes.index') }}" class="small-box-footer">Mas info <i
+                            class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         @endcan
@@ -148,20 +149,20 @@
         @endcan
         {{-- Completados --}}
         {{-- @can('admin.cursos.completados') --}}
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-success">
-                    <div class="inner">
-                        <h3>{{ $total_cursos }}</h3>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{ $total_cursos }}</h3>
 
-                        <p>Cursos completados</p>
-                    </div>
-                    <div class="icon">
-                        <i class="bi bi-check-circle"></i>
-                    </div>
-                    <a href="{{ route('admin.cursos.completados') }}" class="small-box-footer">Mas info <i
-                            class="fas fa-arrow-circle-right"></i></a>
+                    <p>Cursos completados</p>
                 </div>
+                <div class="icon">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <a href="{{ route('admin.cursos.completados') }}" class="small-box-footer">Mas info <i
+                        class="fas fa-arrow-circle-right"></i></a>
             </div>
+        </div>
         {{-- @endcan --}}
     </div>
     <div class="card card-primary card-outline card-tabs">
@@ -239,7 +240,7 @@
                                     data-target="#claseModal">
                                     Agendar Clase
                                 </button>
-                                    
+
                                 <a href="{{ route('admin.reservas.show', Auth::user()->id) }}" class="btn btn-success">
                                     <i class="bi bi-calendar-check"></i>Ver las reservas
                                 </a>
@@ -368,43 +369,43 @@
             const HoraIncioInput = document.getElementById('hora_inicio');
 
             HoraIncioInput.addEventListener('change', function() {
-                let selectedTime = this.value; // Obtener la hora seleccionada
-                this.value = selectedTime; // Conservar solo la hora, ignorar los minutos
-                if (selectedTime) {
-                    selectedTime = selectedTime.split(':'); //Dividir la cadena en horas y minutos
-                    selectedTime = selectedTime[0] + ':00'; //conservar la hora, ignorar los minutos
-                    this.value = selectedTime; // Establecer la hora modificada en el campo de entrada
-                }
-                let now = new Date(); // Obtener la hora actual
+                let selectedTime = this.value; // Obtener la hora seleccionada (formato HH:MM)
+                let now = new Date(); // Obtener la fecha y hora actual
 
                 if (selectedTime) {
                     // Dividir la hora seleccionada en horas y minutos
-                    let selectedHour = parseInt(selectedTime.split(':')[0], 10);
+                    let [selectedHour, selectedMinutes] = selectedTime.split(':').map(Number);
 
                     // Verificar si la hora seleccionada está fuera del rango permitido (06:00 - 20:00)
                     if (selectedHour < 6 || selectedHour > 20) {
-                        this.value = null;
+                        this.value = ''; // Limpiar el campo de entrada
                         Swal.fire({
-                            title: "No es posble",
+                            title: "No es posible",
                             text: "Por favor seleccione una hora entre las 06:00 y las 20:00.",
                             icon: "warning"
                         });
                         return; // Terminar la ejecución si está fuera de rango
                     }
 
-                    // Obtener la hora y minutos actuales
-                    let currentHour = now.getHours();
-                    let currentMinutes = now.getMinutes();
-                    let today = new Date().toISOString().slice(0, 10);
                     // Obtener la fecha seleccionada del input de fecha
                     let selectedDate = fechaReservaInput.value;
-                    // Verificar si la hora seleccionada ya ha pasado
+                    let today = now.toISOString().slice(0,
+                    10); // Obtener la fecha actual en formato YYYY-MM-DD
+
+                    // Verificar si la fecha seleccionada es hoy
                     if (selectedDate === today) {
-                        if (selectedHour < currentHour || (selectedHour ===
-                                currentHour &&
-                                selectedMinutes <
-                                currentMinutes)) {
-                            this.value = null;
+                        // Obtener la hora y minutos actuales
+                        let currentHour = now.getHours();
+                        let currentMinutes = now.getMinutes();
+
+                        // Verificar si la hora seleccionada ya ha pasado
+                        if (
+                            selectedHour < currentHour ||
+                            // Si la hora seleccionada es menor que la hora actual
+                            (selectedHour === currentHour && selectedMinutes <
+                            currentMinutes) // O si es la misma hora pero los minutos seleccionados son menores
+                        ) {
+                            this.value = ''; // Limpiar el campo de entrada
                             Swal.fire({
                                 text: "No puede seleccionar una hora que ya ha pasado.",
                                 icon: "error"
@@ -514,6 +515,7 @@
                     url: url,
                     type: 'GET',
                     success: function(data) {
+                        // console.log(data);
                         $('#curso_info').html(data);
                     },
                     error: function() {
@@ -522,6 +524,7 @@
                 });
             } else {
                 $('#curso_info').html('');
+
             }
         });
         // carga contenido de tabla en profesor_info
@@ -534,7 +537,7 @@
         //NOTA: NO SE ESTA VISUALIZANDO 
         new DataTable('#reservas', {
             responsive: true,
-            autoWidth: false, //no le vi la funcionalidad
+            autoWidth: false,
             dom: 'Bfrtip', // Añade el contenedor de botones
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print', 'colvis' // Botones que aparecen en la imagen

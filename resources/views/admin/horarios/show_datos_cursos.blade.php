@@ -48,7 +48,7 @@
                         @php
                             $nombre_profesor = '';
                             $agendado = false; // Inicializa la variable $agendado en false
-
+                            $userid = '';
                             // Recorremos los horarios disponibles
                             foreach ($horarios as $horario) {
                                 $horario_inicio_24 = date('H:i', strtotime($horario->hora_inicio));
@@ -75,6 +75,8 @@
                                             $hora_fin_24 > $asignado_inicio_24
                                         ) {
                                             $agendado = true; // Cambia a verdadero si hay coincidencia
+                                            $es_del_usuario = auth()->check() && auth()->user()->id == $horario_asignado->user_id;
+                                            $userid=$horario_asignado;
                                             break; // Salir del bucle si se encuentra coincidencia
                                         }
                                     }
@@ -82,9 +84,12 @@
                                 }
                             }
                         @endphp
-                        <td class="{{ $agendado ? 'table-primary' : '' }}">
+                                    <td class="{{ $agendado ? ($es_del_usuario ? 'table-success' : 'table-primary') : '' }}">
+                                        {{ $nombre_profesor }}
+                                    </td>
+                        {{-- <td class="{{ $agendado ? 'table-primary' : '' }}">
                             {{ $nombre_profesor }}
-                        </td>
+                        </td> --}}
                     @endforeach
                 </tr>
             @endforeach

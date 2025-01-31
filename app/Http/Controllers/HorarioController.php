@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class HorarioController extends Controller
 {
@@ -35,27 +36,27 @@ class HorarioController extends Controller
             // Obtener horarios con profesor y curso
             $horarios = Horario::with(['profesor', 'curso'])->where('curso_id', $id)->get();
     
-            // Obtener horarios asignados para la semana actual
-            $horarios_asignados = CalendarEvent::select(
-                'events.id',
+            $horarios_asignados = CalendarEvent::select([
+                'events.id AS evento_id',
                 'events.profesor_id',
                 'events.curso_id',
                 'events.start AS hora_inicio',
                 'events.end AS hora_fin',
-                'events.created_at',
-                'events.updated_at'
-            )
-                ->selectRaw('DAYNAME(events.start) AS dia')
-                ->join('profesors', 'events.profesor_id', '=', 'profesors.id')
-                ->join('cursos', 'events.curso_id', '=', 'cursos.id')
-                ->join('cliente_curso', 'events.curso_id', '=', 'cliente_curso.curso_id')
-                ->join('clientes', 'cliente_curso.cliente_id', '=', 'clientes.id')
-                ->where('events.curso_id', $id) // Usa la variable $id para el filtro
-                ->where('events.start', '>=', \DB::raw('DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)')) // Inicio de la semana (lunes)
-                ->where('events.start', '<', \DB::raw('DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)')) // Fin de la semana (domingo)
-                ->distinct() // Para evitar duplicados
-                ->get();
-    
+                \DB::raw('DAYNAME(events.start) AS dia'),
+                'users.id AS user_id',
+                'users.name AS user_nombre',
+                'cursos.nombre AS curso_nombre'
+            ])
+            ->join('cursos', 'events.curso_id', '=', 'cursos.id')
+            ->join('clientes', 'events.cliente_id', '=', 'clientes.id')
+            ->join('users', 'clientes.user_id', '=', 'users.id')
+            ->where('events.curso_id', $id)
+            ->where('events.start', '>=', Carbon::now()->startOfWeek()) // Filtra desde el inicio de la semana
+            ->where('events.start', '<', Carbon::now()->endOfWeek()) // Filtra hasta el final de la semana
+            ->orderBy('events.start', 'ASC')
+            ->limit(100)
+            ->get();
+            
             // Traducir los días al español
             $horarios_asignados = $horarios_asignados->map(function ($horario) {
                 $horario->dia = $this->traducir_dia($horario->dia); // Traduce el día al español

@@ -25,7 +25,7 @@
                                 <th>Nro</th>
                                 <th>Profesor</th>
                                 <th>Estudiante</th>
-                                <th>Especialidad</th>
+                                <th>Curso</th>
                                 <th>Fecha de reserva</th>
                                 <th>Hora de inicio</th>
                                 <th>Hora de fin</th>

@@ -22,6 +22,20 @@
                         <form action="{{ route('admin.horarios.store') }}" method="POST" autocomplete="off">
                             @csrf
                             <div class="form-group">
+                                <label for="profesor_id">Profesores </label><b>*</b>
+                                <select class="form-control" name="profesor_id" id="profesor_id">
+                                    <option value="" selected disabled>Seleccione una opción</option>
+                                    @foreach ($profesores as $profesor)
+                                        <option value="{{ $profesor->id }}">
+                                            {{ $profesor->nombres . ' ' . $profesor->apellidos }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('profesor_id')
+                                    <small class="bg-danger text-white p-1">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
                                 <label for="curso_id">Cursos </label><b>*</b>
                                 <select name="curso_id" id="curso_select" class="form-control">
                                     <option value="" selected disabled>Seleccione una opción</option>
@@ -37,20 +51,7 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group">
-                                <label for="profesor_id">Profesores </label><b>*</b>
-                                <select class="form-control" name="profesor_id" id="profesor_id">
-                                    <option value="" selected disabled>Seleccione una opción</option>
-                                    @foreach ($profesores as $profesor)
-                                        <option value="{{ $profesor->id }}">
-                                            {{ $profesor->nombres . ' ' . $profesor->apellidos }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('profesor_id')
-                                    <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                @enderror
-                            </div>
+
 
                             <div class="form-group">
                                 <label for="dia">Dia </label><b>*</b>
@@ -109,8 +110,8 @@
 @section('js')
     <script>
         // carga contenido de tabla en  curso_info
-        $('#curso_select').on('change', function() {
-            var curso_id = $('#curso_select').val();
+        $('#profesor_id').on('change', function() {
+            var curso_id = $('#profesor_id').val();
             var url = "{{ route('admin.horarios.show_datos_cursos', ':id') }}";
             url = url.replace(':id', curso_id);
             // alert(curso_id);
