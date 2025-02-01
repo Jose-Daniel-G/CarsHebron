@@ -43,15 +43,10 @@
                                     <td scope="row">{{ $contador++ }}</td>
                                     <td scope="row">{{ $evento->profesor->nombres . ' ' . $evento->profesor->apellidos }}
                                     </td>
-                                    <td scope="row">
-                                        @if ($evento->cliente)
-                                            {{ $evento->cliente->nombres . ' ' . $evento->cliente->apellidos }}
-                                        @else
-                                            No Cliente
-                                        @endif
+                                    <td scope="row">{{ $evento->cliente->nombres . ' ' . $evento->cliente->apellidos }}
                                     </td>
 
-                                    <td scope="row" class="text-center">{{ $evento->profesor->especialidad }}</td>
+                                    <td scope="row" class="text-center">{{ $evento->curso->nombre }}</td>
                                     <td scope="row" class="text-center">
                                         {{ \Carbon\Carbon::parse($evento->start)->format('Y-m-d') }}</td>
                                     <td scope="row" class="text-center">

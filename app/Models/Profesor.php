@@ -10,8 +10,8 @@ class Profesor extends Model
     use HasFactory;
     protected $table = 'profesors'; // Si la tabla se llama 'profesors'
 
-    protected $fillable=['nombres','apellidos','telefono','especialidad',
-    'user_id',  // Asegúrate de agregarlo aquí
+    protected $fillable=['nombres','apellidos','telefono',
+    'user_id',  // Asegúrate de agregarlo aquí 'especialidad',
     ];
     // public function cursos()
     // {
@@ -21,10 +21,6 @@ class Profesor extends Model
     // {
     //     return $this->belongsToMany(Curso::class, 'curso_profesor');
     // }
-    public function cursos()
-    {
-        return $this->belongsToMany(Curso::class, 'curso_profesor', 'profesor_id', 'curso_id');
-    }
     public function horarios(){
         return $this->hasMany(Horario::class);
     }

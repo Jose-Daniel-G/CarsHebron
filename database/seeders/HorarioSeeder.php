@@ -27,7 +27,7 @@ class HorarioSeeder extends Seeder
             'dia' => 'MARTES',
             'hora_inicio' => '6:00:00',
             'hora_fin' => '18:00:00',
-            'profesor_id' => '2',
+            'profesor_id' => '1',
             'curso_id' => '1',
         ]);
         Horario::create([
@@ -41,15 +41,8 @@ class HorarioSeeder extends Seeder
             'dia' => 'JUEVES',
             'hora_inicio' => '6:00:00',
             'hora_fin' => '14:00:00',
-            'profesor_id' => '3',
-            'curso_id' => '1',
-        ]);
-        Horario::create([
-            'dia' => 'JUEVES',
-            'hora_inicio' => '6:00:00',
-            'hora_fin' => '14:00:00',
             'profesor_id' => '1',
-            'curso_id' => '2',
+            'curso_id' => '1',
         ]);
         Horario::create([
             'dia' => 'VIERNES',
@@ -62,7 +55,14 @@ class HorarioSeeder extends Seeder
             'dia' => 'SABADO',
             'hora_inicio' => '6:00:00',
             'hora_fin' => '20:00:00',
-            'profesor_id' => '3',
+            'profesor_id' => '1',
+            'curso_id' => '1',
+        ]);
+        Horario::create([
+            'dia' => 'LUNES',
+            'hora_inicio' => '6:00:00',
+            'hora_fin' => '19:00:00',
+            'profesor_id' => '2',
             'curso_id' => '1',
         ]);
     }

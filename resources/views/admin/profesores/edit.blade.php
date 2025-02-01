@@ -58,17 +58,6 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="especialidad">Especialidad </label><b>*</b>
-                                        <input type="text" class="form-control" name="especialidad"
-                                            value="{{ $profesor->especialidad }}" required>
-                                        @error('especialidad')
-                                            <small class="bg-danger text-white p-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
                                         <label for="email">Email </label><b>*</b>
                                         <input type="email" class="form-control" name="email"
                                             value="{{ $profesor->user->email }}" required>

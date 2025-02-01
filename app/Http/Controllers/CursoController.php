@@ -32,7 +32,6 @@ class CursoController extends Controller
             'descripcion' => 'required',
             'horas_requeridas' => 'required|integer|min:1',
             'estado' => 'required|in:A,I', // Asegúrate de que el estado sea válido
-            'ubicacion' => 'nullable',
         ]);
 
         // Crear un nuevo curso

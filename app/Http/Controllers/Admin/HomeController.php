@@ -34,6 +34,7 @@ class HomeController extends Controller
 
         if (Auth::user()->hasRole('superAdmin') ||  Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria') || Auth::user()->hasRole('profesor')) {
             $cursos = Curso::all();
+            
             $clientes = Cliente::all();
             $role = 'admin'; // Asegúrate de tener un campo 'role'
 
@@ -42,6 +43,8 @@ class HomeController extends Controller
             $cliente = Cliente::where('user_id', Auth::id())->first();
             // dd($cliente);    
             $cursos = $cliente->cursos; // Cursos del cliente
+            // dd($cursos);    
+
             $profesores = Profesor::distinct()
                 ->join('events', 'profesors.id', '=', 'events.profesor_id')
                 ->join('clientes', 'clientes.id', '=', 'events.cliente_id')

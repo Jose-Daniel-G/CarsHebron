@@ -26,7 +26,7 @@ class ProfesorSeeder extends Seeder
             'nombres' => 'Profesor',
             'apellidos' => 'Lewis',
             'telefono' => '4564564565',
-            'especialidad' => 'A1',
+            //'especialidad' => 'A1',
             'user_id' => '4',
         ]);
 
@@ -40,7 +40,7 @@ class ProfesorSeeder extends Seeder
             'nombres' => 'TEACHER',
             'apellidos' => 'Gallardo',
             'telefono' => '432324324',
-            'especialidad' => 'motocicletas',
+            //'especialidad' => 'motocicletas',
             'user_id' => '5',
         ]);
         User::create([
@@ -53,7 +53,7 @@ class ProfesorSeeder extends Seeder
             'nombres' => 'Julio Profe',
             'apellidos' => 'Valdes',
             'telefono' => '123123213',
-            'especialidad' => 'Transporte público',
+            //'especialidad' => 'Transporte público',
             'user_id' => '6',
         ]);
         User::create([
@@ -66,7 +66,7 @@ class ProfesorSeeder extends Seeder
             'nombres' => 'Martin Profe',
             'apellidos' => 'Valdes',
             'telefono' => '123123213',
-            'especialidad' => 'Carga o camiones',
+            //'especialidad' => 'Carga o camiones',
             'user_id' => '7',
         ]);
         //--------------------------------------------]

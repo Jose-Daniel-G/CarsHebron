@@ -38,7 +38,6 @@
                                 <th>Nro</th>
                                 <th>Nombres y Apellidos</th>
                                 <th>Telefono</th>
-                                <th>Especialidad</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -49,7 +48,6 @@
                                     <td scope="row">{{ $contador++ }}</td>
                                     <td scope="row">{{ $profesor->nombres . ' ' . $profesor->apellidos }}</td>
                                     <td scope="row">{{ $profesor->telefono }}</td>
-                                    <td scope="row">{{ $profesor->especialidad }}</td>
                                     <td scope="row">
                                         <div class="btn-group" role="group" aria-label="basic example">
                                             <a href="{{ route('admin.profesores.show', $profesor->id) }}"

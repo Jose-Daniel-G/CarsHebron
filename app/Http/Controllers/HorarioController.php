@@ -34,7 +34,7 @@ class HorarioController extends Controller
     {
         try {
             // Obtener horarios con profesor y curso
-            $horarios = Horario::with(['profesor', 'curso'])->where('curso_id', $id)->get();
+            $horarios = Horario::with(['profesor', 'curso'])->where('profesor_id', $id)->get();
     
             $horarios_asignados = CalendarEvent::select([
                 'events.id AS evento_id',

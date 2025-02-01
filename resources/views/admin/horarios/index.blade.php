@@ -29,7 +29,6 @@
                             <tr>
                                 <th>Nro</th>
                                 <th>Profesor</th>
-                                <th>Especialidad</th>
                                 <th>Curso</th>
                                 <th>Dia de atencion</th>
                                 <th>Hora Inicio</th>
@@ -43,9 +42,8 @@
                                 <tr>
                                     <td scope="row">{{ $contador++ }}</td>
                                     <td scope="row">{{ $horario->profesor->nombres }}</td>
-                                    <td scope="row">{{ $horario->profesor->especialidad }}</td>
                                     <td scope="row">
-                                        {{ $horario->curso->nombre . '  ' . $horario->curso->ubicacion }}
+                                        {{ $horario->curso->nombre }}
                                     </td>
                                     <td scope="row">{{ $horario->dia }}</td>
                                     <td scope="row" class="text-center">{{ $horario->hora_inicio }}</td>

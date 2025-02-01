@@ -92,14 +92,12 @@ class ClienteController extends Controller
             'nombres' => 'required',
             'apellidos' => 'required',
             'cc' => 'required|unique:clientes,cc,' . $cliente->id,
-            'fecha_nacimiento' => 'required',
             'genero' => 'required',
             'celular' => 'required',
             'correo' => 'required|email|max:250|unique:clientes,correo,' . $cliente->id,
             'direccion' => 'required',
             'contacto_emergencia' => 'required',
         ]);
-        $validatedData['fecha_nacimiento'] = Carbon::createFromFormat('Y-m-d', $request->fecha_nacimiento)->format('d/m/Y');
 
         if ($request->has('reset_password')) { //Si el checkbox está marcado, Restablecer la contraseña a la cédula
             $usuario = User::find($cliente->user_id); //dd($cliente->user_id);

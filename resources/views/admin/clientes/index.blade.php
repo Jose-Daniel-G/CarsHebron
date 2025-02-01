@@ -35,7 +35,6 @@
                                 <th>Apellidos</th>
                                 <th>cc</th>
                                 <th>Celular</th>
-                                <th>Fecha de Nacimiento</th>
                                 <th>Direccion</th>
                                 {{-- <th>Email</th> --}}
                                 <th>Acciones</th>

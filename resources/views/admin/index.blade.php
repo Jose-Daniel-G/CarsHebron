@@ -194,14 +194,13 @@
                             <label for="curso_id">Cursos </label><b>*</b>
                         </div>
                         <div class="col-md-4">
-                            <select name="curso_id" id="curso_select" class="form-control">
+                            {{-- <select name="curso_id" id="curso_select" class="form-control">
                                 <option value="" selected disabled>Seleccione una opción</option>
-                                @foreach ($cursos as $curso)
+                                @foreach ($profesores as $curso)
                                     <option value="{{ $curso->id }}">
-                                        {{-- {{ $curso->nombre }} </option> --}}
-                                        {{ $curso->nombre . ' - ' . $curso->ubicacion }} </option>
+                                        {{ $curso->nombres }} </option>
                                 @endforeach
-                            </select>
+                            </select> --}}
                         </div>
                     </div>
                     <div class="row">
@@ -370,6 +369,12 @@
 
             HoraIncioInput.addEventListener('change', function() {
                 let selectedTime = this.value; // Obtener la hora seleccionada (formato HH:MM)
+                // verificar si la fecha selecionada es anterior a la fecha actual
+                if (selectedTime) {
+                    selectedTime = selectedTime.split(':'); //Dividir la cadena en horas y minutos
+                    selectedTime = selectedTime[0] + ':00'; //conservar la hora, ignorar los minutos
+                    this.value = selectedTime; // Establecer la hora modificada en el campo de entrada
+                }
                 let now = new Date(); // Obtener la fecha y hora actual
 
                 if (selectedTime) {
@@ -612,7 +617,7 @@
         });
     </script>
     <script>
-        /// SOLO PERMITE EL ME ACTUAL
+        /// SOLO PERMITE EL MES ACTUAL
         // Obtener la fecha actual
         var today = new Date();
 
@@ -625,8 +630,8 @@
         var lastDayString = lastDay.toISOString().split('T')[0];
 
         // Asignar los valores min y max al input de fecha
-        document.getElementById('fecha_reserva').setAttribute('min', firstDayString);
-        document.getElementById('fecha_reserva').setAttribute('max', lastDayString);
+        // document.getElementById('fecha_reserva').setAttribute('min', firstDayString);
+        // document.getElementById('fecha_reserva').setAttribute('max', lastDayString);
     </script>
     {{-- <script>
         @if (session('error'))

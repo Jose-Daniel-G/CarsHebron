@@ -21,7 +21,7 @@ class ProfesorFactory extends Factory
             'nombres' => $this->faker->firstName(),
             'apellidos' => $this->faker->lastName(),
             'telefono' => $this->faker->phoneNumber(),
-            'especialidad' => $this->faker->word(),
+            // 'especialidad' => $this->faker->word(),
             // Asegúrate de que 'user_id' sea opcional o se genere correctamente
             'user_id' => User::factory(), // Si usas factory para User
         ];

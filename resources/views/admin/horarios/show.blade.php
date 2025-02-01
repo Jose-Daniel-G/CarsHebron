@@ -22,7 +22,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="profesor_id">Profesores </label>
-                                    <p>{{ $horario->profesor->nombres . ' ' . $horario->profesor->apellidos." ".$horario->profesor->especialidad }}</p>
+                                    <p>{{ $horario->profesor->nombres . ' ' . $horario->profesor->apellidos}}</p>
 
                                 </div>
                             </div>

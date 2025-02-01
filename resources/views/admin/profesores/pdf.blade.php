@@ -34,7 +34,6 @@
                 <th>Apellidos y nombres</th>
                 <th>Telefono</th>
                 <th></th>
-                <th>Epecialidad</th>
             </tr>
         </thead>
         <tbody>
@@ -45,7 +44,6 @@
                     <td>{{ $profesor->apellidos }}</td>
                     <td class="text-center">{{ $profesor->telefono }}</td>
                     
-                    <td>{{ $profesor->especialidad }}</td>
                 </tr>
             @endforeach
 

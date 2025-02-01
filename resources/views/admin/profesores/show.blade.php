@@ -59,15 +59,6 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="especialidad">Especialidad </label><b>*</b>
-                                        <p>
-                                            {{ $profesor->especialidad }}
-                                        </p>
-                                    </div>
-                                </div>
-
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="estado">Estado </label><b>*</b>
