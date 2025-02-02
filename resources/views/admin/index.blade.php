@@ -196,9 +196,9 @@
                         <div class="col-md-4">
                             <select name="curso_id" id="profesor_select" class="form-control">
                                 <option value="" selected disabled>Seleccione una opción</option>
-                                @foreach ($profesores as $curso)
+                                @foreach ($profesorSelect as $curso)
                                     <option value="{{ $curso->id }}">
-                                        {{ $curso->nombres }} </option>
+                                        {{ $curso->cursos." - ".$curso->nombres }} </option>
                                 @endforeach
                             </select>
                         </div>
@@ -576,7 +576,7 @@
         });
     </script>
     <script>
-        /// SOLO PERMITE EL ME ACTUAL
+        /// MODAL SOLO PERMITE EL  MES ACTUAL
         // Obtener la fecha actual
         var today = new Date();
 

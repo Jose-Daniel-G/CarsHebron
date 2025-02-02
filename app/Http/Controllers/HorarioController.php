@@ -131,31 +131,32 @@ class HorarioController extends Controller
             ->exists();
 
         // Verificar si el horario ya existe para ese día, rango de horas y curso
-        $horarioCurso = Horario::where('dia', $request->dia)
-            ->where('curso_id', $request->curso_id) // Filtrar por curso
-            ->where(function ($query) use ($request) {
-                $query->where(function ($query) use ($request) {
-                    $query->where('hora_inicio', '>=', $request->hora_inicio)
-                        ->where('hora_inicio', '<', $request->hora_fin);
-                })
-                    ->orWhere(function ($query) use ($request) {
-                        $query->where('hora_fin', '>', $request->hora_inicio)
-                            ->where('hora_fin', '<=', $request->hora_fin);
-                    })
-                    ->orWhere(function ($query) use ($request) {
-                        $query->where('hora_inicio', '<', $request->hora_inicio)
-                            ->where('hora_fin', '>', $request->hora_fin);
-                    });
-            })
-            ->exists();
+        // $horarioCurso = Horario::where('dia', $request->dia)
+        //     ->where('curso_id', $request->curso_id) // Filtrar por curso
+        //     ->where(function ($query) use ($request) {
+        //         $query->where(function ($query) use ($request) {
+        //             $query->where('hora_inicio', '>=', $request->hora_inicio)
+        //                 ->where('hora_inicio', '<', $request->hora_fin);
+        //         })
+        //             ->orWhere(function ($query) use ($request) {
+        //                 $query->where('hora_fin', '>', $request->hora_inicio)
+        //                     ->where('hora_fin', '<=', $request->hora_fin);
+        //             })
+        //             ->orWhere(function ($query) use ($request) {
+        //                 $query->where('hora_inicio', '<', $request->hora_inicio)
+        //                     ->where('hora_fin', '>', $request->hora_fin);
+        //             });
+        //     })
+        //     ->exists();
 
         // Si ya existe un horario en ese rango para el mismo curso con otro profesor
-        if ($horarioCurso) {
-            return redirect()->back()
-                ->withInput()
-                ->with('mensaje', 'Ya existe un horario para el curso con otro profesor en ese rango de tiempo')
-                ->with('icono', 'error');
-        } else if ($horarioProfesor) {
+        // if ($horarioCurso) {
+        //     return redirect()->back()
+        //         ->withInput()
+        //         ->with('mensaje', 'Ya existe un horario para el curso con otro profesor en ese rango de tiempo')
+        //         ->with('icono', 'error');
+        // } else 
+        if ($horarioProfesor) {
             return redirect()->back()
                 ->withInput()
                 ->with('mensaje', 'El profesor ya tiene asignado un horario en ese rango de tiempo')
