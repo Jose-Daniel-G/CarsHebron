@@ -111,16 +111,17 @@
     <script>
         // carga contenido de tabla en  curso_info
         $('#profesor_id').on('change', function() {
-            var curso_id = $('#profesor_id').val();
+            var profesor_id = $('#profesor_id').val();
             var url = "{{ route('admin.horarios.show_datos_cursos', ':id') }}";
-            url = url.replace(':id', curso_id);
-            // alert(curso_id);
+            url = url.replace(':id', profesor_id);
+            // alert(profesor_id);
 
-            if (curso_id) {
+            if (profesor_id) {
                 $.ajax({
                     url: url,
                     type: 'GET',
                     success: function(data) {
+                        // console.log(data);
                         $('#curso_info').html(data);
                     },
                     error: function() {

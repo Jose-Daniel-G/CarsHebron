@@ -194,12 +194,11 @@
                             <label for="curso_id">Cursos </label><b>*</b>
                         </div>
                         <div class="col-md-4">
-                            <select name="curso_id" id="curso_select" class="form-control">
+                            <select name="curso_id" id="profesor_select" class="form-control">
                                 <option value="" selected disabled>Seleccione una opción</option>
-                                @foreach ($cursos as $curso)
+                                @foreach ($profesores as $curso)
                                     <option value="{{ $curso->id }}">
-                                        {{-- {{ $curso->nombre }} </option> --}}
-                                        {{ $curso->nombre . ' - ' . $curso->ubicacion }} </option>
+                                        {{ $curso->nombres }} </option>
                                 @endforeach
                             </select>
                         </div>
@@ -215,24 +214,6 @@
                 @can('show_datos_cursos')
                     <div class="tab-pane fade active show" id="custom-tabs-three-profile" role="tabpanel"
                         aria-labelledby="custom-tabs-three-profile-tab">
-
-                        <div class="row">
-                            <div class="col-md-8 d-flex justify-content-end">
-                                <label for="curso_id">Profesores</label><b>*</b>
-                            </div>
-                            <div class="col-md-4">
-                                <select name="profesor_id" id="profesor_select" class="form-control">
-                                    <option value="" selected disabled>Seleccione una opción</option>
-                                    @foreach ($profesores as $profesore)
-                                        <option value="{{ $profesore->id }}">
-                                            {{ $profesore->nombres . ' ' . $profesore->apellidos }}
-                                            {{-- {{ $profesore->nombres . ' ' . $profesore->apellidos . ' - ' . $profesore->especialidad }} --}}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
                         <div class="row">
                             <div class="col-md-12">
                                 <!-- Button trigger modal -->
@@ -471,19 +452,7 @@
             if ($('#custom-tabs-three-profile').hasClass('active')) {
                 calendar.render();
             }
-
-            // Evento cuando cambia la selección del profesor
-            $('#profesor_select').on('change', function() {
-                var profesor_id = $(this).val();
-
-                // Remover todas las fuentes de eventos del calendario
-                calendar.removeAllEventSources();
-
-                // Si hay un profesor seleccionado, cargar sus eventos
-                if (profesor_id) {
-                    var url = "{{ route('admin.horarios.show_reserva_profesores', ':id') }}";
-                    url = url.replace(':id', profesor_id);
-
+                    var url = "{{ route('admin.horarios.show_reserva_profesores') }}";
                     $.ajax({
                         url: url,
                         type: 'GET',
@@ -497,16 +466,11 @@
                             alert('Error al obtener datos del profesor');
                         }
                     });
-                } else {
-                    // Si no hay profesor seleccionado, también puedes limpiar los eventos si es necesario
-                    calendar.removeAllEventSources();
-                }
-            });
         });
 
         // carga contenido de tabla en  curso_info
-        $('#curso_select').on('change', function() {
-            var curso_id = $('#curso_select').val();
+        $('#profesor_select').on('change', function() {
+            var curso_id = $('#profesor_select').val();
             var url = "{{ route('admin.horarios.show_datos_cursos', ':id') }}";
             url = url.replace(':id', curso_id);
 

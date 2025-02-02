@@ -63,15 +63,13 @@ class HomeController extends Controller
         return view('admin.reservas.show', compact('events'));
     }
 
-    public function show_reserva_profesores($id) //calendar
+    public function show_reserva_profesores() //calendar
     {
         try {
             // Verifica si el usuario autenticado es un administrador
             if (Auth::user()->hasRole('superAdmin') ||  Auth::user()->hasRole('admin') || Auth::user()->hasRole('secretaria')) {
                 // Obtener todos los eventos del profesor específico
-                $events = CalendarEvent::with(['profesor', 'cliente']) // Asegúrate de que estas relaciones estén definidas en el modelo
-                    ->where('profesor_id', $id)
-                    ->get();
+                $events = CalendarEvent::with(['profesor', 'cliente'])->get();
                 return response()->json($events);
             } else {
 
@@ -80,7 +78,6 @@ class HomeController extends Controller
                 ->join('clientes', 'clientes.id', '=', 'events.cliente_id')
                 ->join('users as clientes_users', 'clientes.user_id', '=', 'clientes_users.id')
                 ->where('clientes.user_id', Auth::id())
-                ->where('events.profesor_id', $id)
                 ->select('events.*')
                 ->get();
 
