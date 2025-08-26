@@ -7,6 +7,7 @@ use App\Models\PicoyPlaca;
 use App\Models\Profesor;
 use App\Models\User;
 use App\Models\Vehiculo;
+use App\Models\TipoVehiculo;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            TipoVehiculoSeeder::class,
             RoleSeeder::class,
             AdminSeeder::class,
             SecretariaSeeder::class,

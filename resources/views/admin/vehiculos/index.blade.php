@@ -54,7 +54,7 @@
                                     <td>{{ $vehiculo->placa }}</td>
                                     <td>{{ $vehiculo->modelo }}</td>
                                     <td>{{ $vehiculo->disponible ? 'Sí' : 'No' }}</td>
-                                    <td>{{ $vehiculo->tipo }}</td>
+                                    <td>{{ $vehiculo->tipo->tipo }}</td>
                                     <td>{{ $vehiculo->nombres . ' ' . $vehiculo->apellidos }}</td>
                                     <td>
                                         <a href="#" class="btn btn-primary" data-id="{{ $vehiculo->id }}"
@@ -169,11 +169,13 @@
                     modal.find('#disponible').val(data.vehiculo.disponible ? '1' : '0');
                     modal.find('#tipo').val(data.vehiculo.tipo);
                     modal.find('#picoyplaca_id').val(data.vehiculo.picoyplaca_id);
+                   
+
                     modal.find('#profesor_nombres').val(data.vehiculo.profesor.nombres + ' ' + data
                         .vehiculo.profesor.apellidos);
 
                     // Limpiar y agregar opciones al select de tipo
-                    var tipoSelect = modal.find('#tipo_select');
+                    var tipoSelect = modal.find('#tipo_selecti');
                     tipoSelect.empty();
                     ['Sedan', 'SUV', 'Pickup', 'Hatchback'].forEach(function(tipo) {
                         tipoSelect.append(new Option(tipo, tipo.toLowerCase()));

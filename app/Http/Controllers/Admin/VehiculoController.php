@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Profesor;
+use App\Models\TipoVehiculo;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 
@@ -17,8 +18,8 @@ class VehiculoController extends Controller
             ->select('vehiculos.*', 'profesors.nombres', 'profesors.apellidos')
             ->limit(100)
             ->get();
-
-        return view("admin.vehiculos.index", compact('vehiculos'));
+        $tipos = TipoVehiculo::all();
+        return view("admin.vehiculos.index", compact('vehiculos','tipos'));
     }
 
     public function create()
@@ -64,7 +65,7 @@ class VehiculoController extends Controller
     {
         $profesores = Profesor::all(); // Obtener todos los profesores
         $vehiculo->load('profesor'); // Cargar solo el profesor relacionado
-
+        \Log::info('Vehículo con profesor:', ['vehiculo' => $vehiculo->toArray()]);
         return response()->json([
             'vehiculo' => $vehiculo,
             'profesores' => $profesores,

@@ -24,7 +24,11 @@ class Vehiculo extends Model
     {
         return $this->belongsTo(Profesor::class, 'profesor_id');
     }
-
+    public function tipo()
+    {
+        // Relación de muchos a uno: un vehículo tiene un tipo
+        return $this->belongsTo(TipoVehiculo::class,  'tipo_id');
+    }
     // protected $fillable = [
     //     // 'marca','anio','color', 'pico_y_placa',
     //     'placa','nombre','modelo', 'tipo','disponible',];
