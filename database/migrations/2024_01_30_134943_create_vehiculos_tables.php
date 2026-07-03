@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('modelo');
             $table->boolean('disponible')->default(true);
             $table->string('tipo');
+            $table->foreignId('tipo_id')->constrained('tipos_vehiculos');
             $table->timestamps();
             $table->unsignedBigInteger('profesor_id')->nullable();
             $table->foreign('profesor_id')->references('id')->on('users')->onDelete('set null');
